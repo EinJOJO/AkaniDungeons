@@ -1,5 +1,6 @@
 package it.einjojo.akani.dungeon.config;
 
+import com.google.common.collect.ImmutableList;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -33,7 +34,8 @@ public class MobBiomesConfig {
     }
 
     public List<String> mobIds(Biome biome) {
-        return biomeAssignments.get(biome);
+        return ImmutableList.copyOf(biomeAssignments.computeIfAbsent(biome, k -> List.of()));
     }
+
 
 }

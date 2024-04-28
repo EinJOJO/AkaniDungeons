@@ -44,6 +44,10 @@ tasks {
 
     }
 
+    runServer {
+        minecraftVersion("1.20.4")
+    }
+
     assemble {
         dependsOn("shadowJar")
     }
@@ -51,8 +55,8 @@ tasks {
     shadowJar {
         archiveClassifier.set("")
         archiveVersion.set("")
-        relocate("co.aikar.commands", "it.einjojo.akani.essentials.command.acf")
-        relocate("fr.mrmicky.fastboard", "it.einjojo.akani.essentials.scoreboard.fastboard")
+        //relocate("co.aikar.commands", "it.einjojo.akani.essentials.command.acf")
+        //relocate("fr.mrmicky.fastboard", "it.einjojo.akani.essentials.scoreboard.fastboard")
 
     }
 }

@@ -1,0 +1,6 @@
+name: AkaniDungeons
+main: it.einjojo.akani.dungeon.AkaniDungeonPlugin
+version: ${version}
+author: EinJoJo
+description: AkaniDungeons plugin
+api-version: 1.19
