@@ -1,6 +1,8 @@
 package it.einjojo.akani.dungeon;
 
 import co.aikar.commands.PaperCommandManager;
+import it.einjojo.akani.dungeon.listener.MineListener;
+import it.einjojo.akani.dungeon.listener.OreAttackPacketListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class AkaniDungeonPlugin extends JavaPlugin {
@@ -10,8 +12,10 @@ public class AkaniDungeonPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         akaniDungeon = new AkaniDungeon(this);
-        akaniDungeon.enable();
+        akaniDungeon.startSchedulers();
         registerCommands();
+        new OreAttackPacketListener(akaniDungeon.mineManager());
+        new MineListener(akaniDungeon.mineManager(), this);
     }
 
     public void registerCommands() {
@@ -22,6 +26,5 @@ public class AkaniDungeonPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        if (akaniDungeon != null) akaniDungeon.disable();
     }
 }

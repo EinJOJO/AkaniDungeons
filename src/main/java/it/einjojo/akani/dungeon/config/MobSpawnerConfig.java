@@ -1,6 +1,6 @@
 package it.einjojo.akani.dungeon.config;
 
-import it.einjojo.akani.dungeon.mobs.ChunkPosition;
+import it.einjojo.akani.dungeon.util.ChunkPosition;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.util.HashMap;

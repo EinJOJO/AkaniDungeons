@@ -1,6 +1,7 @@
 package it.einjojo.akani.dungeon.mobs;
 
 import it.einjojo.akani.dungeon.AkaniDungeon;
+import it.einjojo.akani.dungeon.util.ChunkPosition;
 import it.einjojo.akani.dungeon.util.ChunkRing;
 import it.einjojo.akani.dungeon.util.RepeatingTask;
 import org.bukkit.Bukkit;

@@ -1,6 +1,7 @@
 package it.einjojo.akani.dungeon;
 
 import it.einjojo.akani.dungeon.config.DungeonConfig;
+import it.einjojo.akani.dungeon.mine.MineManager;
 import it.einjojo.akani.dungeon.mine.SyncOreRenderer;
 import it.einjojo.akani.dungeon.mobs.AsyncMobPopulateChunkSelector;
 import it.einjojo.akani.dungeon.mobs.SyncMobSpawner;
@@ -15,6 +16,7 @@ public class AkaniDungeon {
     private final SyncOreRenderer syncOreRenderer;
     private final SyncMobSpawner syncMobSpawner;
     private final SpawnableFactory spawnableFactory;
+    private final MineManager mineManager;
 
     public AkaniDungeon(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -23,15 +25,13 @@ public class AkaniDungeon {
         syncOreRenderer = new SyncOreRenderer();
         syncMobSpawner = new SyncMobSpawner(this);
         spawnableFactory = new DefaultSpawnableFactory();
+        mineManager = new MineManager();
+
     }
 
-    protected void enable() {
-        startSchedulers();
-    }
 
-    protected void disable() {
-
-
+    public MineManager mineManager() {
+        return mineManager;
     }
 
 

@@ -1,6 +1,5 @@
 package it.einjojo.akani.dungeon.util;
 
-import it.einjojo.akani.dungeon.mobs.ChunkPosition;
 import org.bukkit.Chunk;
 
 import java.util.ArrayList;

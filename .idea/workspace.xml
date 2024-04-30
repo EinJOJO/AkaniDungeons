@@ -4,25 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5cc949d3-5baf-413b-a507-ac4496d6ac28" name="Changes" comment="Initial commit with basic plugin structure and mob spawning functionality.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mobs/ChunkPosition.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mobs/factory/DefaultSpawnableFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mobs/factory/SpawnableFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mobs/spawnable/VanillaMob.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/util/ChunkRing.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
+    <list default="true" id="5cc949d3-5baf-413b-a507-ac4496d6ac28" name="Changes" comment="Implemented ChunkRing utility class for managing chunk positions based on a pattern. Updated AsyncMobPopulateChunkSelector to refill chunks based on patterns and special configurations. Added glowing effect to spawned entities in SyncMobSpawner. Added DefaultSpawnableFactory for creating spawnable entities. Updated MythicMob to be a Spawnable entity. Refactored class locations to follow a better package structure.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/command/ChunkMobsCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/listener/MineListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/listener/OreAttackPacketListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/BreakReward.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineOreFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineOreType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineProgression.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle/libs.versions.toml" beforeDir="false" afterPath="$PROJECT_DIR$/gradle/libs.versions.toml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeon.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeonPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeonPlugin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/DungeonConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/DungeonConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/MobBiomesConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/MobBiomesConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/MobSpawnerConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/MobSpawnerConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineChunk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineChunk.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineOre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineOre.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mobs/AsyncMobPopulateChunkSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mobs/AsyncMobPopulateChunkSelector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mobs/MythicMob.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mobs/spawnable/MythicMob.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mobs/Spawnable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mobs/spawnable/Spawnable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mobs/SyncMobSpawner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mobs/SyncMobSpawner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mobs/ChunkPosition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/util/ChunkPosition.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/util/ChunkRing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/util/ChunkRing.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -75,8 +76,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Record" />
         <option value="Interface" />
+        <option value="Record" />
         <option value="Class" />
       </list>
     </option>
@@ -84,6 +85,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;EinJOJO&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/EinJOJO/AkaniDungeons.git&quot;,
+    &quot;accountId&quot;: &quot;af65a019-f8cb-4eed-a776-246947542980&quot;
+  }
+}</component>
   <component name="JvmLoggingSettingsStorage">
     <option name="loggerId" value="Slf4j" />
   </component>
@@ -100,6 +113,7 @@
   &quot;keyToString&quot;: {
     &quot;Gradle.AkaniDungeons [build].executor&quot;: &quot;Run&quot;,
     &quot;Gradle.AkaniDungeons [runServer].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowPanel.toolwindow.highlight.mappings&quot;: &quot;true&quot;,
@@ -115,6 +129,9 @@
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\schlo\Desktop\AkaniDungeons\gradle" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\schlo\Desktop\AkaniDungeons\run\plugins" />
     </key>
   </component>
   <component name="RunManager" selected="Gradle.AkaniDungeons [build]">
@@ -186,7 +203,9 @@
       <updated>1714230096480</updated>
       <workItem from="1714230097676" duration="10125000" />
       <workItem from="1714296771868" duration="9994000" />
-      <workItem from="1714319860345" duration="1619000" />
+      <workItem from="1714319860345" duration="3362000" />
+      <workItem from="1714411169189" duration="4139000" />
+      <workItem from="1714507131707" duration="4546000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit with basic plugin structure and mob spawning functionality.">
       <option name="closed" value="true" />
@@ -196,11 +215,20 @@
       <option name="project" value="LOCAL" />
       <updated>1714243596629</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Implemented ChunkRing utility class for managing chunk positions based on a pattern. Updated AsyncMobPopulateChunkSelector to refill chunks based on patterns and special configurations. Added glowing effect to spawned entities in SyncMobSpawner. Added DefaultSpawnableFactory for creating spawnable entities. Updated MythicMob to be a Spawnable entity. Refactored class locations to follow a better package structure.">
+      <option name="closed" value="true" />
+      <created>1714321522294</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1714321522294</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial commit with basic plugin structure and mob spawning functionality." />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial commit with basic plugin structure and mob spawning functionality." />
+    <MESSAGE value="Implemented ChunkRing utility class for managing chunk positions based on a pattern. Updated AsyncMobPopulateChunkSelector to refill chunks based on patterns and special configurations. Added glowing effect to spawned entities in SyncMobSpawner. Added DefaultSpawnableFactory for creating spawnable entities. Updated MythicMob to be a Spawnable entity. Refactored class locations to follow a better package structure." />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented ChunkRing utility class for managing chunk positions based on a pattern. Updated AsyncMobPopulateChunkSelector to refill chunks based on patterns and special configurations. Added glowing effect to spawned entities in SyncMobSpawner. Added DefaultSpawnableFactory for creating spawnable entities. Updated MythicMob to be a Spawnable entity. Refactored class locations to follow a better package structure." />
   </component>
 </project>

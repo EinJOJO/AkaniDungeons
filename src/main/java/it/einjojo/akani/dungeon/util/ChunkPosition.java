@@ -1,4 +1,4 @@
-package it.einjojo.akani.dungeon.mobs;
+package it.einjojo.akani.dungeon.util;
 
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -12,6 +12,10 @@ public record ChunkPosition(int x, int z) {
 
     public static ChunkPosition of(Chunk chunk) {
         return new ChunkPosition(chunk.getX(), chunk.getZ());
+    }
+
+    public static ChunkPosition of(Location location) {
+        return new ChunkPosition(location.getBlockX() >> 4, location.getBlockZ() >> 4);
     }
 
     public Chunk toChunk(World world) {

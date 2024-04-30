@@ -13,11 +13,13 @@ repositories {
     maven("https://repo.aikar.co/content/groups/aikar/")
     maven("https://repo.akani.dev/releases")
     maven("https://repo.oraxen.com/releases")
+    maven("https://repo.codemc.io/repository/maven-releases/")
 }
 
 dependencies {
     compileOnly(libs.paper)
     implementation(libs.acf)
+    compileOnly(libs.packeteventsspigot)
     annotationProcessor(libs.acf)
 }
 

@@ -16,7 +16,7 @@ fastboard="2.1.0"
 acf = { group = "co.aikar", name = "acf-paper", version.ref = "acf" }
 fawe = { group = "com.intellectualsites.bom", name = "bom-newest", version.ref = "fawe-bom" }
 paper = { group = "io.papermc.paper", name = "paper-api", version.ref = "paper-api" }
-packetevents-spigot = { group = "com.github.retrooper.packetevents", name = "spigot", version.ref = "packetevents" }
+packeteventsspigot = { group = "com.github.retrooper.packetevents", name = "spigot", version.ref = "packetevents" }
 gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
 jedis = { group = "redis.clients", name = "jedis", version.ref = "jedis" }
 luckperms = { group = "net.luckperms", name = "api", version.ref = "luckperms" }
