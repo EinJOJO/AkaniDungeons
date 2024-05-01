@@ -11,5 +11,4 @@ import java.util.List;
  */
 public record MineOreType(ItemStack icon, List<BreakReward> breakRewards) {
 
-
 }
