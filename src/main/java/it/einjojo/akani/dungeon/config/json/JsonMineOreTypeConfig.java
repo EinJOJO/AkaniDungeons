@@ -15,7 +15,7 @@ import java.util.List;
 public class JsonMineOreTypeConfig implements MineOreTypeConfig {
     private final Gson gson;
     private final Path filePath;
-    private List<MineOreType> oreTypes = new ArrayList<>();
+    private final List<MineOreType> oreTypes = new ArrayList<>();
 
     public JsonMineOreTypeConfig(Gson gson, Path filePath) {
         this.gson = gson;
@@ -23,6 +23,7 @@ public class JsonMineOreTypeConfig implements MineOreTypeConfig {
     }
 
     public void load() {
+        oreTypes.clear();
         try {
             if (Files.exists(filePath)) {
                 JsonObject json = gson.fromJson(Files.newBufferedReader(filePath), JsonObject.class);

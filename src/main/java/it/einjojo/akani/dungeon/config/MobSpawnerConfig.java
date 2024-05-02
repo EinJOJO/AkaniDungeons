@@ -27,4 +27,62 @@ public interface MobSpawnerConfig {
     int selectorInterval();
 
     int spawnerInterval();
+
+    public static class Dummy implements MobSpawnerConfig {
+
+        @Override
+        public Map<ChunkPosition, Double> refillOverwrites() {
+            return Map.of();
+        }
+
+        @Override
+        public void addRefillOverwrite(ChunkPosition chunkPosition, double refill) {
+
+        }
+
+        @Override
+        public void setRefillOverwrites(Map<ChunkPosition, Double> refillOverwrites) {
+
+        }
+
+        @Override
+        public int minMobsPerChunk() {
+            return 0;
+        }
+
+        @Override
+        public void setMinMobsPerChunk(int minMobsPerChunk) {
+
+        }
+
+        @Override
+        public void setMaxMobsPerChunk(int maxMobsPerChunk) {
+
+        }
+
+        @Override
+        public int maxMobsPerChunk() {
+            return 0;
+        }
+
+        @Override
+        public String worldName() {
+            return "";
+        }
+
+        @Override
+        public void setWorldName(String worldName) {
+
+        }
+
+        @Override
+        public int selectorInterval() {
+            return 200;
+        }
+
+        @Override
+        public int spawnerInterval() {
+            return 20;
+        }
+    }
 }

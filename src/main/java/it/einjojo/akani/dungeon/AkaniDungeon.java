@@ -1,6 +1,6 @@
 package it.einjojo.akani.dungeon;
 
-import it.einjojo.akani.dungeon.config.DungeonConfig;
+import it.einjojo.akani.dungeon.config.DungeonConfigManager;
 import it.einjojo.akani.dungeon.mine.MineManager;
 import it.einjojo.akani.dungeon.mine.SyncOreRenderer;
 import it.einjojo.akani.dungeon.mine.factory.MineOreFactory;
@@ -12,7 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class AkaniDungeon {
     private final JavaPlugin plugin;
-    private final DungeonConfig config;
+    private final DungeonConfigManager configManager;
     private final AsyncMobPopulateChunkSelector asyncMobPopulateChunkSelector;
     private final SyncOreRenderer syncOreRenderer;
     private final SyncMobSpawner syncMobSpawner;
@@ -20,9 +20,9 @@ public class AkaniDungeon {
     private final MineOreFactory mineOreFactory;
     private final MineManager mineManager;
 
-    public AkaniDungeon(JavaPlugin plugin) {
+    public AkaniDungeon(JavaPlugin plugin, DungeonConfigManager configManager) {
         this.plugin = plugin;
-        this.config = new DungeonConfig(plugin);
+        this.configManager = configManager;
         asyncMobPopulateChunkSelector = new AsyncMobPopulateChunkSelector(this);
         syncOreRenderer = new SyncOreRenderer();
         syncMobSpawner = new SyncMobSpawner(this);
@@ -42,13 +42,17 @@ public class AkaniDungeon {
 
 
     public void startSchedulers() {
-        asyncMobPopulateChunkSelector.start(plugin, config.mobSpawnerConfig().selectorInterval());
+        asyncMobPopulateChunkSelector.start(plugin, configManager.mobSpawnerConfig().selectorInterval());
         syncOreRenderer.start(plugin, 2);
-        syncMobSpawner.start(plugin, config.mobSpawnerConfig().spawnerInterval());
+        syncMobSpawner.start(plugin, configManager.mobSpawnerConfig().spawnerInterval());
     }
 
-    public DungeonConfig config() {
-        return config;
+    public DungeonConfigManager config() {
+        return configManager;
+    }
+
+    public DungeonConfigManager configManager() {
+        return configManager;
     }
 
     public JavaPlugin plugin() {

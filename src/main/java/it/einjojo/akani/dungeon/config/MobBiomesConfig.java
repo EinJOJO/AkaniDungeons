@@ -7,9 +7,21 @@ import java.util.Map;
 
 public interface MobBiomesConfig {
 
-    public Map<Biome, List<String>> biomeAssignments();
+    Map<Biome, List<String>> biomeAssignments();
 
-    public List<String> mobIds(Biome biome);
+    List<String> mobIds(Biome biome);
 
 
+    public static class Dummy implements MobBiomesConfig {
+
+        @Override
+        public Map<Biome, List<String>> biomeAssignments() {
+            return Map.of();
+        }
+
+        @Override
+        public List<String> mobIds(Biome biome) {
+            return List.of();
+        }
+    }
 }
