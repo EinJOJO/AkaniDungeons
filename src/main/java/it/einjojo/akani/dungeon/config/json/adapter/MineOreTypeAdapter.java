@@ -18,6 +18,7 @@ public class MineOreTypeAdapter implements JsonSerializer<MineOreType>, JsonDese
     @Override
     public MineOreType deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
+        String name = jsonObject.get("name").getAsString();
         //hardness
         Hardness hardness = Hardness.UNDETERMINED;
         try {
@@ -39,12 +40,14 @@ public class MineOreTypeAdapter implements JsonSerializer<MineOreType>, JsonDese
         jsonObject.getAsJsonArray("breakRewards").forEach(jsonElement -> {
             breakReward.add(context.deserialize(jsonElement, BreakReward.class));
         });
-        return new MineOreType(itemBuilder.build(), breakReward, hardness);
+        return new MineOreType(name, itemBuilder.build(), breakReward, hardness);
     }
 
     @Override
     public JsonElement serialize(MineOreType src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject jsonObject = new JsonObject();
+        //name
+        jsonObject.addProperty("name", src.name());
         //hardness
         jsonObject.addProperty("hardness", src.hardness().name());
         //icon

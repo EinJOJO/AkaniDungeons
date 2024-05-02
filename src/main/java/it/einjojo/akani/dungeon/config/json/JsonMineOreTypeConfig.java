@@ -25,12 +25,14 @@ public class JsonMineOreTypeConfig implements MineOreTypeConfig {
     public void load() {
         oreTypes.clear();
         try {
-            if (Files.exists(filePath)) {
-                JsonObject json = gson.fromJson(Files.newBufferedReader(filePath), JsonObject.class);
-                json.getAsJsonArray().forEach(jsonElement -> {
-                    oreTypes.add(gson.fromJson(jsonElement, MineOreType.class));
-                });
+            if (!Files.exists(filePath)) {
+                Files.createFile(filePath);
             }
+            JsonObject json = gson.fromJson(Files.newBufferedReader(filePath), JsonObject.class);
+            if (json == null) return;
+            json.getAsJsonArray().forEach(jsonElement -> {
+                oreTypes.add(gson.fromJson(jsonElement, MineOreType.class));
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -39,7 +41,6 @@ public class JsonMineOreTypeConfig implements MineOreTypeConfig {
     @Override
     public void addOreType(MineOreType oreType) {
         oreTypes.add(oreType);
-        save();
     }
 
     public void save() {
@@ -53,7 +54,6 @@ public class JsonMineOreTypeConfig implements MineOreTypeConfig {
     @Override
     public void removeOreType(MineOreType remove) {
         oreTypes.remove(remove);
-        save();
     }
 
     @Override

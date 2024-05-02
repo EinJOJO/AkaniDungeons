@@ -50,4 +50,8 @@ public class DungeonConfigManager {
     public MineOreTypeConfig mineOreTypeConfig() {
         return mineOreTypeConfig;
     }
+
+    public Gson gson() {
+        return gson;
+    }
 }

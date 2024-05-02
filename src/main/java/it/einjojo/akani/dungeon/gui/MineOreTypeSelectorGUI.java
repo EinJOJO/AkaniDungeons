@@ -1,22 +1,34 @@
 package it.einjojo.akani.dungeon.gui;
 
-import fr.minuskube.inv.SmartInventory;
+import fr.minuskube.inv.ClickableItem;
 import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
+import it.einjojo.akani.core.paper.util.ItemBuilder;
+import it.einjojo.akani.dungeon.config.MineOreTypeConfig;
+import it.einjojo.akani.dungeon.mine.MineOreType;
 import org.bukkit.entity.Player;
 
-public class MineOreTypeSelectorGUI implements InventoryProvider {
+import java.util.List;
 
-    public static final SmartInventory INVENTORY = SmartInventory.builder()
-            .id("mineOreTypeSelector")
-            .provider(new MineOreTypeSelectorGUI())
-            .size(6, 9)
-            .title("Available Ores")
-            .build();
+public class MineOreTypeSelectorGUI implements InventoryProvider {
+    private final MineOreTypeConfig config;
+
+
+    public MineOreTypeSelectorGUI(MineOreTypeConfig config) {
+        this.config = config;
+    }
 
     @Override
     public void init(Player player, InventoryContents contents) {
         contents.fillRow(0, GUIItem.BACKGROUND.emptyClickableItem());
+        for (MineOreType oreType : config.types()) {
+            ClickableItem.of(new ItemBuilder(oreType.icon()).lore(List.of(
+
+            )).build(), (e) -> {
+
+            });
+
+        }
         contents.fillRow(5, GUIItem.BACKGROUND.emptyClickableItem());
     }
 
