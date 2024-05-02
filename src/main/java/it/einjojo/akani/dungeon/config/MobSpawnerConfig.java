@@ -1,89 +1,30 @@
 package it.einjojo.akani.dungeon.config;
 
 import it.einjojo.akani.dungeon.util.ChunkPosition;
-import org.bukkit.configuration.ConfigurationSection;
 
-import java.util.HashMap;
 import java.util.Map;
 
-public class MobSpawnerConfig {
-    private final ConfigurationSection section;
-    private final int selectorInterval;
-    private final int spawnerInterval;
-    private Map<ChunkPosition, Double> refillOverwrites = new HashMap<>();
-    private String worldName;
-    private int maxMobsPerChunk;
-    private int minMobsPerChunk;
+public interface MobSpawnerConfig {
 
-    public MobSpawnerConfig(ConfigurationSection section) {
-        this.section = section;
-        section.addDefault("world", "world");
-        section.addDefault("selectorInterval", 200);
-        section.addDefault("spawnerInterval", 2);
-        section.addDefault("maxMobsPerChunk", 7);
-        section.addDefault("refillOverwrites", Map.of());
-        selectorInterval = section.getInt("selectorInterval");
-        spawnerInterval = section.getInt("spawnerInterval");
-        worldName = section.getString("world");
-        maxMobsPerChunk = section.getInt("maxMobsPerChunk");
-        minMobsPerChunk = section.getInt("minMobsPerChunk");
-        section.getMapList("refillOverwrites").forEach(map -> {
-            ChunkPosition chunkPosition = new ChunkPosition((int) map.get("x"), (int) map.get("z"));
-            refillOverwrites.put(chunkPosition, (double) map.get("refill"));
-        });
-    }
+    Map<ChunkPosition, Double> refillOverwrites();
 
-    public Map<ChunkPosition, Double> refillOverwrites() {
-        return refillOverwrites;
-    }
+    void addRefillOverwrite(ChunkPosition chunkPosition, double refill);
 
-    public void addRefillOverwrite(ChunkPosition chunkPosition, double refill) {
-        refillOverwrites.put(chunkPosition, refill);
-        setRefillOverwrites(refillOverwrites);
-    }
+    void setRefillOverwrites(Map<ChunkPosition, Double> refillOverwrites);
 
-    public void setRefillOverwrites(Map<ChunkPosition, Double> refillOverwrites) {
-        this.refillOverwrites = refillOverwrites;
-        section.set("refillOverwrites", refillOverwrites.entrySet().stream()
-                .map(entry -> Map.of(
-                        "x", entry.getKey().x(),
-                        "z", entry.getKey().z(),
-                        "refill", entry.getValue())
-                ).toList());
-    }
+    int minMobsPerChunk();
 
-    public int minMobsPerChunk() {
-        return minMobsPerChunk;
-    }
+    void setMinMobsPerChunk(int minMobsPerChunk);
 
-    public void setMinMobsPerChunk(int minMobsPerChunk) {
-        this.minMobsPerChunk = minMobsPerChunk;
-        section.set("minMobsPerChunk", minMobsPerChunk);
-    }
+    void setMaxMobsPerChunk(int maxMobsPerChunk);
 
-    public void setMaxMobsPerChunk(int maxMobsPerChunk) {
-        this.maxMobsPerChunk = maxMobsPerChunk;
-        section.set("maxMobsPerChunk", maxMobsPerChunk);
-    }
+    int maxMobsPerChunk();
 
-    public int maxMobsPerChunk() {
-        return maxMobsPerChunk;
-    }
+    String worldName();
 
-    public String worldName() {
-        return worldName;
-    }
+    void setWorldName(String worldName);
 
-    public void setWorldName(String worldName) {
-        this.worldName = worldName;
-        section.set("world", worldName);
-    }
+    int selectorInterval();
 
-    public int selectorInterval() {
-        return selectorInterval;
-    }
-
-    public int spawnerInterval() {
-        return spawnerInterval;
-    }
+    int spawnerInterval();
 }

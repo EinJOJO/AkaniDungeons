@@ -14,7 +14,7 @@ public record MineOreType(ItemStack icon, List<BreakReward> breakRewards, Hardne
 
 
     public boolean canBreak(ItemStack tool) {
-        return false;
+        return Hardness.canBreak(tool.getType(), hardness);
     }
 
     public List<ItemStack> breakRewards(ItemStack toolUsed) {

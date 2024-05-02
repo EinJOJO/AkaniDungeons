@@ -5,13 +5,14 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Dependency;
 import co.aikar.commands.annotation.Subcommand;
 import it.einjojo.akani.dungeon.AkaniDungeon;
+import it.einjojo.akani.dungeon.mine.Hardness;
 import it.einjojo.akani.dungeon.mine.MineOre;
 import it.einjojo.akani.dungeon.mine.MineOreType;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-@CommandAlias("mineore")
+@CommandAlias("mineore|mine")
 public class MineOreCommand extends BaseCommand {
 
     @Dependency
@@ -29,7 +30,7 @@ public class MineOreCommand extends BaseCommand {
         if (lastOre != null) {
             lastOre.unrender(sender);
         }
-        lastOre = core.mineOreFactory().createMineOre(sender.getLocation(), new MineOreType(itemInHand, null));
+        lastOre = core.mineOreFactory().createMineOre(sender.getLocation(), new MineOreType(itemInHand, null, Hardness.STONE));
         lastOre.render(sender);
     }
 

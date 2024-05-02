@@ -20,7 +20,8 @@ repositories {
 dependencies {
     compileOnly(libs.paper)
     implementation(libs.acf)
-    implementation("xyz.xenondevs.invui:invui:1.30")
+    compileOnly(libs.akanicore)
+    compileOnly("fr.minuskube.inv:smart-invs:1.2.7")
     compileOnly(libs.packeteventsspigot)
     annotationProcessor(libs.acf)
 }

@@ -15,8 +15,7 @@ public class DungeonConfig {
 
     public void load() {
         plugin.reloadConfig();
-        mobSpawnerConfig = new MobSpawnerConfig(getOrCreateSection("mobs.spawner"));
-        mobBiomesConfig = new MobBiomesConfig(getOrCreateSection("mobs.biomes"));
+
         plugin.getConfig().options().copyDefaults(true);
         save();
     }

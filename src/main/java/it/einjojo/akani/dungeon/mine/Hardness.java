@@ -40,4 +40,10 @@ public enum Hardness {
         }
     }
 
+    public static boolean canBreak(Material tool, Hardness hardness) {
+        return HARDNESS_MAP.get(tool) != null && HARDNESS_MAP.get(tool).ordinal() >= hardness.ordinal();
+    }
+
+
+
 }
