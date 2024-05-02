@@ -8,7 +8,7 @@ import java.util.Random;
 public record BreakReward(ItemStack baseItem, int min, int max, double chance) {
     private static final Random random = new Random();
 
-    public @Nullable ItemStack breakReward(ItemStack usedTool) {
+    public @Nullable ItemStack reward(ItemStack usedTool) {
         if (random.nextDouble() > chance) {
             return null;
         }

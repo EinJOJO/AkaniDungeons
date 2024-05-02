@@ -4,15 +4,18 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
+import com.github.retrooper.packetevents.protocol.item.ItemStack;
 import com.github.retrooper.packetevents.protocol.player.Equipment;
 import com.github.retrooper.packetevents.protocol.player.EquipmentSlot;
 import com.github.retrooper.packetevents.util.Vector3d;
+import com.github.retrooper.packetevents.util.Vector3f;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityEquipment;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -29,14 +32,21 @@ public record MineOre(int entityId, Location location, MineOreType type, Set<UUI
         }
         //Spawn entity
         viewers.add(player.getUniqueId());
-        if (!hasDestroyed(player)) {
-            spawnOreArmorstand(player);
-            return;
+        spawnOreArmorstand(player);
+        if (hasDestroyed(player.getUniqueId())) {
+            updateMetadata(player, Component.text("§c§lDestroyed"));
+        } else {
+            updateMetadata(player, Objects.requireNonNullElse(type.icon().getItemMeta().displayName(), Component.text("Erz")).color(NamedTextColor.GREEN));
+            updateEquipment(player, true);
         }
     }
 
-    public boolean hasDestroyed(Player player) {
-        return playerDestroyMap.containsKey(player.getUniqueId());
+    public boolean isViewing(UUID playerUuid) {
+        return viewers.contains(playerUuid);
+    }
+
+    public boolean hasDestroyed(UUID playerUuid) {
+        return playerDestroyMap.containsKey(playerUuid);
     }
 
     private void spawnOreArmorstand(Player player) {
@@ -45,9 +55,9 @@ public record MineOre(int entityId, Location location, MineOreType type, Set<UUI
                 Optional.of(UUID.randomUUID()),
                 EntityTypes.ARMOR_STAND,
                 SpigotConversionUtil.fromBukkitLocation(location).getPosition(),
-                15f,
-                3f,
-                0f,
+                location().getPitch(),
+                location.getYaw(),
+                location.getYaw(),
                 0,
                 Optional.of(Vector3d.zero())
         );
@@ -55,10 +65,15 @@ public record MineOre(int entityId, Location location, MineOreType type, Set<UUI
         System.out.println("Spawned armor stand");
     }
 
-    public void setMetadata(Player player, @Nullable Component displayName) {
+    public void updateMetadata(Player player, @Nullable Component displayName) {
         List<EntityData> data = new ArrayList<>(List.of(
-                new EntityData(0, EntityDataTypes.BYTE, (0x20)), // invisible
-                new EntityData(5, EntityDataTypes.BOOLEAN, true) // No gravity
+                new EntityData(0, EntityDataTypes.BYTE, (byte) (0x20)), // invisible
+                new EntityData(5, EntityDataTypes.BOOLEAN, true), // No gravity
+
+                new EntityData(16, EntityDataTypes.ROTATION, new Vector3f(51f, 205f, 40f)), // head
+                new EntityData(18, EntityDataTypes.ROTATION, new Vector3f(116f, 40f, 25f)), //left arm
+                new EntityData(19, EntityDataTypes.ROTATION, new Vector3f(112f, 209f, 87f)) // right arm
+
         ));
         if (displayName == null) {
             data.add(new EntityData(2, EntityDataTypes.OPTIONAL_ADV_COMPONENT, Optional.empty())); // name
@@ -71,12 +86,24 @@ public record MineOre(int entityId, Location location, MineOreType type, Set<UUI
 
     }
 
-    public void equipArmorStandWithMineBlock(Player player) {
-        List<Equipment> equipmentList = List.of(
-                new Equipment(EquipmentSlot.HELMET, SpigotConversionUtil.fromBukkitItemStack(type.icon()))
-        );
+    public void updateEquipment(Player player, boolean showBlock) {
+        List<Equipment> equipmentList;
+        if (showBlock) {
+            equipmentList = List.of(
+                    new Equipment(EquipmentSlot.HELMET, SpigotConversionUtil.fromBukkitItemStack(type.icon())),
+                    new Equipment(EquipmentSlot.MAIN_HAND, SpigotConversionUtil.fromBukkitItemStack(type.icon())),
+                    new Equipment(EquipmentSlot.OFF_HAND, SpigotConversionUtil.fromBukkitItemStack(type.icon()))
+            );
+        } else {
+            equipmentList = List.of(
+                    new Equipment(EquipmentSlot.HELMET, ItemStack.EMPTY),
+                    new Equipment(EquipmentSlot.MAIN_HAND, ItemStack.EMPTY),
+                    new Equipment(EquipmentSlot.OFF_HAND, ItemStack.EMPTY)
+            );
+        }
         WrapperPlayServerEntityEquipment entityEquipmentPacket = new WrapperPlayServerEntityEquipment(entityId, equipmentList);
         PacketEvents.getAPI().getPlayerManager().sendPacket(player, entityEquipmentPacket);
+
     }
 
     public void unrender(Player player) {

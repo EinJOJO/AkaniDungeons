@@ -17,6 +17,7 @@ public class MineOreCommand extends BaseCommand {
     @Dependency
     private AkaniDungeon core;
 
+    private MineOre lastOre;
 
     @Subcommand("spawn")
     public void spawn(Player sender) {
@@ -25,8 +26,11 @@ public class MineOreCommand extends BaseCommand {
             sender.sendMessage("You must be holding an item in your hand to spawn a mine ore.");
             return;
         }
-        MineOre ore = core.mineOreFactory().createMineOre(sender.getLocation(), new MineOreType(itemInHand, null));
-        ore.render(sender);
+        if (lastOre != null) {
+            lastOre.unrender(sender);
+        }
+        lastOre = core.mineOreFactory().createMineOre(sender.getLocation(), new MineOreType(itemInHand, null));
+        lastOre.render(sender);
     }
 
 

@@ -14,11 +14,13 @@ repositories {
     maven("https://repo.akani.dev/releases")
     maven("https://repo.oraxen.com/releases")
     maven("https://repo.codemc.io/repository/maven-releases/")
+    maven("https://repo.xenondevs.xyz/releases")
 }
 
 dependencies {
     compileOnly(libs.paper)
     implementation(libs.acf)
+    implementation("xyz.xenondevs.invui:invui:1.30")
     compileOnly(libs.packeteventsspigot)
     annotationProcessor(libs.acf)
 }
