@@ -5,14 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5cc949d3-5baf-413b-a507-ac4496d6ac28" name="Changes" comment="Refactored MineOreCommand to properly handle spawning mine ores and added rendering and unrendering methods for MineOre.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/GuiManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/DungeonConfigManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/DungeonConfigManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeonPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeonPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/command/MineOreCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/command/MineOreCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/JsonMineOreTypeConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/JsonMineOreTypeConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/adapter/MineOreTypeAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/adapter/MineOreTypeAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/GUIItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/GUIItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/GuiManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/GuiManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/MineOreTypeSelectorGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/MineOreTypeSelectorGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/listener/MineListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/listener/MineListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineOreType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineOreType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineOre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineOre.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -111,8 +115,8 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Gradle.AkaniDungeons [build].executor": "Debug",
-    "Gradle.AkaniDungeons [runServer].executor": "Debug",
+    "Gradle.AkaniDungeons [build].executor": "Run",
+    "Gradle.AkaniDungeons [runServer].executor": "Run",
     "Gradle.Build AkaniDungeons.executor": "Run",
     "Gradle.Download Sources.executor": "Run",
     "Gradle.Load Gradle Dependencies.executor": "Run",
@@ -125,18 +129,20 @@
     "WebServerToolWindowPanel.toolwindow.show.size": "false",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/schlo/Desktop/AkaniDungeons/build/libs"
+    "last_opened_file_path": "C:/Users/schlo/Desktop/AkaniDungeons/run/plugins"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\schlo\Desktop\AkaniDungeons\run\plugins" />
       <recent name="C:\Users\schlo\Desktop\AkaniDungeons\gradle" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\schlo\Desktop\AkaniDungeons\build\libs" />
       <recent name="C:\Users\schlo\Desktop\AkaniDungeons\run\plugins" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.AkaniDungeons [runServer]">
+  <component name="RunManager" selected="Gradle.AkaniDungeons [build]">
     <configuration name="AkaniDungeons [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -183,8 +189,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Gradle.AkaniDungeons [runServer]" />
         <item itemvalue="Gradle.AkaniDungeons [build]" />
+        <item itemvalue="Gradle.AkaniDungeons [runServer]" />
       </list>
     </recent_temporary>
   </component>
@@ -214,6 +220,9 @@
       <workItem from="1714640454306" duration="4061000" />
       <workItem from="1714653881460" duration="2719000" />
       <workItem from="1714659113591" duration="2620000" />
+      <workItem from="1714746843988" duration="41000" />
+      <workItem from="1714761397884" duration="673000" />
+      <workItem from="1714817108305" duration="6949000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit with basic plugin structure and mob spawning functionality.">
       <option name="closed" value="true" />

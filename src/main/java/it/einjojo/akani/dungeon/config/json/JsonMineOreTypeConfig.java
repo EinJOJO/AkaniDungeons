@@ -58,6 +58,6 @@ public class JsonMineOreTypeConfig implements MineOreTypeConfig {
 
     @Override
     public List<MineOreType> types() {
-        return List.of();
+        return oreTypes;
     }
 }

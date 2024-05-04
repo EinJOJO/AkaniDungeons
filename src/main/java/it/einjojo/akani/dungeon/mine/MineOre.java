@@ -36,7 +36,7 @@ public record MineOre(int entityId, Location location, MineOreType type, Set<UUI
         if (hasDestroyed(player.getUniqueId())) {
             updateMetadata(player, Component.text("§c§lDestroyed"));
         } else {
-            updateMetadata(player, Objects.requireNonNullElse(type.icon().getItemMeta().displayName(), Component.text("Erz")).color(NamedTextColor.GREEN));
+            updateMetadata(player, Objects.requireNonNullElse(type.icon().getItemMeta().displayName(), Component.text("Erz").appendNewline().append(Component.text(type.name()))).color(NamedTextColor.GREEN));
             updateEquipment(player, true);
         }
     }

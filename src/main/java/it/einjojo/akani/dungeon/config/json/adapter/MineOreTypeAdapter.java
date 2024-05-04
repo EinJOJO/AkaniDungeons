@@ -31,8 +31,11 @@ public class MineOreTypeAdapter implements JsonSerializer<MineOreType>, JsonDese
         //icon
         JsonObject icon = jsonObject.getAsJsonObject("icon");
         Optional<JsonElement> optionalTexture = Optional.ofNullable(jsonObject.get("texture"));
-        ItemBuilder itemBuilder = new ItemBuilder(Material.valueOf(icon.get("material").getAsString())).
-                customModelData(icon.get("customModelData").getAsInt());
+        int customModelData = icon.get("customModelData").getAsInt();
+        ItemBuilder itemBuilder = new ItemBuilder(Material.valueOf(icon.get("material").getAsString()));
+        if (customModelData != 0) {
+            itemBuilder.customModelData(customModelData);
+        }
         optionalTexture.ifPresent(jsonElement -> itemBuilder.skullTexture(jsonElement.getAsString()));
 
         // break rewards
@@ -53,7 +56,8 @@ public class MineOreTypeAdapter implements JsonSerializer<MineOreType>, JsonDese
         //icon
         JsonObject icon = new JsonObject();
         icon.addProperty("material", src.icon().getType().name());
-        icon.addProperty("customModelData", src.icon().getItemMeta().getCustomModelData());
+        int customModelData = src.icon().getItemMeta().hasCustomModelData() ? src.icon().getItemMeta().getCustomModelData() : 0;
+        icon.addProperty("customModelData", customModelData);
         ItemMeta itemMeta = src.icon().getItemMeta();
         if (itemMeta instanceof SkullMeta skullMeta) {
             skullMeta.getPlayerProfile().getProperties().forEach(property -> {

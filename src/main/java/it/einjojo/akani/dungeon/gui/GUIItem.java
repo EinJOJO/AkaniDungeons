@@ -10,7 +10,8 @@ import org.bukkit.inventory.ItemStack;
 import java.util.function.Consumer;
 
 public enum GUIItem {
-    BACKGROUND(new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).displayName(Component.empty()));
+    BACKGROUND(new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).displayName(Component.empty())),
+    ADD_BUTTON(new ItemBuilder(Material.LIME_STAINED_GLASS_PANE).displayName(Component.text("§aHinzufügen")));
     private final ItemBuilder itemBuilder;
 
     GUIItem(ItemBuilder itemBuilder) {

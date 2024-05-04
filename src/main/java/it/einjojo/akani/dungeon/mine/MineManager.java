@@ -14,9 +14,6 @@ public class MineManager {
     private final Map<UUID, MineProgression> progressionMap = new ConcurrentHashMap<>();
 
 
-    public MineManager() {
-    }
-
     public MineOre oreByEntityId(int entityId) {
         return oreMap.get(entityId);
     }
