@@ -34,10 +34,10 @@ public record MineOre(int entityId, Location location, MineOreType type, Set<UUI
         viewers.add(player.getUniqueId());
         spawnOreArmorstand(player);
         if (hasDestroyed(player.getUniqueId())) {
-            updateMetadata(player, Component.text("§c§lDestroyed"));
+            setName(player, Component.text("§c" + type.name()).color(NamedTextColor.RED));
         } else {
-            updateMetadata(player, Objects.requireNonNullElse(type.icon().getItemMeta().displayName(), Component.text("Erz").appendNewline().append(Component.text(type.name()))).color(NamedTextColor.GREEN));
-            updateEquipment(player, true);
+            setName(player, Component.text("§a" + type.name()).color(NamedTextColor.GREEN));
+            setEquipment(player, true);
         }
     }
 
@@ -62,10 +62,6 @@ public record MineOre(int entityId, Location location, MineOreType type, Set<UUI
                 Optional.of(Vector3d.zero())
         );
         PacketEvents.getAPI().getPlayerManager().sendPacket(player, spawnPacket);
-        System.out.println("Spawned armor stand");
-    }
-
-    public void updateMetadata(Player player, @Nullable Component displayName) {
         List<EntityData> data = new ArrayList<>(List.of(
                 new EntityData(0, EntityDataTypes.BYTE, (byte) (0x20)), // invisible
                 new EntityData(5, EntityDataTypes.BOOLEAN, true), // No gravity
@@ -75,20 +71,21 @@ public record MineOre(int entityId, Location location, MineOreType type, Set<UUI
                 new EntityData(19, EntityDataTypes.ROTATION, new Vector3f(112f, 209f, 87f)) // right arm
 
         ));
-        if (displayName == null) {
-            data.add(new EntityData(2, EntityDataTypes.OPTIONAL_ADV_COMPONENT, Optional.empty())); // name
-            data.add(new EntityData(3, EntityDataTypes.BOOLEAN, false)); // is name visible
-        } else {
-            data.add(new EntityData(2, EntityDataTypes.OPTIONAL_ADV_COMPONENT, Optional.of(displayName))); // name
-            data.add(new EntityData(3, EntityDataTypes.BOOLEAN, true)); // is name visible
-        }
         PacketEvents.getAPI().getPlayerManager().sendPacket(player, new WrapperPlayServerEntityMetadata(entityId, data));
+    }
+
+
+    public void setName(Player player, @Nullable Component displayName) {
+        PacketEvents.getAPI().getPlayerManager().sendPacket(player, new WrapperPlayServerEntityMetadata(entityId, List.of(
+                new EntityData(3, EntityDataTypes.BOOLEAN, displayName != null), // render name
+                new EntityData(2, EntityDataTypes.OPTIONAL_ADV_COMPONENT, Optional.ofNullable(displayName)) // name
+        )));
 
     }
 
-    public void updateEquipment(Player player, boolean showBlock) {
+    public void setEquipment(Player player, boolean showBlocks) {
         List<Equipment> equipmentList;
-        if (showBlock) {
+        if (showBlocks) {
             equipmentList = List.of(
                     new Equipment(EquipmentSlot.HELMET, SpigotConversionUtil.fromBukkitItemStack(type.icon())),
                     new Equipment(EquipmentSlot.MAIN_HAND, SpigotConversionUtil.fromBukkitItemStack(type.icon())),
@@ -116,6 +113,7 @@ public record MineOre(int entityId, Location location, MineOreType type, Set<UUI
 
     public void destroy(Player player) {
         unrender(player);
+        player.getInventory().addItem(type.breakRewards(player.getInventory().getItemInMainHand()).toArray(new org.bukkit.inventory.ItemStack[0]));
         playerDestroyMap.put(player.getUniqueId(), System.currentTimeMillis());
     }
 

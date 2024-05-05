@@ -24,11 +24,11 @@ public class AkaniDungeon {
         this.plugin = plugin;
         this.configManager = configManager;
         asyncMobPopulateChunkSelector = new AsyncMobPopulateChunkSelector(this);
-        syncOreRenderer = new SyncOreRenderer();
+        mineManager = new MineManager();
+        syncOreRenderer = new SyncOreRenderer(mineManager);
         syncMobSpawner = new SyncMobSpawner(this);
         spawnableFactory = new DefaultSpawnableFactory();
         mineOreFactory = new MineOreFactory();
-        mineManager = new MineManager();
 
     }
 

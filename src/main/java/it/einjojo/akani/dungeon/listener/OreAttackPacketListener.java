@@ -7,10 +7,6 @@ import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityEquipment;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnLivingEntity;
 import it.einjojo.akani.dungeon.mine.MineManager;
 import it.einjojo.akani.dungeon.mine.MineOre;
 import it.einjojo.akani.dungeon.mine.MineProgression;
@@ -42,27 +38,11 @@ public class OreAttackPacketListener extends PacketListenerAbstract {
         }
         event.setCancelled(true);
         progression.progress(mineOre);
+
     }
 
     @Override
     public void onPacketSend(PacketSendEvent event) {
-        if (event.getPacketType() == PacketType.Play.Server.ENTITY_EQUIPMENT) {
-            var equipment = new WrapperPlayServerEntityEquipment(event);
-            return;
-        }
-        if (event.getPacketType() == PacketType.Play.Server.SPAWN_LIVING_ENTITY) {
-            var packet = new WrapperPlayServerSpawnLivingEntity(event);
-            return;
-        }
-        if (event.getPacketType() == PacketType.Play.Server.SPAWN_ENTITY) {
-            var packet = new WrapperPlayServerSpawnEntity(event);
-            return;
-        }
-        if (event.getPacketType() == PacketType.Play.Server.ENTITY_METADATA) {
-            var packet = new WrapperPlayServerEntityMetadata(event);
-
-            return;
-        }
 
     }
 }

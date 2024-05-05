@@ -6,7 +6,7 @@ import org.jetbrains.annotations.Nullable;
  * Represents the progression of a player's mining.
  */
 public class MineProgression {
-    private static final int ORE_TIMEOUT = 2 * 1000;
+    private static final int ORE_TIMEOUT = 3 * 1000; // 3 seconds timeout
     private MineOre lastOre;
     private long lastOreTime;
     private int stage;
@@ -21,12 +21,21 @@ public class MineProgression {
      * @param ore the ore that the player is currently mining
      */
     public void progress(MineOre ore) {
-        if (lastOre != null && lastOre != ore) {
+        if (lastOre != ore) {
             reset();
         }
+        if (!canProgressAgain()) return;
         lastOre = ore;
         lastOreTime = System.currentTimeMillis();
         stage++;
+    }
+
+    public boolean canProgressAgain() {
+        return System.currentTimeMillis() - lastOreTime >= 700;
+    }
+
+    public long lastOreTime() {
+        return lastOreTime;
     }
 
     void reset() {
