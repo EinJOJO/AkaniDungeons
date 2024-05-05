@@ -43,7 +43,7 @@ public class AkaniDungeon {
 
     public void startSchedulers() {
         asyncMobPopulateChunkSelector.start(plugin, configManager.mobSpawnerConfig().selectorInterval());
-        syncOreRenderer.start(plugin, 2);
+        syncOreRenderer.start(plugin, 5);
         syncMobSpawner.start(plugin, configManager.mobSpawnerConfig().spawnerInterval());
     }
 

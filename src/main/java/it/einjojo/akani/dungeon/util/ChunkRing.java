@@ -47,7 +47,7 @@ public class ChunkRing {
             offsetZ = zero.z();
         }
 
-        // Find the zero position
+        // Find the zero position in the pattern
         for (int z = 0; z < pattern.length; z++) {
             for (int x = 0; x < pattern[z].length; x++) {
                 if (pattern[z][x] == '0') {
@@ -61,11 +61,8 @@ public class ChunkRing {
         // Find the chunks for the given patternId
         for (int z = 0; z < pattern.length; z++) {
             for (int x = 0; x < pattern[z].length; x++) {
-                if (pattern[z][x] == '0') {
-                    continue;
-                }
                 int chunkX = offsetX + x - zeroX;
-                int chunkZ = offsetX + z - zeroZ;
+                int chunkZ = offsetZ + z - zeroZ;
                 chunks.computeIfAbsent(pattern[z][x], k -> new ArrayList<>()).add(new ChunkPosition(chunkX, chunkZ));
             }
         }

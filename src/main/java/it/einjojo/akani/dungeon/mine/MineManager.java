@@ -40,6 +40,7 @@ public class MineManager {
         oreMap.put(ore.entityId(), ore);
         MineChunk chunk = oreChunkMap.computeIfAbsent(ChunkPosition.of(ore.location()), chunkPosition -> new MineChunk(chunkPosition, new LinkedList<>()));
         chunk.ores().add(ore);
+
     }
 
 

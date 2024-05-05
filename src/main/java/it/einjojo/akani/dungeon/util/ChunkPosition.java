@@ -18,6 +18,12 @@ public record ChunkPosition(int x, int z) {
         return new ChunkPosition(location.getBlockX() >> 4, location.getBlockZ() >> 4);
     }
 
+    public Location center(World world) {
+        int cx = x * 16 + 8;
+        int cz = z * 16 + 8;
+        return new Location(world, cx, world.getHighestBlockYAt(cx, cz), cz);
+    }
+
     public Chunk toChunk(World world) {
         return world.getChunkAt(x, z);
     }
