@@ -20,18 +20,19 @@ public class MineProgression {
      *
      * @param ore the ore that the player is currently mining
      */
-    public void progress(MineOre ore) {
+    public boolean progress(MineOre ore) {
         if (lastOre != ore) {
             reset();
         }
-        if (!canProgressAgain()) return;
+        if (!canProgressAgain()) return false;
         lastOre = ore;
         lastOreTime = System.currentTimeMillis();
         stage++;
+        return true;
     }
 
     public boolean canProgressAgain() {
-        return System.currentTimeMillis() - lastOreTime >= 700;
+        return System.currentTimeMillis() - lastOreTime >= 900;
     }
 
     public long lastOreTime() {

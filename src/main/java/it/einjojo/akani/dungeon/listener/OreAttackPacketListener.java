@@ -10,6 +10,10 @@ import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientIn
 import it.einjojo.akani.dungeon.mine.MineManager;
 import it.einjojo.akani.dungeon.mine.MineOre;
 import it.einjojo.akani.dungeon.mine.MineProgression;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
 public class OreAttackPacketListener extends PacketListenerAbstract {
 
@@ -37,8 +41,10 @@ public class OreAttackPacketListener extends PacketListenerAbstract {
             return;
         }
         event.setCancelled(true);
-        progression.progress(mineOre);
-
+        if (!progression.progress(mineOre)) return;
+        Player player = (Player) event.getPlayer();
+        mineOre.setName(player, Component.text(progression.stage()).color(NamedTextColor.GREEN));
+        player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
     }
 
     @Override

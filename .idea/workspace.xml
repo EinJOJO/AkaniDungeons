@@ -4,13 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5cc949d3-5baf-413b-a507-ac4496d6ac28" name="Changes" comment="Commit message: Updated mine ore rendering to display ore type names in different colors based on their status, added functionality to give rewards upon ore destruction. Made changes to MineChunk, SyncOreRenderer, MineOre, ChunkRing, and other related classes to implement the new rendering and reward system.">
+    <list default="true" id="5cc949d3-5baf-413b-a507-ac4496d6ac28" name="Changes" comment="Rendere Erze auf sehr schlaue Art und weise">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeon.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/SyncOreRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/SyncOreRenderer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/util/ChunkPosition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/util/ChunkPosition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/util/ChunkRing.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/util/ChunkRing.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/listener/OreAttackPacketListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/listener/OreAttackPacketListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineProgression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineProgression.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -219,7 +216,7 @@
       <workItem from="1714817108305" duration="11191000" />
       <workItem from="1714867430407" duration="1672000" />
       <workItem from="1714893469968" duration="7943000" />
-      <workItem from="1714939058232" duration="7592000" />
+      <workItem from="1714939058232" duration="7908000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit with basic plugin structure and mob spawning functionality.">
       <option name="closed" value="true" />
@@ -309,7 +306,23 @@
       <option name="project" value="LOCAL" />
       <updated>1714946190964</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Commit message: Updated mine ore rendering to display ore type names in different colors based on their status, added functionality to give rewards upon ore destruction. Made changes to MineChunk, SyncOreRenderer, MineOre, ChunkRing, and other related classes to implement the new rendering and reward system.">
+      <option name="closed" value="true" />
+      <created>1714948260795</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1714948260795</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Rendere Erze auf sehr schlaue Art und weise">
+      <option name="closed" value="true" />
+      <created>1714948285885</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1714948285885</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -321,6 +334,7 @@
     <MESSAGE value="Updated mine ore type GUI to display information about the ore type and its rewards." />
     <MESSAGE value="Updated mine ore rendering to display ore type names in different colors based on their status, added functionality to give rewards upon ore destruction." />
     <MESSAGE value="Commit message: Updated mine ore rendering to display ore type names in different colors based on their status, added functionality to give rewards upon ore destruction. Made changes to MineChunk, SyncOreRenderer, MineOre, ChunkRing, and other related classes to implement the new rendering and reward system." />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit message: Updated mine ore rendering to display ore type names in different colors based on their status, added functionality to give rewards upon ore destruction. Made changes to MineChunk, SyncOreRenderer, MineOre, ChunkRing, and other related classes to implement the new rendering and reward system." />
+    <MESSAGE value="Rendere Erze auf sehr schlaue Art und weise" />
+    <option name="LAST_COMMIT_MESSAGE" value="Rendere Erze auf sehr schlaue Art und weise" />
   </component>
 </project>

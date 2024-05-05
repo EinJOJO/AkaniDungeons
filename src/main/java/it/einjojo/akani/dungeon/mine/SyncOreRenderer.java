@@ -55,20 +55,16 @@ public class SyncOreRenderer implements RepeatingTask {
                     if (mineChunk == null) {
                         continue;
                     }
-                    playerWorld.strikeLightningEffect(chunkPosition.center(playerWorld));
                     newRendered.add(mineChunk); // Add to rendered chunks
                     mineChunk.renderOres(player); // Try render ores
                 }
             }
-            player.sendActionBar("Rendered " + newRendered.size() + " chunks");
             List<MineChunk> oldRendered = rendered_chunks.get(player.getUniqueId());
             if (oldRendered != null) {
                 // Get all chunks that are not rendered anymore
                 oldRendered.removeAll(newRendered);
                 for (MineChunk mineChunk : oldRendered) {
                     mineChunk.unrenderOres(player);
-                    player.sendMessage("Unrendering chunk: " + mineChunk.position());
-                    playerWorld.createExplosion(mineChunk.position().center(playerWorld), 0);
                 }
             }
             rendered_chunks.put(player.getUniqueId(), newRendered);
