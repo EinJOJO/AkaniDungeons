@@ -12,13 +12,20 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Represents a type of ore that can be found in a mine.
- *
- * @param icon the icon of the ore
- */
-public record MineOreType(String name, ItemStack icon, List<BreakReward> breakRewards, Hardness hardness) {
+
+public class MineOreType {
     private static final NamespacedKey SPAWN_EGG_KEY = new NamespacedKey("akani", "mine_ore_spawn_egg");
+    private final String name;
+    private final ItemStack icon;
+    private final List<BreakReward> breakRewards;
+    private Hardness hardness;
+
+    public MineOreType(String name, ItemStack icon, List<BreakReward> breakRewards, Hardness hardness) {
+        this.breakRewards = breakRewards;
+        this.hardness = hardness;
+        this.icon = icon;
+        this.name = name;
+    }
 
     public static @Nullable String spawnEggName(ItemStack itemStack) {
         if (itemStack == null || itemStack.getItemMeta() == null) return null;
@@ -53,5 +60,25 @@ public record MineOreType(String name, ItemStack icon, List<BreakReward> breakRe
             }
         }
         return rewards;
+    }
+
+    public String name() {
+        return name;
+    }
+
+    public ItemStack icon() {
+        return icon;
+    }
+
+    public List<BreakReward> breakRewards() {
+        return breakRewards;
+    }
+
+    public Hardness hardness() {
+        return hardness;
+    }
+
+    public void setHardness(Hardness hardness) {
+        this.hardness = hardness;
     }
 }

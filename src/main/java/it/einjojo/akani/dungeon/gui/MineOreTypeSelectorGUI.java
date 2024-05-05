@@ -7,34 +7,51 @@ import it.einjojo.akani.core.paper.util.ItemBuilder;
 import it.einjojo.akani.dungeon.config.MineOreTypeConfig;
 import it.einjojo.akani.dungeon.mine.MineOreType;
 import net.kyori.adventure.text.Component;
+import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
 public class MineOreTypeSelectorGUI implements InventoryProvider {
+    private static final NamespacedKey MINE_ORE_TYPE_KEY = new NamespacedKey("akani", "gui_mine_ore_type");
     private final MineOreTypeConfig config;
+    private final GuiManager guiManager;
 
 
-    public MineOreTypeSelectorGUI(MineOreTypeConfig config) {
+    public MineOreTypeSelectorGUI(MineOreTypeConfig config, GuiManager guiManager) {
         this.config = config;
+        this.guiManager = guiManager;
     }
 
     @Override
     public void init(Player player, InventoryContents contents) {
         contents.fillRow(0, GUIItem.BACKGROUND.emptyClickableItem());
         contents.fillRow(5, GUIItem.BACKGROUND.emptyClickableItem());
-        for (MineOreType oreType : config.types()) {
+        for (int i = 0; i < config.types().size(); i++) {
+            MineOreType oreType = config.types().get(i);
             ClickableItem item = ClickableItem.of(new ItemBuilder(oreType.icon()).lore(List.of(
-                    Component.text("§7Rechtsklicke um ein Spawn-Ei für " + oreType.name() + " zuerhalten.")
+                    Component.empty(),
+                    Component.text("§7Name§8: §7:" + oreType.name()),
+                    Component.empty(),
+                    Component.text("§7[§dLinkslklcike§7] §eVerwalte§7 den Erztyp"),
+                    Component.text("§7[§eRechtsklicke§7] Erhalte §6Spawn-Ei: " + oreType.name()),
+                    Component.empty()
+
             )).build(), (e) -> {
-                player.getInventory().addItem(oreType.spawnEggItemStack());
+                if (e.isLeftClick()) {
+                    guiManager.mineOreTypeGUI(oreType).open(player);
+                } else {
+                    player.getInventory().addItem(oreType.spawnEggItemStack());
+                }
             });
             contents.add(item);
         }
         contents.set(5, 4, GUIItem.ADD_BUTTON.clickableItem(e -> {
+
             player.sendMessage(Component.text("§aHalte den Block, der zusehen sein soll, in der Hand und gib ihm einen Namen."));
             player.sendMessage(Component.text("§aVerwende /mineore types create <name> um eine neue Erz-Kategorie zu erstellen."));
             player.closeInventory();
+
         }));
     }
 

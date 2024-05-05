@@ -6,9 +6,18 @@ import it.einjojo.akani.dungeon.config.DungeonConfigManager;
 import it.einjojo.akani.dungeon.gui.GuiManager;
 import it.einjojo.akani.dungeon.listener.MineListener;
 import it.einjojo.akani.dungeon.listener.OreAttackPacketListener;
+import it.einjojo.akani.dungeon.mine.Hardness;
+import it.einjojo.akani.dungeon.mine.MineOreType;
+import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 public class AkaniDungeonPlugin extends JavaPlugin {
+    private static final Logger log = LoggerFactory.getLogger(AkaniDungeonPlugin.class);
     private AkaniDungeon akaniDungeon;
     private PaperCommandManager commandManager;
     private GuiManager guiManager;
@@ -25,8 +34,20 @@ public class AkaniDungeonPlugin extends JavaPlugin {
         new MineListener(this, akaniDungeon);
     }
 
+
     public void registerCommands() {
         commandManager = new PaperCommandManager(this);
+        commandManager.getCommandCompletions().registerAsyncCompletion("oreTypes", (c) -> akaniDungeon.config().mineOreTypeConfig().types().stream().map(MineOreType::name).toList());
+        commandManager.getCommandCompletions().registerStaticCompletion("oreHardness", () -> Arrays.stream(Hardness.values()).map(Enum::name).toList());
+        commandManager.getCommandContexts().registerContext(MineOreType.class, (c) -> akaniDungeon.config().mineOreTypeConfig().types().stream().filter(t -> t.name().equals(c.popFirstArg())).findFirst().orElseThrow());
+        commandManager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {
+            if (t instanceof NoSuchElementException ex) {
+                ((CommandSender) sender.getIssuer()).sendMessage("§cNicht gefunden." + ex.getMessage());
+                return true;
+            }
+            log.warn("Exception in command {}", command.getName(), t);
+            return false;
+        }, false);
         commandManager.enableUnstableAPI("brigadier");
         commandManager.registerDependency(AkaniDungeon.class, akaniDungeon);
         commandManager.registerDependency(GuiManager.class, guiManager);

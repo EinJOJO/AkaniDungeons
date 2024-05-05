@@ -4,19 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5cc949d3-5baf-413b-a507-ac4496d6ac28" name="Changes" comment="Refactored MineOreCommand to properly handle spawning mine ores and added rendering and unrendering methods for MineOre.">
+    <list default="true" id="5cc949d3-5baf-413b-a507-ac4496d6ac28" name="Changes" comment="Implemented functionality to create new mine ore types and added a GUI for ore type selection. Updated rendering and unrendering methods for mine ores.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/MineOreTypeGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/material_theme_project_new.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeonPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeonPlugin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/command/MineOreCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/command/MineOreCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/DungeonConfigManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/DungeonConfigManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/JsonMineOreTypeConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/JsonMineOreTypeConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/adapter/MineOreTypeAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/adapter/MineOreTypeAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/GUIItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/GUIItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/adapter/BreakRewardAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/adapter/BreakRewardAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/GuiManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/GuiManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/MineOreTypeSelectorGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/MineOreTypeSelectorGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/listener/MineListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/listener/MineListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineOre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineOre.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/BreakReward.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/BreakReward.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineOreType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineOreType.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,25 +113,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.AkaniDungeons [build].executor": "Run",
-    "Gradle.AkaniDungeons [runServer].executor": "Run",
-    "Gradle.Build AkaniDungeons.executor": "Run",
-    "Gradle.Download Sources.executor": "Run",
-    "Gradle.Load Gradle Dependencies.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowPanel.toolwindow.highlight.mappings": "true",
-    "WebServerToolWindowPanel.toolwindow.highlight.symlinks": "true",
-    "WebServerToolWindowPanel.toolwindow.show.date": "false",
-    "WebServerToolWindowPanel.toolwindow.show.permissions": "false",
-    "WebServerToolWindowPanel.toolwindow.show.size": "false",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/schlo/Desktop/AkaniDungeons/run/plugins"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.AkaniDungeons [build].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.AkaniDungeons [runServer].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Build AkaniDungeons.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Load Gradle Dependencies.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.highlight.mappings&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.highlight.symlinks&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.date&quot;: &quot;false&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.permissions&quot;: &quot;false&quot;,
+    &quot;WebServerToolWindowPanel.toolwindow.show.size&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/schlo/Desktop/AkaniDungeons/run/plugins&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\schlo\Desktop\AkaniDungeons\run\plugins" />
@@ -222,7 +222,9 @@
       <workItem from="1714659113591" duration="2620000" />
       <workItem from="1714746843988" duration="41000" />
       <workItem from="1714761397884" duration="673000" />
-      <workItem from="1714817108305" duration="6949000" />
+      <workItem from="1714817108305" duration="11191000" />
+      <workItem from="1714867430407" duration="1672000" />
+      <workItem from="1714893469968" duration="5961000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit with basic plugin structure and mob spawning functionality.">
       <option name="closed" value="true" />
@@ -280,7 +282,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714659923570</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Implemented functionality to create new mine ore types and added a GUI for ore type selection. Updated rendering and unrendering methods for mine ores.">
+      <option name="closed" value="true" />
+      <created>1714824624294</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1714824624294</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -288,6 +298,7 @@
     <MESSAGE value="Implemented ChunkRing utility class for managing chunk positions based on a pattern. Updated AsyncMobPopulateChunkSelector to refill chunks based on patterns and special configurations. Added glowing effect to spawned entities in SyncMobSpawner. Added DefaultSpawnableFactory for creating spawnable entities. Updated MythicMob to be a Spawnable entity. Refactored class locations to follow a better package structure." />
     <MESSAGE value="Implemented MineOreCommand to spawn mine ores, added render and unrender methods to MineOre, and updated PacketEvents API usage." />
     <MESSAGE value="Refactored MineOreCommand to properly handle spawning mine ores and added rendering and unrendering methods for MineOre." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactored MineOreCommand to properly handle spawning mine ores and added rendering and unrendering methods for MineOre." />
+    <MESSAGE value="Implemented functionality to create new mine ore types and added a GUI for ore type selection. Updated rendering and unrendering methods for mine ores." />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented functionality to create new mine ore types and added a GUI for ore type selection. Updated rendering and unrendering methods for mine ores." />
   </component>
 </project>

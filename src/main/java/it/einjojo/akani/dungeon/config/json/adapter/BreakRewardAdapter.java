@@ -11,9 +11,9 @@ public class BreakRewardAdapter implements JsonSerializer<BreakReward>, JsonDese
     public BreakReward deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject object = json.getAsJsonObject();
         String base64 = object.get("baseItem").getAsString();
-        int min = object.get("min").getAsInt();
-        int max = object.get("max").getAsInt();
-        double chance = object.get("chance").getAsDouble();
+        short min = object.get("min").getAsShort();
+        short max = object.get("max").getAsShort();
+        float chance = object.get("chance").getAsFloat();
         return new BreakReward(Base64ItemStack.decode(base64), min, max, chance);
     }
 
