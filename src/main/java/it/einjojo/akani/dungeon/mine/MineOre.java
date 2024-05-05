@@ -80,7 +80,6 @@ public record MineOre(int entityId, Location location, MineOreType type, Set<UUI
                 new EntityData(3, EntityDataTypes.BOOLEAN, displayName != null), // render name
                 new EntityData(2, EntityDataTypes.OPTIONAL_ADV_COMPONENT, Optional.ofNullable(displayName)) // name
         )));
-
     }
 
     public void setEquipment(Player player, boolean showBlocks) {

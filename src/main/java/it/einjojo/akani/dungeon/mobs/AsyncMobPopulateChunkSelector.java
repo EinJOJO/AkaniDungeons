@@ -50,7 +50,7 @@ public class AsyncMobPopulateChunkSelector implements RepeatingTask {
         Set<ChunkPosition> ring1 = new HashSet<>();
         Set<ChunkPosition> ring2 = new HashSet<>();
         for (Player player : world.getPlayers()) {
-            ChunkRing ring = new ChunkRing(player.getChunk(), SPAWN_PATTERN);
+            ChunkRing ring = new ChunkRing(ChunkPosition.of(player.getChunk()), SPAWN_PATTERN);
             zeros.add(ChunkPosition.of(player.getChunk()));
             ring1.addAll(ring.getChunks('1'));
             ring2.addAll(ring.getChunks('2'));

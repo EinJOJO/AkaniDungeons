@@ -5,11 +5,19 @@ import org.bukkit.scheduler.BukkitTask;
 
 public interface RepeatingTask extends Runnable {
 
+    default boolean isAsync() {
+        return false;
+    }
+
     default void start(JavaPlugin plugin, int interval) {
         if (task() != null) {
             stop();
         }
-        setTask(plugin.getServer().getScheduler().runTaskTimer(plugin, this, 0, interval));
+        if (isAsync()) {
+            setTask(plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, this, 0, interval));
+        } else {
+            setTask(plugin.getServer().getScheduler().runTaskTimer(plugin, this, 0, interval));
+        }
     }
 
     BukkitTask task();

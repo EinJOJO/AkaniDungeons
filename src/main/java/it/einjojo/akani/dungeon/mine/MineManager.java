@@ -1,6 +1,7 @@
 package it.einjojo.akani.dungeon.mine;
 
 import it.einjojo.akani.dungeon.util.ChunkPosition;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedList;
 import java.util.Map;
@@ -18,7 +19,7 @@ public class MineManager {
         return oreMap.get(entityId);
     }
 
-    public MineChunk chunkByPosition(ChunkPosition position) {
+    public @Nullable MineChunk chunkByPosition(ChunkPosition position) {
         return oreChunkMap.get(position);
     }
 

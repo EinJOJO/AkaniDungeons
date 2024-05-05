@@ -1,6 +1,6 @@
 package it.einjojo.akani.dungeon.util;
 
-import org.bukkit.Chunk;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,14 +8,44 @@ import java.util.List;
 import java.util.Map;
 
 public class ChunkRing {
+    private final char[][] pattern;
     private final Map<Character, List<ChunkPosition>> chunks = new HashMap<>();
+    private @Nullable ChunkPosition zero;
 
-    public ChunkRing(Chunk zero, String... patternString) {
-        char[][] pattern = new char[patternString.length][];
+    public ChunkRing(@Nullable ChunkPosition zero, String... patternString) {
+        this.zero = zero;
+        pattern = new char[patternString.length][];
         for (int i = 0; i < patternString.length; i++) {
-            pattern[i] = patternString[i].toCharArray();
+            pattern[i] = patternString[i].replaceAll(" ", "").toCharArray();
         }
+        if (zero != null) computeChunks(); // Compute the chunks if the zero is not null
+    }
+
+    public char[][] pattern() {
+        return pattern;
+    }
+
+    public Map<Character, List<ChunkPosition>> chunks() {
+        return chunks;
+    }
+
+    public ChunkPosition zero() {
+        return zero;
+    }
+
+    public void setZero(ChunkPosition zero) {
+        this.zero = zero;
+        computeChunks();
+    }
+
+    public void computeChunks() {
+        chunks.clear();
+        int offsetX = 0, offsetZ = 0;
         int zeroX = 0, zeroZ = 0;
+        if (zero != null) {
+            offsetX = zero.x();
+            offsetZ = zero.z();
+        }
 
         // Find the zero position
         for (int z = 0; z < pattern.length; z++) {
@@ -34,8 +64,8 @@ public class ChunkRing {
                 if (pattern[z][x] == '0') {
                     continue;
                 }
-                int chunkX = zero.getX() + x - zeroX;
-                int chunkZ = zero.getZ() + z - zeroZ;
+                int chunkX = offsetX + x - zeroX;
+                int chunkZ = offsetX + z - zeroZ;
                 chunks.computeIfAbsent(pattern[z][x], k -> new ArrayList<>()).add(new ChunkPosition(chunkX, chunkZ));
             }
         }
