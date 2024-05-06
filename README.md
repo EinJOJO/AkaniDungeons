@@ -1,3 +1,5 @@
+[![wakatime](https://wakatime.com/badge/user/8604eeb7-fa00-4008-be52-a3985d373289/project/edea7113-66eb-4f41-ac35-eb3426cadd2a.svg)](https://wakatime.com/badge/user/8604eeb7-fa00-4008-be52-a3985d373289/project/edea7113-66eb-4f41-ac35-eb3426cadd2a)
+
 #### About AkaniDungeons
 AkaniDungeons is a Minecraft plugin focused on enhancing the gameplay experience within a single dungeon world. 
 It manages mob population and mining activities, enriching player interaction and strategies within a pre-existing dungeon environment.
