@@ -79,7 +79,7 @@ public class MineOreType {
     }
 
     public ItemStack icon() {
-        return icon;
+        return icon.clone();
     }
 
     public List<BreakReward> breakRewards() {

@@ -1,18 +1,19 @@
 package it.einjojo.akani.dungeon.mine;
 
+import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public enum Hardness {
-    UNDETERMINED,
-    WOOD,
-    STONE,
-    GOLD,
-    IRON,
-    DIAMOND,
-    NETHERITE;
+    UNDETERMINED("§cNicht Definiert", Material.BARRIER),
+    WOOD("§cHolz", Material.OAK_PLANKS),
+    STONE("§7Stein", Material.STONE),
+    IRON("§fEisen", Material.IRON_INGOT),
+    GOLD("§6Gold", Material.GOLD_INGOT),
+    DIAMOND("§bDiamant", Material.DIAMOND),
+    NETHERITE("§5Netherite", Material.NETHERITE_INGOT);
     public static final Map<Material, Hardness> HARDNESS_MAP = new HashMap<>();
 
     static {
@@ -40,10 +41,28 @@ public enum Hardness {
         }
     }
 
+    public final String name;
+    private final Material iconMaterial;
+
+    Hardness(String name, Material iconMaterial) {
+        this.name = name;
+        this.iconMaterial = iconMaterial;
+    }
+
     public static boolean canBreak(Material tool, Hardness hardness) {
         return HARDNESS_MAP.get(tool) != null && HARDNESS_MAP.get(tool).ordinal() >= hardness.ordinal();
     }
 
+    public Component displayName() {
+        return Component.text(name);
+    }
 
+    public String plainDisplayName() {
+        return name;
+    }
+
+    public Material icon() {
+        return iconMaterial;
+    }
 
 }

@@ -31,10 +31,12 @@ public class MineOreTypeSelectorGUI implements InventoryProvider {
             MineOreType oreType = config.types().get(i);
             ClickableItem item = ClickableItem.of(new ItemBuilder(oreType.icon()).lore(List.of(
                     Component.empty(),
-                    Component.text("§7Name§8: §7:" + oreType.name()),
+                    Component.text("§7▶ Name: §c" + oreType.name()),
+                    Component.text("§7▶ HP: §c" + oreType.maxHealth() + " ❤"),
+                    Component.text("§7▶ Härte: §c" + oreType.hardness().name()),
                     Component.empty(),
-                    Component.text("§7[§dLinkslklcike§7] §eVerwalte§7 den Erztyp"),
-                    Component.text("§7[§eRechtsklicke§7] Erhalte §6Spawn-Ei: " + oreType.name()),
+                    Component.text("§7[§cLinksklick§7] Einstellungen"),
+                    Component.text("§7[§cRechtsklick§7] Spawn-Ei"),
                     Component.empty()
 
             )).build(), (e) -> {

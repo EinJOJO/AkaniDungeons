@@ -71,6 +71,7 @@ public record MineOre(int entityId, Location location, MineOreType type, Set<UUI
     }
 
 
+
     public void setName(Player player, @Nullable Component displayName) {
         PacketEvents.getAPI().getPlayerManager().sendPacket(player, new WrapperPlayServerEntityMetadata(entityId, List.of(
                 new EntityData(3, EntityDataTypes.BOOLEAN, displayName != null), // render name
@@ -98,6 +99,11 @@ public record MineOre(int entityId, Location location, MineOreType type, Set<UUI
 
     }
 
+    /**
+     * Unrender the ore for the player
+     *
+     * @param player the player
+     */
     public void unrender(Player player) {
         if (!viewers.contains(player.getUniqueId())) {
             return;
@@ -106,9 +112,13 @@ public record MineOre(int entityId, Location location, MineOreType type, Set<UUI
         PacketEvents.getAPI().getPlayerManager().sendPacket(player, new WrapperPlayServerDestroyEntities(entityId));
     }
 
+    /**
+     * Destroy the ore for the player and set the time when it was destroyed
+     *
+     * @param player the player
+     */
     public void destroy(Player player) {
         unrender(player);
-        player.getInventory().addItem(type.breakRewards(player.getInventory().getItemInMainHand()).toArray(new org.bukkit.inventory.ItemStack[0]));
         playerDestroyMap.put(player.getUniqueId(), System.currentTimeMillis());
     }
 
