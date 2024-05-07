@@ -34,6 +34,8 @@ public class MineOreTypeSelectorGUI implements InventoryProvider {
                     Component.text("§7▶ Name: §c" + oreType.name()),
                     Component.text("§7▶ HP: §c" + oreType.maxHealth() + " ❤"),
                     Component.text("§7▶ Härte: §c" + oreType.hardness().name()),
+                    Component.text("§7▶ Tool: §c" + oreType.toolType().name()),
+                    Component.text("§7▶ Respawnzeit: §c" + oreType.respawnTime().toMinutes() + " Minuten"),
                     Component.empty(),
                     Component.text("§7[§cLinksklick§7] Einstellungen"),
                     Component.text("§7[§cRechtsklick§7] Spawn-Ei"),

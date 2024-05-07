@@ -5,6 +5,7 @@ import it.einjojo.akani.core.paper.util.ItemBuilder;
 import it.einjojo.akani.dungeon.mine.BreakReward;
 import it.einjojo.akani.dungeon.mine.Hardness;
 import it.einjojo.akani.dungeon.mine.MineOreType;
+import it.einjojo.akani.dungeon.mine.ToolType;
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -46,7 +47,11 @@ public class MineOreTypeAdapter implements JsonSerializer<MineOreType>, JsonDese
         jsonObject.getAsJsonArray("breakRewards").forEach(jsonElement -> {
             breakReward.add(context.deserialize(jsonElement, BreakReward.class));
         });
-        return new MineOreType(name, itemBuilder.build(), breakReward, hardness, maxHP);
+
+        // tool
+        ToolType toolType = Optional.ofNullable(jsonObject.get("toolType")).map(jsonElement -> ToolType.valueOf(jsonElement.getAsString())).orElse(ToolType.PICKAXE);
+
+        return new MineOreType(name, itemBuilder.build(), breakReward, hardness, maxHP, toolType);
     }
 
     @Override
@@ -76,6 +81,15 @@ public class MineOreTypeAdapter implements JsonSerializer<MineOreType>, JsonDese
             breakRewards.add(context.serialize(breakReward, BreakReward.class));
         });
         jsonObject.add("breakRewards", breakRewards);
+
+        //maxhp
+        jsonObject.addProperty("maxHealth", src.maxHealth());
+        //tool
+        jsonObject.addProperty("toolType", src.toolType().name());
+
+        // respawnTime
+        jsonObject.addProperty("respawnTimeMinutes", src.respawnTime().toMinutes());
+
         return jsonObject;
     }
 }

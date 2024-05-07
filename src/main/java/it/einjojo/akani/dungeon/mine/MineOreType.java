@@ -20,15 +20,17 @@ public class MineOreType {
     private final String name;
     private final ItemStack icon;
     private final List<BreakReward> breakRewards;
-    private final float maxHealth;
+    private float maxHealth;
+    private ToolType toolType;
     private Hardness hardness;
 
-    public MineOreType(String name, ItemStack icon, List<BreakReward> breakRewards, Hardness hardness, float maxHealth) {
+    public MineOreType(String name, ItemStack icon, List<BreakReward> breakRewards, Hardness hardness, float maxHealth, ToolType toolType) {
         this.breakRewards = breakRewards;
         this.hardness = hardness;
         this.icon = icon;
         this.name = name;
         this.maxHealth = maxHealth;
+        this.toolType = toolType;
     }
 
     public static @Nullable String spawnEggName(ItemStack itemStack) {
@@ -37,12 +39,27 @@ public class MineOreType {
         return itemStack.getItemMeta().getPersistentDataContainer().get(SPAWN_EGG_KEY, PersistentDataType.STRING);
     }
 
+    public void setToolType(ToolType toolType) {
+        this.toolType = toolType;
+    }
+
+    public ToolType toolType() {
+        return toolType;
+    }
+
+    /**
+     * @return Time it takes for the ore to respawn
+     */
     public Duration respawnTime() {
         return RESPAWN_TIME;
     }
 
     public float maxHealth() {
         return maxHealth;
+    }
+
+    public void setMaxHealth(float maxHealth) {
+        this.maxHealth = maxHealth;
     }
 
     /**

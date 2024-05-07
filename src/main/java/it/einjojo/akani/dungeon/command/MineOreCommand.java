@@ -7,6 +7,7 @@ import it.einjojo.akani.dungeon.gui.GuiManager;
 import it.einjojo.akani.dungeon.mine.BreakReward;
 import it.einjojo.akani.dungeon.mine.Hardness;
 import it.einjojo.akani.dungeon.mine.MineOreType;
+import it.einjojo.akani.dungeon.mine.ToolType;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -38,7 +39,7 @@ public class MineOreCommand extends BaseCommand {
             return;
         }
         itemInHand.setAmount(1);
-        MineOreType type = new MineOreType(name, itemInHand, new ArrayList<>(), Hardness.UNDETERMINED, 10);
+        MineOreType type = new MineOreType(name, itemInHand, new ArrayList<>(), Hardness.UNDETERMINED, 10, ToolType.PICKAXE);
         core.config().mineOreTypeConfig().addOreType(type);
         core.config().mineOreTypeConfig().save();
         sender.getInventory().addItem(type.spawnEggItemStack());

@@ -8,6 +8,7 @@ import it.einjojo.akani.core.paper.util.ItemBuilder;
 import it.einjojo.akani.dungeon.mine.BreakReward;
 import it.einjojo.akani.dungeon.mine.Hardness;
 import it.einjojo.akani.dungeon.mine.MineOreType;
+import it.einjojo.akani.dungeon.mine.ToolType;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -40,6 +41,29 @@ public class MineOreTypeSettingGUI implements InventoryProvider {
         contents.set(5, 0, close);
         addItemList(contents);
         addHardnessSelector(player, contents);
+    }
+
+    protected void addToolType(Player player, InventoryContents contents) {
+        SlotPos toolTypeSelector = SlotPos.of(2, 4);
+        contents.set(toolTypeSelector, ClickableItem.of(new ItemBuilder(ToolType.material(oreType().toolType(), oreType.hardness()))
+                .displayName(Component.text("§c" + oreType.toolType().name()))
+                .lore(List.of(
+                        Component.empty(),
+                        Component.text("§7Wähle das Werkzeug, das benötigt wird,"),
+                        Component.text("§7um dieses Erz abzubauen."),
+                        Component.empty(),
+                        Component.text("§7▶ Aktuelles Werkzeug: §c" + oreType.toolType().name()),
+                        Component.empty()
+                )).addItemFlag(ItemFlag.HIDE_ENCHANTS).build(), (e) -> {
+            int index = oreType.toolType().ordinal();
+            index++;
+            if (index >= ToolType.values().length) {
+                index = 0;
+            }
+            oreType.setToolType(ToolType.values()[index]);
+            init(player, contents);
+        }));
+
     }
 
     protected void addItemList(InventoryContents contents) {
