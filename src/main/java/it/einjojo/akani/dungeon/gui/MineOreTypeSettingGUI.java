@@ -35,10 +35,10 @@ public class MineOreTypeSettingGUI implements InventoryProvider {
     public void init(Player player, InventoryContents contents) {
         ClickableItem close = ClickableItem.of(new ItemBuilder(Material.BARRIER).displayName(Component.text("§cSchließen")).build(), e -> guiManager.mineOreTypeSelectorGUI().open(player));
         ClickableItem icon = ClickableItem.empty(oreType.icon());
-        ClickableItem toolType = ClickableItem.empty(oreType.icon());
         ClickableItem maxHp = ClickableItem.empty(oreType.icon());
         contents.set(5, 4, icon);
         contents.set(5, 0, close);
+        addToolType(player, contents);
         addItemList(contents);
         addHardnessSelector(player, contents);
     }

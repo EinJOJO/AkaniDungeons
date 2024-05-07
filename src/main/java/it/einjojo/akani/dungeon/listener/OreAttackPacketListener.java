@@ -11,6 +11,7 @@ import it.einjojo.akani.dungeon.mine.MineManager;
 import it.einjojo.akani.dungeon.mine.MineOre;
 import it.einjojo.akani.dungeon.mine.MineProgression;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -18,6 +19,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class OreAttackPacketListener extends PacketListenerAbstract {
 
@@ -50,9 +53,23 @@ public class OreAttackPacketListener extends PacketListenerAbstract {
         event.setCancelled(true);
         Player player = (Player) event.getPlayer();
         ItemStack tool = player.getInventory().getItemInMainHand();
+        if (tool.getType().equals(Material.DEBUG_STICK)) {
+            player.sendMessage("§7Type: §c" + mineOre.type().name());
+            player.sendMessage("§7Destroyed: ");
+            for (Map.Entry<UUID, Long> entry : mineOre.playerDestroyMap().entrySet()) {
+                player.sendMessage("§7 - " + entry.getKey() + " : §c" + entry.getValue());
+            }
+            return;
+        }
+        if (mineOre.hasDestroyed(player.getUniqueId())) {
+            player.spawnParticle(Particle.ASH, mineOre.location().clone().add(0, 0.3f, 0), 3);
+            player.sendActionBar(Component.text("§cDu hast dieses Erz bereits abgebaut!"));
+            player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.3f, 1);
+            return;
+        }
         if (!mineOre.type().canBreak(tool)) {
             player.spawnParticle(Particle.ASH, mineOre.location().clone().add(0, 0.3f, 0), 3);
-            player.sendActionBar(Component.text("§cDu benötigst ein besseres Werkzeug!"));
+            player.sendActionBar(Component.text("§cDu benötigst ein anderes Werkzeug!"));
             player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.3f, 1);
             return;
         }
