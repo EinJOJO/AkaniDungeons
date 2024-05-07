@@ -9,28 +9,40 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.Nullable;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class MineOreType {
     private static final NamespacedKey SPAWN_EGG_KEY = new NamespacedKey("akani", "mine_ore_spawn_egg");
+    private static final Duration RESPAWN_TIME = Duration.ofMinutes(30);
     private final String name;
     private final ItemStack icon;
     private final List<BreakReward> breakRewards;
+    private final float maxHealth;
     private Hardness hardness;
 
-    public MineOreType(String name, ItemStack icon, List<BreakReward> breakRewards, Hardness hardness) {
+    public MineOreType(String name, ItemStack icon, List<BreakReward> breakRewards, Hardness hardness, float maxHealth) {
         this.breakRewards = breakRewards;
         this.hardness = hardness;
         this.icon = icon;
         this.name = name;
+        this.maxHealth = maxHealth;
     }
 
     public static @Nullable String spawnEggName(ItemStack itemStack) {
         if (itemStack == null || itemStack.getItemMeta() == null) return null;
         if (!itemStack.getType().equals(Material.ALLAY_SPAWN_EGG)) return null;
         return itemStack.getItemMeta().getPersistentDataContainer().get(SPAWN_EGG_KEY, PersistentDataType.STRING);
+    }
+
+    public Duration respawnTime() {
+        return RESPAWN_TIME;
+    }
+
+    public float maxHealth() {
+        return maxHealth;
     }
 
     /**

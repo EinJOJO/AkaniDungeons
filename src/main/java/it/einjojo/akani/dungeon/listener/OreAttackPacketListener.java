@@ -4,24 +4,29 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
-import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 import it.einjojo.akani.dungeon.mine.MineManager;
 import it.einjojo.akani.dungeon.mine.MineOre;
 import it.einjojo.akani.dungeon.mine.MineProgression;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.List;
 
 public class OreAttackPacketListener extends PacketListenerAbstract {
 
     private final MineManager mineManager;
+    private final JavaPlugin plugin;
 
-    public OreAttackPacketListener(MineManager mineManager) {
+    public OreAttackPacketListener(MineManager mineManager, JavaPlugin plugin) {
         super(PacketListenerPriority.NORMAL);
         this.mineManager = mineManager;
+        this.plugin = plugin;
         PacketEvents.getAPI().getEventManager().registerListener(this);
     }
 
@@ -41,14 +46,25 @@ public class OreAttackPacketListener extends PacketListenerAbstract {
             return;
         }
         event.setCancelled(true);
-        if (!progression.progress(mineOre)) return;
         Player player = (Player) event.getPlayer();
-        mineOre.setName(player, Component.text(progression.stage()).color(NamedTextColor.GREEN));
-        player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+        ItemStack tool = player.getInventory().getItemInMainHand();
+        if (!mineOre.type().canBreak(tool)) {
+            player.spawnParticle(Particle.ASH, mineOre.location().clone().add(0, 0.3f, 0), 3);
+            player.sendActionBar(Component.text("§cDu benötigst ein besseres Werkzeug!"));
+            player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.3f, 1);
+            return;
+        }
+        if (!progression.progress(player, mineOre)) return;
+        if (progression.isComplete()) {
+            List<ItemStack> rewards = mineOre.type().breakRewards(tool);
+            for (ItemStack reward : rewards) {
+                player.getInventory().addItem(reward);
+            }
+            plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
+                mineOre.destroy(player);
+            }, 20);
+        }
+
     }
 
-    @Override
-    public void onPacketSend(PacketSendEvent event) {
-
-    }
 }

@@ -22,13 +22,14 @@ public class MineOreCommand extends BaseCommand {
     private GuiManager guiManager;
 
 
-    @Default
+    @Subcommand("gui")
     @Description("Open the mine ore type selector GUI.")
     public void openTypesGui(Player sender) {
         guiManager.mineOreTypeSelectorGUI().open(sender);
     }
 
     @Subcommand("create")
+    @CommandCompletion("<erz-name>")
     @Description("Create a mine ore type.")
     public void createType(Player sender, String name) {
         ItemStack itemInHand = sender.getInventory().getItemInMainHand().clone();
@@ -37,7 +38,7 @@ public class MineOreCommand extends BaseCommand {
             return;
         }
         itemInHand.setAmount(1);
-        MineOreType type = new MineOreType(name, itemInHand, new ArrayList<>(), Hardness.UNDETERMINED);
+        MineOreType type = new MineOreType(name, itemInHand, new ArrayList<>(), Hardness.UNDETERMINED, 10);
         core.config().mineOreTypeConfig().addOreType(type);
         core.config().mineOreTypeConfig().save();
         sender.getInventory().addItem(type.spawnEggItemStack());
@@ -62,6 +63,7 @@ public class MineOreCommand extends BaseCommand {
 
     @Subcommand("listrewards")
     @Description("List the rewards of a mine ore type.")
+    @CommandCompletion("@oreTypes")
     public void listRewards(Player sender, MineOreType type) {
         sender.sendMessage("§7Abbaubelohnungen für §e" + type.name() + "§8:");
         for (BreakReward reward : type.breakRewards()) {
@@ -77,8 +79,6 @@ public class MineOreCommand extends BaseCommand {
         core.config().mineOreTypeConfig().save();
         sender.sendMessage("§7Erzhärte überschrieben §e" + oreType.name() + "§8: §7" + hardness.name());
     }
-
-
 
 
 }

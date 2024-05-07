@@ -42,7 +42,7 @@ public class AkaniDungeonPlugin extends JavaPlugin {
         commandManager.getCommandContexts().registerContext(MineOreType.class, (c) -> akaniDungeon.config().mineOreTypeConfig().types().stream().filter(t -> t.name().equals(c.popFirstArg())).findFirst().orElseThrow());
         commandManager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {
             if (t instanceof NoSuchElementException ex) {
-                ((CommandSender) sender.getIssuer()).sendMessage("§cNicht gefunden." + ex.getMessage());
+                ((CommandSender) sender.getIssuer()).sendMessage("§cNicht gefunden.");
                 return true;
             }
             log.warn("Exception in command {}", command.getName(), t);

@@ -37,6 +37,7 @@ public class SyncOreRenderer implements RepeatingTask {
     @Override
     public void run() {
         for (Player player : Bukkit.getOnlinePlayers()) {
+            resetProgressions(player);
             // Check Chunk Change
             ChunkPosition currentChunk = ChunkPosition.of(player.getLocation());
             ChunkPosition last = lastChunk.get(player.getUniqueId());
@@ -71,6 +72,18 @@ public class SyncOreRenderer implements RepeatingTask {
         }
     }
 
+    private void resetProgressions(Player player) {
+        MineProgression progression = mineManager.progressionByPlayer(player.getUniqueId());
+        if (progression == null) return;
+        MineOre lastOre = progression.lastOre();
+        if (progression.isMining()) {
+            return;
+        }
+        if (lastOre != null) {
+            progression.reset(player);
+        }
+
+    }
 
     @Override
     public BukkitTask task() {

@@ -15,7 +15,6 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEn
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -33,10 +32,7 @@ public record MineOre(int entityId, Location location, MineOreType type, Set<UUI
         //Spawn entity
         viewers.add(player.getUniqueId());
         spawnOreArmorstand(player);
-        if (hasDestroyed(player.getUniqueId())) {
-            setName(player, Component.text("§c" + type.name()).color(NamedTextColor.RED));
-        } else {
-            setName(player, Component.text("§a" + type.name()).color(NamedTextColor.GREEN));
+        if (!hasDestroyed(player.getUniqueId())) {
             setEquipment(player, true);
         }
     }

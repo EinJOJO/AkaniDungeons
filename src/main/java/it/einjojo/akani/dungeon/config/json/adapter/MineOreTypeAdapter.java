@@ -38,12 +38,15 @@ public class MineOreTypeAdapter implements JsonSerializer<MineOreType>, JsonDese
         }
         optionalTexture.ifPresent(jsonElement -> itemBuilder.skullTexture(jsonElement.getAsString()));
 
+        //maxhp
+        float maxHP = Optional.ofNullable(jsonObject.get("maxHealth")).map(JsonElement::getAsFloat).orElse(10F);
+
         // break rewards
         List<BreakReward> breakReward = new ArrayList<>();
         jsonObject.getAsJsonArray("breakRewards").forEach(jsonElement -> {
             breakReward.add(context.deserialize(jsonElement, BreakReward.class));
         });
-        return new MineOreType(name, itemBuilder.build(), breakReward, hardness);
+        return new MineOreType(name, itemBuilder.build(), breakReward, hardness, maxHP);
     }
 
     @Override
