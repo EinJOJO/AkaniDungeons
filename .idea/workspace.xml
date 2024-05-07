@@ -4,17 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5cc949d3-5baf-413b-a507-ac4496d6ac28" name="Changes" comment="removed debug stuff and added mining">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/UnspecificItem.java" afterDir="false" />
+    <list default="true" id="5cc949d3-5baf-413b-a507-ac4496d6ac28" name="Changes" comment="provided javaplugin to areattackListener">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeonPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeonPlugin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/command/MineOreCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/command/MineOreCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/adapter/MineOreTypeAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/adapter/MineOreTypeAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/listener/OreAttackPacketListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/listener/OreAttackPacketListener.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineOre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineOre.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineOreType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineOreType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineProgression.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineProgression.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/SyncOreRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/SyncOreRenderer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -224,7 +217,7 @@
       <workItem from="1714867430407" duration="1672000" />
       <workItem from="1714893469968" duration="7943000" />
       <workItem from="1714939058232" duration="10157000" />
-      <workItem from="1715104099801" duration="2772000" />
+      <workItem from="1715104099801" duration="3631000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit with basic plugin structure and mob spawning functionality.">
       <option name="closed" value="true" />
@@ -338,7 +331,23 @@
       <option name="project" value="LOCAL" />
       <updated>1714948705850</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="- Refactored the MineOre class to improve ore rendering logic and display ore names in different colors based on their status&#10;- Updated the rendering to reset progressions for players when needed to ensure correct display and functionality&#10;- Added functionality to give rewards upon ore destruction and set a respawn time for ore types&#10;- Created a new interface UnspecificItem to handle item comparisons and matching logic efficiently">
+      <option name="closed" value="true" />
+      <created>1715107028376</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1715107028376</updated>
+    </task>
+    <task id="LOCAL-00016" summary="provided javaplugin to areattackListener">
+      <option name="closed" value="true" />
+      <created>1715107150700</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1715107150700</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -352,6 +361,8 @@
     <MESSAGE value="Commit message: Updated mine ore rendering to display ore type names in different colors based on their status, added functionality to give rewards upon ore destruction. Made changes to MineChunk, SyncOreRenderer, MineOre, ChunkRing, and other related classes to implement the new rendering and reward system." />
     <MESSAGE value="Rendere Erze auf sehr schlaue Art und weise" />
     <MESSAGE value="removed debug stuff and added mining" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed debug stuff and added mining" />
+    <MESSAGE value="- Refactored the MineOre class to improve ore rendering logic and display ore names in different colors based on their status&#10;- Updated the rendering to reset progressions for players when needed to ensure correct display and functionality&#10;- Added functionality to give rewards upon ore destruction and set a respawn time for ore types&#10;- Created a new interface UnspecificItem to handle item comparisons and matching logic efficiently" />
+    <MESSAGE value="provided javaplugin to areattackListener" />
+    <option name="LAST_COMMIT_MESSAGE" value="provided javaplugin to areattackListener" />
   </component>
 </project>

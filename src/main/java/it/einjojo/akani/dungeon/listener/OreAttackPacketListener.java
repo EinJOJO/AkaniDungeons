@@ -6,6 +6,7 @@ import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityAnimation;
 import it.einjojo.akani.dungeon.mine.MineManager;
 import it.einjojo.akani.dungeon.mine.MineOre;
 import it.einjojo.akani.dungeon.mine.MineProgression;
@@ -22,6 +23,7 @@ public class OreAttackPacketListener extends PacketListenerAbstract {
 
     private final MineManager mineManager;
     private final JavaPlugin plugin;
+
 
     public OreAttackPacketListener(MineManager mineManager, JavaPlugin plugin) {
         super(PacketListenerPriority.NORMAL);
@@ -55,6 +57,8 @@ public class OreAttackPacketListener extends PacketListenerAbstract {
             return;
         }
         if (!progression.progress(player, mineOre)) return;
+        WrapperPlayServerEntityAnimation swingAnimation = new WrapperPlayServerEntityAnimation(player.getEntityId(), WrapperPlayServerEntityAnimation.EntityAnimationType.SWING_MAIN_ARM);
+        event.getUser().sendPacket(swingAnimation);
         if (progression.isComplete()) {
             List<ItemStack> rewards = mineOre.type().breakRewards(tool);
             for (ItemStack reward : rewards) {

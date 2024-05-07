@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public class MineProgression {
     private static final int PROGRESS_BAR_LENGTH = 20;
+    private static final int DELAY_MILLIS = 800;
     private static final Component COMPLETED_PROGRESS = Component.text("✔").color(NamedTextColor.GREEN);
     private static final int ORE_TIMEOUT = 3 * 1000; // 3 seconds timeout
     private MineOre lastOre;
@@ -63,7 +64,7 @@ public class MineProgression {
     }
 
     public boolean canProgressAgain() {
-        return System.currentTimeMillis() - lastOreTimeMillis >= 900;
+        return System.currentTimeMillis() - lastOreTimeMillis >= DELAY_MILLIS;
     }
 
     public long lastOreTimeMillis() {
