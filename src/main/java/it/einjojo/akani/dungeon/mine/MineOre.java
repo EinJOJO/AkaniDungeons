@@ -26,12 +26,10 @@ public record MineOre(int entityId, Location location, MineOreType type, Set<UUI
 
 
     public void render(Player player) {
-        if (viewers.contains(player.getUniqueId())) {
-            return;
+        if (!viewers.contains(player.getUniqueId())) {
+            viewers.add(player.getUniqueId());
+            spawnOreArmorstand(player);
         }
-        //Spawn entity
-        viewers.add(player.getUniqueId());
-        spawnOreArmorstand(player);
         if (!hasDestroyed(player.getUniqueId())) {
             setEquipment(player, true);
         }
@@ -42,7 +40,15 @@ public record MineOre(int entityId, Location location, MineOreType type, Set<UUI
     }
 
     public boolean hasDestroyed(UUID playerUuid) {
-        return playerDestroyMap.containsKey(playerUuid);
+        Long time = playerDestroyMap.get(playerUuid);
+        if (time == null) {
+            return false;
+        }
+        boolean destroyed = System.currentTimeMillis() - time < type.respawnTime().toMillis();
+        if (!destroyed) {
+            playerDestroyMap.remove(playerUuid);
+        }
+        return destroyed;
     }
 
     private void spawnOreArmorstand(Player player) {
@@ -69,7 +75,6 @@ public record MineOre(int entityId, Location location, MineOreType type, Set<UUI
         ));
         PacketEvents.getAPI().getPlayerManager().sendPacket(player, new WrapperPlayServerEntityMetadata(entityId, data));
     }
-
 
 
     public void setName(Player player, @Nullable Component displayName) {
@@ -105,11 +110,10 @@ public record MineOre(int entityId, Location location, MineOreType type, Set<UUI
      * @param player the player
      */
     public void unrender(Player player) {
-        if (!viewers.contains(player.getUniqueId())) {
-            return;
+        if (viewers.contains(player.getUniqueId())) {
+            viewers.remove(player.getUniqueId());
+            PacketEvents.getAPI().getPlayerManager().sendPacket(player, new WrapperPlayServerDestroyEntities(entityId));
         }
-        viewers.remove(player.getUniqueId());
-        PacketEvents.getAPI().getPlayerManager().sendPacket(player, new WrapperPlayServerDestroyEntities(entityId));
     }
 
     /**

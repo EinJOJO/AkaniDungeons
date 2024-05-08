@@ -7,7 +7,7 @@ import it.einjojo.akani.dungeon.gui.GuiManager;
 import it.einjojo.akani.dungeon.mine.BreakReward;
 import it.einjojo.akani.dungeon.mine.Hardness;
 import it.einjojo.akani.dungeon.mine.MineOreType;
-import it.einjojo.akani.dungeon.mine.ToolType;
+import it.einjojo.akani.dungeon.mine.tool.ToolType;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;

@@ -5,7 +5,7 @@ import it.einjojo.akani.core.paper.util.ItemBuilder;
 import it.einjojo.akani.dungeon.mine.BreakReward;
 import it.einjojo.akani.dungeon.mine.Hardness;
 import it.einjojo.akani.dungeon.mine.MineOreType;
-import it.einjojo.akani.dungeon.mine.ToolType;
+import it.einjojo.akani.dungeon.mine.tool.ToolType;
 import org.bukkit.Material;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;

@@ -4,6 +4,7 @@ import it.einjojo.akani.dungeon.config.DungeonConfigManager;
 import it.einjojo.akani.dungeon.mine.MineManager;
 import it.einjojo.akani.dungeon.mine.SyncOreRenderer;
 import it.einjojo.akani.dungeon.mine.factory.MineOreFactory;
+import it.einjojo.akani.dungeon.mine.tool.ToolFactory;
 import it.einjojo.akani.dungeon.mobs.AsyncMobPopulateChunkSelector;
 import it.einjojo.akani.dungeon.mobs.SyncMobSpawner;
 import it.einjojo.akani.dungeon.mobs.factory.DefaultSpawnableFactory;
@@ -17,6 +18,7 @@ public class AkaniDungeon {
     private final SyncOreRenderer syncOreRenderer;
     private final SyncMobSpawner syncMobSpawner;
     private final SpawnableFactory spawnableFactory;
+    private final ToolFactory toolFactory;
     private final MineOreFactory mineOreFactory;
     private final MineManager mineManager;
 
@@ -29,7 +31,12 @@ public class AkaniDungeon {
         syncMobSpawner = new SyncMobSpawner(this);
         spawnableFactory = new DefaultSpawnableFactory();
         mineOreFactory = new MineOreFactory();
+        toolFactory = new ToolFactory(configManager.toolConfig());
 
+    }
+
+    public ToolFactory toolFactory() {
+        return toolFactory;
     }
 
     public MineOreFactory mineOreFactory() {

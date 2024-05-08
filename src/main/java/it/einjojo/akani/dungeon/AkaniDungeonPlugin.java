@@ -30,7 +30,7 @@ public class AkaniDungeonPlugin extends JavaPlugin {
         akaniDungeon.startSchedulers();
         guiManager = new GuiManager(this, dungeonConfigManager.mineOreTypeConfig());
         registerCommands();
-        new OreAttackPacketListener(akaniDungeon.mineManager(), this);
+        new OreAttackPacketListener(akaniDungeon.mineManager(), akaniDungeon.toolFactory(), this);
         new MineListener(this, akaniDungeon);
     }
 

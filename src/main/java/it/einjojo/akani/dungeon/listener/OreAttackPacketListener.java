@@ -10,7 +10,10 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEn
 import it.einjojo.akani.dungeon.mine.MineManager;
 import it.einjojo.akani.dungeon.mine.MineOre;
 import it.einjojo.akani.dungeon.mine.MineProgression;
+import it.einjojo.akani.dungeon.mine.tool.Tool;
+import it.einjojo.akani.dungeon.mine.tool.ToolFactory;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
@@ -25,12 +28,14 @@ import java.util.UUID;
 public class OreAttackPacketListener extends PacketListenerAbstract {
 
     private final MineManager mineManager;
+    private final ToolFactory toolFactory;
     private final JavaPlugin plugin;
 
 
-    public OreAttackPacketListener(MineManager mineManager, JavaPlugin plugin) {
+    public OreAttackPacketListener(MineManager mineManager, ToolFactory toolFactory, JavaPlugin plugin) {
         super(PacketListenerPriority.NORMAL);
         this.mineManager = mineManager;
+        this.toolFactory = toolFactory;
         this.plugin = plugin;
         PacketEvents.getAPI().getEventManager().registerListener(this);
     }
@@ -52,8 +57,8 @@ public class OreAttackPacketListener extends PacketListenerAbstract {
         }
         event.setCancelled(true);
         Player player = (Player) event.getPlayer();
-        ItemStack tool = player.getInventory().getItemInMainHand();
-        if (tool.getType().equals(Material.DEBUG_STICK)) {
+        ItemStack itemStack = player.getInventory().getItemInMainHand();
+        if (itemStack.getType().equals(Material.DEBUG_STICK)) {
             player.sendMessage("§7Type: §c" + mineOre.type().name());
             player.sendMessage("§7Destroyed: ");
             for (Map.Entry<UUID, Long> entry : mineOre.playerDestroyMap().entrySet()) {
@@ -62,30 +67,37 @@ public class OreAttackPacketListener extends PacketListenerAbstract {
             return;
         }
         if (mineOre.hasDestroyed(player.getUniqueId())) {
-            player.spawnParticle(Particle.ASH, mineOre.location().clone().add(0, 0.3f, 0), 3);
-            player.sendActionBar(Component.text("§cDu hast dieses Erz bereits abgebaut!"));
-            player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.3f, 1);
+            denialAction(player, mineOre, Component.text("§cYou already destroyed this!"));
             return;
         }
-        if (!mineOre.type().canBreak(tool)) {
-            player.spawnParticle(Particle.ASH, mineOre.location().clone().add(0, 0.3f, 0), 3);
-            player.sendActionBar(Component.text("§cDu benötigst ein anderes Werkzeug!"));
-            player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.3f, 1);
+        Tool tool = toolFactory.fromItemStack(itemStack);
+        if (tool.type() == null || !mineOre.type().canBreak(itemStack)) {
+            denialAction(player, mineOre, Component.text("§cYou can't break this with that tool!"));
             return;
         }
-        if (!progression.progress(player, mineOre)) return;
+
+        if (!progression.progress(player, mineOre, tool.damage())) return;
         WrapperPlayServerEntityAnimation swingAnimation = new WrapperPlayServerEntityAnimation(player.getEntityId(), WrapperPlayServerEntityAnimation.EntityAnimationType.SWING_MAIN_ARM);
         event.getUser().sendPacket(swingAnimation);
         if (progression.isComplete()) {
-            List<ItemStack> rewards = mineOre.type().breakRewards(tool);
+            List<ItemStack> rewards = mineOre.type().breakRewards(itemStack);
+            TextComponent.Builder actionbarMessage = Component.text();
             for (ItemStack reward : rewards) {
+                actionbarMessage.append(Component.text("§7+§a%s §7x §a%s".formatted(reward.getAmount(), reward.getType().name())));
+                actionbarMessage.appendSpace();
                 player.getInventory().addItem(reward);
             }
+            player.sendActionBar(actionbarMessage.build());
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
                 mineOre.destroy(player);
             }, 20);
         }
+    }
 
+    protected void denialAction(Player player, MineOre mineOre, Component actionBarMessage) {
+        player.spawnParticle(Particle.ASH, mineOre.location().clone().add(0, 0.3f, 0), 3);
+        player.sendActionBar(actionBarMessage);
+        player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.3f, 1);
     }
 
 }

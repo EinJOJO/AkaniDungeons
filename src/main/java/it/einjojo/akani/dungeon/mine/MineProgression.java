@@ -27,7 +27,7 @@ public class MineProgression {
      *
      * @param ore the ore that the player is currently mining
      */
-    public boolean progress(Player player, MineOre ore) {
+    public boolean progress(Player player, MineOre ore, float newDamage) {
         if (lastOre != ore || hasExpired()) {
             reset(player);
         } else if (!canProgressAgain()) {
@@ -35,7 +35,7 @@ public class MineProgression {
         }
         lastOre = ore;
         lastOreTimeMillis = System.currentTimeMillis();
-        damage++;
+        damage += newDamage;
         ore.setName(player, progressText());
         player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
         return true;

@@ -1,6 +1,7 @@
 package it.einjojo.akani.dungeon.mine;
 
 import it.einjojo.akani.core.paper.util.ItemBuilder;
+import it.einjojo.akani.dungeon.mine.tool.ToolType;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
@@ -31,6 +32,12 @@ public class MineOreType {
         this.name = name;
         this.maxHealth = maxHealth;
         this.toolType = toolType;
+    }
+
+    public List<Component> description() {
+        return List.of(
+
+        );
     }
 
     public static @Nullable String spawnEggName(ItemStack itemStack) {
@@ -76,6 +83,7 @@ public class MineOreType {
     }
 
     public boolean canBreak(ItemStack tool) {
+        if (!toolType().check(tool.getType())) return false;
         return Hardness.canBreak(tool.getType(), hardness);
     }
 

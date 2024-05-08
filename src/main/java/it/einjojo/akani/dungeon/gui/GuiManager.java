@@ -3,6 +3,8 @@ package it.einjojo.akani.dungeon.gui;
 import fr.minuskube.inv.InventoryListener;
 import fr.minuskube.inv.SmartInventory;
 import it.einjojo.akani.dungeon.config.MineOreTypeConfig;
+import it.einjojo.akani.dungeon.gui.mineoretype.MineOreTypeSelectorGUI;
+import it.einjojo.akani.dungeon.gui.mineoretype.MineOreTypeSettingGUI;
 import it.einjojo.akani.dungeon.mine.MineOreType;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.plugin.java.JavaPlugin;

@@ -1,14 +1,15 @@
-package it.einjojo.akani.dungeon.gui;
+package it.einjojo.akani.dungeon.gui.mineoretype;
 
 import fr.minuskube.inv.ClickableItem;
 import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
 import fr.minuskube.inv.content.SlotPos;
 import it.einjojo.akani.core.paper.util.ItemBuilder;
+import it.einjojo.akani.dungeon.gui.GuiManager;
 import it.einjojo.akani.dungeon.mine.BreakReward;
 import it.einjojo.akani.dungeon.mine.Hardness;
 import it.einjojo.akani.dungeon.mine.MineOreType;
-import it.einjojo.akani.dungeon.mine.ToolType;
+import it.einjojo.akani.dungeon.mine.tool.ToolType;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -44,7 +45,7 @@ public class MineOreTypeSettingGUI implements InventoryProvider {
     }
 
     protected void addToolType(Player player, InventoryContents contents) {
-        SlotPos toolTypeSelector = SlotPos.of(2, 4);
+        SlotPos toolTypeSelector = SlotPos.of(1, 4);
         contents.set(toolTypeSelector, ClickableItem.of(new ItemBuilder(ToolType.material(oreType().toolType(), oreType.hardness()))
                 .displayName(Component.text("§c" + oreType.toolType().name()))
                 .lore(List.of(

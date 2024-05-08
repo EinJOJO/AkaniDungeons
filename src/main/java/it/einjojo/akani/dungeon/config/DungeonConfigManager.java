@@ -15,6 +15,7 @@ public class DungeonConfigManager {
     private final MobSpawnerConfig mobSpawnerConfig;
     private final MobBiomesConfig mobBiomesConfig;
     private final MineOreTypeConfig mineOreTypeConfig;
+    private final ToolConfig toolConfig;
 
 
     public DungeonConfigManager(JavaPlugin plugin) {
@@ -25,6 +26,7 @@ public class DungeonConfigManager {
                 .setPrettyPrinting()
                 .create();
         mineOreTypeConfig = new JsonMineOreTypeConfig(gson, plugin.getDataFolder().toPath().resolve("oreTypes.json"));
+        toolConfig = new ToolConfig.Dummy();
         mobBiomesConfig = new MobBiomesConfig.Dummy();
         mobSpawnerConfig = new MobSpawnerConfig.Dummy();
     }
@@ -52,6 +54,10 @@ public class DungeonConfigManager {
 
     public MineOreTypeConfig mineOreTypeConfig() {
         return mineOreTypeConfig;
+    }
+
+    public ToolConfig toolConfig() {
+        return toolConfig;
     }
 
     public Gson gson() {
