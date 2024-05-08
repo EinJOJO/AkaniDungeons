@@ -4,7 +4,6 @@ import it.einjojo.akani.dungeon.util.ChunkPosition;
 import it.einjojo.akani.dungeon.util.ChunkRing;
 import it.einjojo.akani.dungeon.util.RepeatingTask;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -20,8 +19,8 @@ public class SyncOreRenderer implements RepeatingTask {
             "2 1 1 1 1 1 2",
             "2 2 2 2 2 2 2");
     private final MineManager mineManager;
-    private final Map<UUID, List<MineChunk>> rendered_chunks = new HashMap<>();
-    private final Map<UUID, ChunkPosition> lastChunk = new HashMap<>();
+    private final Map<UUID, List<MineChunk>> renderedChunks = new HashMap<>();
+    private final Map<UUID, ChunkPosition> lastChunks = new HashMap<>();
     private BukkitTask task;
 
     public SyncOreRenderer(MineManager mineManager) {
@@ -40,13 +39,12 @@ public class SyncOreRenderer implements RepeatingTask {
             resetProgressions(player);
             // Check Chunk Change
             ChunkPosition currentChunk = ChunkPosition.of(player.getLocation());
-            ChunkPosition last = lastChunk.get(player.getUniqueId());
+            ChunkPosition last = lastChunks.get(player.getUniqueId());
             if (last != null && last.equals(currentChunk)) {
                 continue;
             }
-            World playerWorld = player.getWorld();
             // Player has changed chunk
-            lastChunk.put(player.getUniqueId(), currentChunk);
+            lastChunks.put(player.getUniqueId(), currentChunk);
             RING.setZero(currentChunk);
             List<MineChunk> newRendered = new ArrayList<>();
             for (Map.Entry<Character, List<ChunkPosition>> entry : RING.chunks().entrySet()) {
@@ -60,7 +58,8 @@ public class SyncOreRenderer implements RepeatingTask {
                     mineChunk.renderOres(player); // Try render ores
                 }
             }
-            List<MineChunk> oldRendered = rendered_chunks.get(player.getUniqueId());
+
+            List<MineChunk> oldRendered = renderedChunks.get(player.getUniqueId());
             if (oldRendered != null) {
                 // Get all chunks that are not rendered anymore
                 oldRendered.removeAll(newRendered);
@@ -68,9 +67,10 @@ public class SyncOreRenderer implements RepeatingTask {
                     mineChunk.unrenderOres(player);
                 }
             }
-            rendered_chunks.put(player.getUniqueId(), newRendered);
+            renderedChunks.put(player.getUniqueId(), newRendered);
         }
     }
+
 
     private void resetProgressions(Player player) {
         MineProgression progression = mineManager.progressionByPlayer(player.getUniqueId());
@@ -84,6 +84,19 @@ public class SyncOreRenderer implements RepeatingTask {
         }
 
     }
+
+    public MineManager mineManager() {
+        return mineManager;
+    }
+
+    public Map<UUID, List<MineChunk>> renderedChunks() {
+        return renderedChunks;
+    }
+
+    public Map<UUID, ChunkPosition> lastChunk() {
+        return lastChunks;
+    }
+
 
     @Override
     public BukkitTask task() {

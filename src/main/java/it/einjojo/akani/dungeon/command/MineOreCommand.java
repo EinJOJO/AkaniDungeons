@@ -81,5 +81,14 @@ public class MineOreCommand extends BaseCommand {
         sender.sendMessage("§7Erzhärte überschrieben §e" + oreType.name() + "§8: §7" + hardness.name());
     }
 
+    @Subcommand("sethp")
+    @CommandCompletion("@oreTypes <hp>")
+    @Description("Set the health points of a mine ore type.")
+    public void setHp(Player sender, MineOreType oreType, float hp) {
+        oreType.setMaxHealth(hp);
+        core.config().mineOreTypeConfig().save();
+        sender.sendMessage("§7Erz-HP überschrieben §e" + oreType.name() + "§8: §7" + hp);
+    }
+
 
 }

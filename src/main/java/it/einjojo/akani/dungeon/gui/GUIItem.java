@@ -7,11 +7,17 @@ import org.bukkit.Material;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 public enum GUIItem {
     BACKGROUND(new ItemBuilder(Material.BLACK_STAINED_GLASS_PANE).displayName(Component.empty())),
-    ADD_BUTTON(new ItemBuilder(Material.LIME_STAINED_GLASS_PANE).displayName(Component.text("§aHinzufügen")));
+    ADD_BUTTON(new ItemBuilder(Material.LIME_STAINED_GLASS_PANE).displayName(Component.text("§aErz hinzufügen")).lore(List.of(
+            Component.empty(),
+            Component.text("§7Klicke hier, um ein neues Erz hinzuzufügen."),
+            Component.text("§7Unterstützt Drag & Drop!"),
+            Component.empty()
+    )));
     private final ItemBuilder itemBuilder;
 
     GUIItem(ItemBuilder itemBuilder) {

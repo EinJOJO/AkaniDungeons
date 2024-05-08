@@ -7,9 +7,12 @@ import it.einjojo.akani.core.paper.util.ItemBuilder;
 import it.einjojo.akani.dungeon.config.MineOreTypeConfig;
 import it.einjojo.akani.dungeon.gui.GUIItem;
 import it.einjojo.akani.dungeon.gui.GuiManager;
+import it.einjojo.akani.dungeon.mine.Hardness;
 import it.einjojo.akani.dungeon.mine.MineOreType;
+import it.einjojo.akani.dungeon.mine.tool.ToolType;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,11 +55,18 @@ public class MineOreTypeSelectorGUI implements InventoryProvider {
             contents.add(item);
         }
         contents.set(5, 4, GUIItem.ADD_BUTTON.clickableItem(e -> {
-
-            player.sendMessage(Component.text("§aHalte den Block, der zusehen sein soll, in der Hand und gib ihm einen Namen."));
-            player.sendMessage(Component.text("§aVerwende /amine create <name> um eine neue Erz-Kategorie zu erstellen."));
-            player.closeInventory();
-
+            ItemStack cursorItem = e.getCursor();
+            if (cursorItem == null || cursorItem.getType().isAir()) {
+                player.sendMessage(Component.text("§aHalte den Block, der zusehen sein soll, in der Hand und gib ihm einen Namen."));
+                player.sendMessage(Component.text("§aVerwende /amine create <name> um eine neue Erz-Kategorie zu erstellen."));
+                player.closeInventory();
+                return;
+            }
+            ItemStack icon = cursorItem.clone();
+            icon.setAmount(1);
+            config.addOreType(new MineOreType(cursorItem.getType().name().toLowerCase(), icon, new ArrayList<>(), Hardness.UNDETERMINED, 10, ToolType.PICKAXE));
+            player.setItemOnCursor(null);
+            init(player, contents);
         }));
     }
 
