@@ -1,8 +1,7 @@
 package it.einjojo.akani.dungeon.config.json;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
 import it.einjojo.akani.dungeon.config.MineOreTypeConfig;
 import it.einjojo.akani.dungeon.mine.MineOreType;
 
@@ -30,13 +29,13 @@ public class JsonMineOreTypeConfig implements MineOreTypeConfig {
             if (!Files.exists(filePath)) {
                 Files.createFile(filePath);
             }
-            var json = gson.fromJson(Files.newBufferedReader(filePath), JsonObject.class);
+            var json = gson.fromJson(Files.newBufferedReader(filePath), JsonArray.class);
             if (json == null) return;
-            json.getAsJsonArray().forEach(jsonElement -> {
+            json.forEach(jsonElement -> {
                 oreTypes.add(gson.fromJson(jsonElement, MineOreType.class));
             });
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -54,7 +53,7 @@ public class JsonMineOreTypeConfig implements MineOreTypeConfig {
         try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
             gson.toJson(oreTypes, writer);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 

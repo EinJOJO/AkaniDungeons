@@ -29,7 +29,13 @@ public class AkaniDungeonPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         DungeonConfigManager dungeonConfigManager = new DungeonConfigManager(this);
-        dungeonConfigManager.load();
+        try {
+            dungeonConfigManager.load();
+        } catch (Exception e) {
+            log.error("Error loading config", e);
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
         akaniDungeon = new AkaniDungeon(this, dungeonConfigManager);
         getServer().getScheduler().runTaskAsynchronously(this, () -> {
             akaniDungeon.mineManager().load();
@@ -46,6 +52,8 @@ public class AkaniDungeonPlugin extends JavaPlugin {
 
     public void registerCommands() {
         commandManager = new PaperCommandManager(this);
+        commandManager.enableUnstableAPI("help");
+        commandManager.enableUnstableAPI("brigadier");
         commandManager.getCommandCompletions().registerAsyncCompletion("oreTypes", (c) -> akaniDungeon.config().mineOreTypeConfig().types().stream().map(MineOreType::name).toList());
         commandManager.getCommandCompletions().registerStaticCompletion("oreHardness", () -> Arrays.stream(Hardness.values()).map(Enum::name).toList());
         commandManager.getCommandContexts().registerContext(MineOreType.class, (c) -> {
@@ -61,7 +69,6 @@ public class AkaniDungeonPlugin extends JavaPlugin {
             log.warn("Exception in command {}", command.getName(), t);
             return false;
         }, false);
-        commandManager.enableUnstableAPI("brigadier");
         commandManager.registerDependency(AkaniDungeon.class, akaniDungeon);
         commandManager.registerDependency(GuiManager.class, guiManager);
         commandManager.registerCommand(new MineOreCommand());
