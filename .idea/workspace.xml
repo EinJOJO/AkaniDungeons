@@ -4,16 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5cc949d3-5baf-413b-a507-ac4496d6ac28" name="Changes" comment="health input over chat">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/PlacedOreConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/JsonPlacedOreConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/adapter/PlacedOreAdapter.java" afterDir="false" />
+    <list default="true" id="5cc949d3-5baf-413b-a507-ac4496d6ac28" name="Changes" comment="Refactored MineOreType equals method to compare names and added hashCode method for consistency.">
+      <change afterPath="$PROJECT_DIR$/.github/assets/mine.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.github/assets/ore_manager.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/DungeonMessageProvider.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/event/PlayerMineEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/event/PlayerPreMineProgressEvent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeon.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeonPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeonPlugin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/DungeonConfigManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/DungeonConfigManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/command/MineOreCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/command/MineOreCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/JsonMineOreTypeConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/JsonMineOreTypeConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/JsonPlacedOreConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/JsonPlacedOreConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/adapter/PlacedOreAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/adapter/PlacedOreAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/mineoretype/MineOreTypeSettingGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/mineoretype/MineOreTypeSettingGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/listener/OreAttackPacketListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/listener/OreAttackPacketListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/plugin.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/plugin.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,6 +123,7 @@
   "keyToString": {
     "Gradle.AkaniDungeons [assemble].executor": "Run",
     "Gradle.AkaniDungeons [build].executor": "Run",
+    "Gradle.AkaniDungeons [clean].executor": "Run",
     "Gradle.AkaniDungeons [runServer].executor": "Run",
     "Gradle.Build AkaniDungeons.executor": "Run",
     "Gradle.Download Sources.executor": "Run",
@@ -127,11 +137,12 @@
     "WebServerToolWindowPanel.toolwindow.show.size": "false",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/schlo/Desktop/AkaniDungeons/src/main/java/it/einjojo/akani/dungeon"
+    "last_opened_file_path": "C:/Users/schlo/Desktop/AkaniDungeons/.github/assets"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\schlo\Desktop\AkaniDungeons\.github\assets" />
       <recent name="C:\Users\schlo\Desktop\AkaniDungeons\src\main\java\it\einjojo\akani\dungeon" />
       <recent name="C:\Users\schlo\Desktop\AkaniDungeons\run\plugins" />
       <recent name="C:\Users\schlo\Desktop\AkaniDungeons\gradle" />
@@ -211,6 +222,28 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="AkaniDungeons [clean]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="clean" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="AkaniDungeons [runServer]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -258,6 +291,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.AkaniDungeons [build]" />
+        <item itemvalue="Gradle.AkaniDungeons [clean]" />
         <item itemvalue="Gradle.AkaniDungeons [assemble]" />
         <item itemvalue="Gradle.AkaniDungeons [runServer]" />
       </list>
@@ -297,7 +331,7 @@
       <workItem from="1714939058232" duration="10157000" />
       <workItem from="1715104099801" duration="11652000" />
       <workItem from="1715186534903" duration="16042000" />
-      <workItem from="1715239479696" duration="10622000" />
+      <workItem from="1715239479696" duration="19356000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit with basic plugin structure and mob spawning functionality.">
       <option name="closed" value="true" />
@@ -515,7 +549,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715245915300</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="Refactored MineOreType equals method to compare names and added hashCode method for consistency.">
+      <option name="closed" value="true" />
+      <created>1715258834154</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1715258834154</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -550,8 +592,8 @@
     <MESSAGE value="optimized equipment rendering" />
     <MESSAGE value="added build mode" />
     <MESSAGE value="input modes" />
-    <MESSAGE value="Refactored MineOreType equals method to compare names and added hashCode method for consistency." />
     <MESSAGE value="health input over chat" />
-    <option name="LAST_COMMIT_MESSAGE" value="health input over chat" />
+    <MESSAGE value="Refactored MineOreType equals method to compare names and added hashCode method for consistency." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactored MineOreType equals method to compare names and added hashCode method for consistency." />
   </component>
 </project>
