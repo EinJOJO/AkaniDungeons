@@ -5,6 +5,7 @@ import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
 import fr.minuskube.inv.content.SlotPos;
 import it.einjojo.akani.core.paper.util.ItemBuilder;
+import it.einjojo.akani.dungeon.gui.GUIItem;
 import it.einjojo.akani.dungeon.gui.GuiManager;
 import it.einjojo.akani.dungeon.input.PlayerChatInput;
 import it.einjojo.akani.dungeon.mine.BreakReward;
@@ -38,6 +39,8 @@ public class MineOreTypeSettingGUI implements InventoryProvider {
 
     @Override
     public void init(Player player, InventoryContents contents) {
+        contents.fillRow(0, GUIItem.BACKGROUND.emptyClickableItem());
+        contents.fillRow(5, GUIItem.BACKGROUND.emptyClickableItem());
         ClickableItem close = ClickableItem.of(new ItemBuilder(Material.BARRIER)
                 .displayName(Component.text("§cSchließen")).build(), e -> guiManager.mineOreTypeSelectorGUI().open(player));
         contents.set(5, 0, close);

@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import it.einjojo.akani.dungeon.config.PlacedOreConfig;
 import it.einjojo.akani.dungeon.mine.PlacedOre;
 
+import java.io.BufferedWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collection;
@@ -35,10 +36,11 @@ public class JsonPlacedOreConfig implements PlacedOreConfig {
 
     @Override
     public void save(Collection<PlacedOre> ores) {
-        try {
-            gson.toJson(ores, Files.newBufferedWriter(filePath));
+        try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
+            gson.toJson(ores, writer);
         } catch (Exception e) {
             e.fillInStackTrace();
+            throw new RuntimeException(e);
         }
     }
 }

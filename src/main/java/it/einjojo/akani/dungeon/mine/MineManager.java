@@ -1,5 +1,6 @@
 package it.einjojo.akani.dungeon.mine;
 
+import com.google.common.base.Preconditions;
 import it.einjojo.akani.dungeon.config.PlacedOreConfig;
 import it.einjojo.akani.dungeon.util.ChunkPosition;
 import it.einjojo.akani.dungeon.util.RepeatingTask;
@@ -26,6 +27,7 @@ public class MineManager implements RepeatingTask {
     private boolean oreChanged = false;
 
     public MineManager(PlacedOreConfig config) {
+        Preconditions.checkNotNull(config);
         this.config = config;
     }
 
@@ -68,6 +70,7 @@ public class MineManager implements RepeatingTask {
             return;
         }
         config.save(oreMap.values());
+        oreChanged = false;
         logger.info("Saved {} placed ores", oreMap.size());
     }
 
@@ -80,6 +83,7 @@ public class MineManager implements RepeatingTask {
             oreMap.remove(ore.entityId());
         }
         config.load().forEach(this::registerOre);
+        oreChanged = false;
         logger.info("Loaded {} placed ores", oreMap.size());
     }
 
