@@ -22,6 +22,7 @@ public class JsonMineOreTypeConfig implements MineOreTypeConfig {
         this.filePath = filePath;
     }
 
+
     public void load() {
         oreTypes.clear();
         try {
@@ -40,6 +41,11 @@ public class JsonMineOreTypeConfig implements MineOreTypeConfig {
 
     @Override
     public void addOreType(MineOreType oreType) {
+        for (MineOreType type : oreTypes) {
+            if (type.name().equals(oreType.name())) {
+                throw new IllegalArgumentException("Ore type with name " + oreType.name() + " already exists");
+            }
+        }
         oreTypes.add(oreType);
     }
 

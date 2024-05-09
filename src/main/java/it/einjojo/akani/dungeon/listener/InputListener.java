@@ -8,6 +8,7 @@ import it.einjojo.akani.dungeon.input.PlayerChatInput;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Sound;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -45,7 +46,7 @@ public class InputListener implements Listener {
     }
 
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onChatMessage(AsyncChatEvent event) {
         Input<?> input = getInputSession(event.getPlayer().getUniqueId());
         if (input == null) {

@@ -62,6 +62,19 @@ public class MineOreType {
         return toolType;
     }
 
+    @Override
+    public final boolean equals(Object object) {
+        if (this == object) return true;
+        if (!(object instanceof MineOreType oreType)) return false;
+
+        return name.equals(oreType.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
     /**
      * @return Time it takes for the ore to respawn
      */
