@@ -1,5 +1,6 @@
 package it.einjojo.akani.dungeon.mine;
 
+import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import it.einjojo.akani.core.paper.util.ItemBuilder;
 import it.einjojo.akani.dungeon.mine.tool.ToolType;
 import net.kyori.adventure.text.Component;
@@ -17,10 +18,11 @@ import java.util.List;
 
 public class MineOreType {
     private static final NamespacedKey SPAWN_EGG_KEY = new NamespacedKey("akani", "mine_ore_spawn_egg");
-    private static final Duration RESPAWN_TIME = Duration.ofMinutes(30);
+    private static final Duration RESPAWN_TIME = Duration.ofSeconds(10);
     private final String name;
     private final ItemStack icon;
     private final List<BreakReward> breakRewards;
+    private final com.github.retrooper.packetevents.protocol.item.ItemStack protocolItemStack;
     private float maxHealth;
     private ToolType toolType;
     private Hardness hardness;
@@ -29,21 +31,26 @@ public class MineOreType {
         this.breakRewards = breakRewards;
         this.hardness = hardness;
         this.icon = icon;
+        protocolItemStack = SpigotConversionUtil.fromBukkitItemStack(icon);
         this.name = name;
         this.maxHealth = maxHealth;
         this.toolType = toolType;
-    }
-
-    public List<Component> description() {
-        return List.of(
-
-        );
     }
 
     public static @Nullable String spawnEggName(ItemStack itemStack) {
         if (itemStack == null || itemStack.getItemMeta() == null) return null;
         if (!itemStack.getType().equals(Material.ALLAY_SPAWN_EGG)) return null;
         return itemStack.getItemMeta().getPersistentDataContainer().get(SPAWN_EGG_KEY, PersistentDataType.STRING);
+    }
+
+    public List<Component> description() {
+        return List.of(
+                Component.text("§7▶ Name: §c" + name()),
+                Component.text("§7▶ HP: §c" + maxHealth() + " ❤"),
+                Component.text("§7▶ Härte: §c" + hardness().name()),
+                Component.text("§7▶ Tool: §c" + toolType().name()),
+                Component.text("§7▶ Respawnzeit: §c" + respawnTime().toMinutes() + " Minuten")
+        );
     }
 
     public void setToolType(ToolType toolType) {
@@ -74,10 +81,10 @@ public class MineOreType {
      */
     public ItemStack spawnEggItemStack() {
         return new ItemBuilder(Material.ALLAY_SPAWN_EGG)
-                .displayName(Component.text("Spawn " + name).color(NamedTextColor.GOLD))
-                .dataContainer(SPAWN_EGG_KEY, PersistentDataType.STRING, name)
+                .displayName(Component.text("Spawn " + name()).color(NamedTextColor.GOLD))
+                .dataContainer(SPAWN_EGG_KEY, PersistentDataType.STRING, name())
                 .lore(List.of(
-                        Component.text("Right click to spawn a " + name + " ore.").color(NamedTextColor.GRAY)
+                        Component.text("Right click to spawn a " + name() + " ore.").color(NamedTextColor.GRAY)
                 )).build();
 
     }
@@ -117,5 +124,9 @@ public class MineOreType {
 
     public void setHardness(Hardness hardness) {
         this.hardness = hardness;
+    }
+
+    public com.github.retrooper.packetevents.protocol.item.ItemStack protocolIcon() {
+        return protocolItemStack;
     }
 }

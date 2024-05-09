@@ -25,14 +25,19 @@ public record MineOre(int entityId, Location location, MineOreType type, Set<UUI
                       Map<UUID, Long> playerDestroyMap) {
 
 
-    public void render(Player player) {
-        if (!viewers.contains(player.getUniqueId())) {
+    public void render(Player player, boolean ignoreDestroy) {
+        if (viewers.contains(player.getUniqueId())) {
+            return;
+        }
+        if (ignoreDestroy || !hasDestroyed(player.getUniqueId())) {
             viewers.add(player.getUniqueId());
             spawnOreArmorstand(player);
-        }
-        if (!hasDestroyed(player.getUniqueId())) {
             setEquipment(player, true);
         }
+    }
+
+    public void render(Player player) {
+        render(player, false);
     }
 
     public boolean isViewing(UUID playerUuid) {
@@ -88,9 +93,9 @@ public record MineOre(int entityId, Location location, MineOreType type, Set<UUI
         List<Equipment> equipmentList;
         if (showBlocks) {
             equipmentList = List.of(
-                    new Equipment(EquipmentSlot.HELMET, SpigotConversionUtil.fromBukkitItemStack(type.icon())),
-                    new Equipment(EquipmentSlot.MAIN_HAND, SpigotConversionUtil.fromBukkitItemStack(type.icon())),
-                    new Equipment(EquipmentSlot.OFF_HAND, SpigotConversionUtil.fromBukkitItemStack(type.icon()))
+                    new Equipment(EquipmentSlot.HELMET, type.protocolIcon()),
+                    new Equipment(EquipmentSlot.MAIN_HAND, type.protocolIcon()),
+                    new Equipment(EquipmentSlot.OFF_HAND, type.protocolIcon())
             );
         } else {
             equipmentList = List.of(
