@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5cc949d3-5baf-413b-a507-ac4496d6ac28" name="Changes" comment="input modes">
+    <list default="true" id="5cc949d3-5baf-413b-a507-ac4496d6ac28" name="Changes" comment="Refactored MineOreType equals method to compare names and added hashCode method for consistency.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/GuiManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/GuiManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/mineoretype/MineOreTypeSettingGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/mineoretype/MineOreTypeSettingGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/listener/InputListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/listener/InputListener.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -105,6 +107,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Gradle.AkaniDungeons [assemble].executor": "Run",
     "Gradle.AkaniDungeons [build].executor": "Run",
     "Gradle.AkaniDungeons [runServer].executor": "Run",
     "Gradle.Build AkaniDungeons.executor": "Run",
@@ -137,6 +140,28 @@
     </key>
   </component>
   <component name="RunManager" selected="Gradle.AkaniDungeons [build]">
+    <configuration name="AkaniDungeons [assemble]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+      <ExternalSystemSettings>
+        <option name="executionName" />
+        <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="externalSystemIdString" value="GRADLE" />
+        <option name="scriptParameters" />
+        <option name="taskDescriptions">
+          <list />
+        </option>
+        <option name="taskNames">
+          <list>
+            <option value="assemble" />
+          </list>
+        </option>
+        <option name="vmOptions" />
+      </ExternalSystemSettings>
+      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
+      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
+      <DebugAllEnabled>false</DebugAllEnabled>
+      <RunAsTest>false</RunAsTest>
+      <method v="2" />
+    </configuration>
     <configuration name="AkaniDungeons [build]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -228,6 +253,7 @@
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.AkaniDungeons [build]" />
+        <item itemvalue="Gradle.AkaniDungeons [assemble]" />
         <item itemvalue="Gradle.AkaniDungeons [runServer]" />
       </list>
     </recent_temporary>
@@ -266,7 +292,7 @@
       <workItem from="1714939058232" duration="10157000" />
       <workItem from="1715104099801" duration="11652000" />
       <workItem from="1715186534903" duration="16042000" />
-      <workItem from="1715239479696" duration="5116000" />
+      <workItem from="1715239479696" duration="6002000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit with basic plugin structure and mob spawning functionality.">
       <option name="closed" value="true" />
@@ -468,7 +494,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715243854596</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Refactored MineOreType equals method to compare names and added hashCode method for consistency.">
+      <option name="closed" value="true" />
+      <created>1715244873177</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1715244873177</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -503,6 +537,7 @@
     <MESSAGE value="optimized equipment rendering" />
     <MESSAGE value="added build mode" />
     <MESSAGE value="input modes" />
-    <option name="LAST_COMMIT_MESSAGE" value="input modes" />
+    <MESSAGE value="Refactored MineOreType equals method to compare names and added hashCode method for consistency." />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactored MineOreType equals method to compare names and added hashCode method for consistency." />
   </component>
 </project>

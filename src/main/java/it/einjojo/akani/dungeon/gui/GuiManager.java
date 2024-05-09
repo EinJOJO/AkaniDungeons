@@ -33,7 +33,7 @@ public class GuiManager {
     }
 
     public SmartInventory mineOreTypeGUI(MineOreType oreType) {
-        MineOreTypeSettingGUI gui = new MineOreTypeSettingGUI(oreType, this);
+        MineOreTypeSettingGUI gui = new MineOreTypeSettingGUI(oreType, this, plugin);
         return SmartInventory.builder()
                 .id("mineOreTypeGUI_" + oreType.name())
                 .provider(gui)

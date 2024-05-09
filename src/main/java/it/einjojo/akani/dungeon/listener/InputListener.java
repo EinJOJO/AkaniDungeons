@@ -54,16 +54,17 @@ public class InputListener implements Listener {
         }
         String plainMessage = PlainTextComponentSerializer.plainText().serialize(event.message());
         if (plainMessage.equalsIgnoreCase("cancel")) {
+            event.setCancelled(true);
             input.unregister();
             input.cancel();
             event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.BLOCK_ANVIL_BREAK, 1, 5);
-            event.setCancelled(true);
+            return;
         }
         if (input instanceof PlayerChatInput pci) {
+            event.setCancelled(true);
             pci.unregister();
             pci.callback().accept(plainMessage);
             event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 10);
-            event.setCancelled(true);
         }
     }
 

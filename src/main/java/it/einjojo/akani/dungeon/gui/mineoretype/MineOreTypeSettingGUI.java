@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +28,12 @@ public class MineOreTypeSettingGUI implements InventoryProvider {
 
     private final MineOreType oreType;
     private final GuiManager guiManager;
+    private final JavaPlugin plugin;
 
-    public MineOreTypeSettingGUI(MineOreType oreType, GuiManager guiManager) {
+    public MineOreTypeSettingGUI(MineOreType oreType, GuiManager guiManager, JavaPlugin plugin) {
         this.oreType = oreType;
         this.guiManager = guiManager;
+        this.plugin = plugin;
     }
 
     @Override
@@ -38,6 +41,14 @@ public class MineOreTypeSettingGUI implements InventoryProvider {
         ClickableItem close = ClickableItem.of(new ItemBuilder(Material.BARRIER)
                 .displayName(Component.text("§cSchließen")).build(), e -> guiManager.mineOreTypeSelectorGUI().open(player));
         contents.set(5, 0, close);
+        addMaxHP(player, contents);
+        addIcon(contents);
+        addToolType(player, contents);
+        addItemList(contents);
+        addHardnessSelector(player, contents);
+    }
+
+    protected void addMaxHP(Player player, InventoryContents contents) {
         ClickableItem maxHp = ClickableItem.of(new ItemBuilder(Material.REDSTONE)
                 .displayName(Component.text("§cMax HP: §7" + oreType.maxHealth() + " ❤"))
                 .lore(List.of(
@@ -52,17 +63,16 @@ public class MineOreTypeSettingGUI implements InventoryProvider {
                 try {
                     float maxHpValue = Float.parseFloat(input);
                     oreType.setMaxHealth(maxHpValue);
-                    guiManager.mineOreTypeSelectorGUI().open(player);
+                    player.sendMessage(Component.text("§aMax HP wurde auf §c" + maxHpValue + " ❤ §agesetzt."));
+                    plugin.getServer().getScheduler().runTask(plugin, () -> {
+                        guiManager.mineOreTypeSelectorGUI().open(player);
+                    });
                 } catch (NumberFormatException ex) {
                     player.sendMessage(Component.text("§cBitte gib eine gültige Zahl ein."));
                 }
-            }, () -> init(player, contents));
+            });
         });
         contents.set(1, 6, maxHp);
-        addIcon(contents);
-        addToolType(player, contents);
-        addItemList(contents);
-        addHardnessSelector(player, contents);
     }
 
     protected void addIcon(InventoryContents contents) {
@@ -114,9 +124,6 @@ public class MineOreTypeSettingGUI implements InventoryProvider {
         }));
     }
 
-    public void onClick(InventoryClickEvent event) {
-        event.setCancelled(true);
-    }
 
     protected void addHardnessSelector(Player player, InventoryContents contents) {
         SlotPos hardnessSelector = SlotPos.of(3, 1);
