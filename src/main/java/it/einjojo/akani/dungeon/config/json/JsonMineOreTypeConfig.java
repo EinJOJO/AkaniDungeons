@@ -2,6 +2,7 @@ package it.einjojo.akani.dungeon.config.json;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import it.einjojo.akani.dungeon.config.MineOreTypeConfig;
 import it.einjojo.akani.dungeon.mine.MineOreType;
 
@@ -29,7 +30,7 @@ public class JsonMineOreTypeConfig implements MineOreTypeConfig {
             if (!Files.exists(filePath)) {
                 Files.createFile(filePath);
             }
-            var json = gson.fromJson(Files.newBufferedReader(filePath), JsonElement.class);
+            var json = gson.fromJson(Files.newBufferedReader(filePath), JsonObject.class);
             if (json == null) return;
             json.getAsJsonArray().forEach(jsonElement -> {
                 oreTypes.add(gson.fromJson(jsonElement, MineOreType.class));

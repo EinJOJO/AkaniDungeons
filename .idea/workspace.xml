@@ -4,11 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5cc949d3-5baf-413b-a507-ac4496d6ac28" name="Changes" comment="Refactored MineOreType equals method to compare names and added hashCode method for consistency.">
+    <list default="true" id="5cc949d3-5baf-413b-a507-ac4496d6ac28" name="Changes" comment="health input over chat">
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/PlacedOreConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/JsonPlacedOreConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/adapter/PlacedOreAdapter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/GuiManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/GuiManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/mineoretype/MineOreTypeSettingGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/mineoretype/MineOreTypeSettingGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/listener/InputListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/listener/InputListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeon.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeonPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeonPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/DungeonConfigManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/DungeonConfigManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/JsonMineOreTypeConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/config/json/JsonMineOreTypeConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/mine/MineManager.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -292,7 +297,7 @@
       <workItem from="1714939058232" duration="10157000" />
       <workItem from="1715104099801" duration="11652000" />
       <workItem from="1715186534903" duration="16042000" />
-      <workItem from="1715239479696" duration="6002000" />
+      <workItem from="1715239479696" duration="10622000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit with basic plugin structure and mob spawning functionality.">
       <option name="closed" value="true" />
@@ -502,7 +507,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715244873177</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="health input over chat">
+      <option name="closed" value="true" />
+      <created>1715245915300</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1715245915300</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -538,6 +551,7 @@
     <MESSAGE value="added build mode" />
     <MESSAGE value="input modes" />
     <MESSAGE value="Refactored MineOreType equals method to compare names and added hashCode method for consistency." />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactored MineOreType equals method to compare names and added hashCode method for consistency." />
+    <MESSAGE value="health input over chat" />
+    <option name="LAST_COMMIT_MESSAGE" value="health input over chat" />
   </component>
 </project>

@@ -28,7 +28,7 @@ public class AkaniDungeon {
         this.plugin = plugin;
         this.configManager = configManager;
         asyncMobPopulateChunkSelector = new AsyncMobPopulateChunkSelector(this);
-        mineManager = new MineManager();
+        mineManager = new MineManager(configManager.placedOreConfig());
         syncOreRenderer = new SyncOreRenderer(mineManager);
         syncMobSpawner = new SyncMobSpawner(this);
         spawnableFactory = new DefaultSpawnableFactory();
@@ -55,6 +55,7 @@ public class AkaniDungeon {
         asyncMobPopulateChunkSelector.start(plugin, configManager.mobSpawnerConfig().selectorInterval());
         syncOreRenderer.start(plugin, 5);
         syncMobSpawner.start(plugin, configManager.mobSpawnerConfig().spawnerInterval());
+        mineManager.start(plugin, 20 * 60 * 5);
     }
 
     public DungeonConfigManager config() {
