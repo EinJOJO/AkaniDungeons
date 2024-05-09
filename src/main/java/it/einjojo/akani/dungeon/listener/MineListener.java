@@ -65,10 +65,11 @@ public class MineListener implements Listener {
         MineOreType oreType = akaniDungeon.configManager().mineOreTypeConfig().types().stream().filter(type -> type.name().equals(spawnEggName)).findFirst().orElse(null);
         if (oreType == null) {
             event.getPlayer().sendMessage("§cOre type not found. Maybe deleted?");
+            return;
         }
-        ;
         MineOre ore = akaniDungeon.mineOreFactory().createMineOre(location.subtract(0, 0.3f, 0).setDirection(event.getPlayer().getLocation().getDirection()), oreType);
         mineManager().registerOre(ore);
+        event.getPlayer().sendMessage("§aErz platziert.");
         ore.render(event.getPlayer());
     }
 

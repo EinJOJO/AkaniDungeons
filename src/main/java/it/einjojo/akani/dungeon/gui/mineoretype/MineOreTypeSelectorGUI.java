@@ -19,12 +19,10 @@ import java.util.List;
 
 public class MineOreTypeSelectorGUI implements InventoryProvider {
     private static final List<Component> CLICK_ACTION = List.of(
-
             Component.empty(),
             Component.text("§7[§cLinksklick§7] Einstellungen"),
             Component.text("§7[§cRechtsklick§7] Spawn-Ei"),
             Component.empty()
-
     );
     private final MineOreTypeConfig config;
     private final GuiManager guiManager;
@@ -40,19 +38,7 @@ public class MineOreTypeSelectorGUI implements InventoryProvider {
         contents.fillRow(0, GUIItem.BACKGROUND.emptyClickableItem());
         contents.fillRow(5, GUIItem.BACKGROUND.emptyClickableItem());
         for (int i = 0; i < config.types().size(); i++) {
-            MineOreType oreType = config.types().get(i);
-            ArrayList<Component> lore = new ArrayList<>();
-            lore.add(Component.empty());
-            lore.addAll(oreType.description());
-            lore.addAll(CLICK_ACTION);
-            ClickableItem item = ClickableItem.of(new ItemBuilder(oreType.icon()).lore(lore).build(), (e) -> {
-                if (e.isLeftClick()) {
-                    guiManager.mineOreTypeGUI(oreType).open(player);
-                } else {
-                    player.getInventory().addItem(oreType.spawnEggItemStack());
-                }
-            });
-            contents.add(item);
+            addOreType(player, contents, config.types().get(i));
         }
         contents.set(5, 4, GUIItem.ADD_BUTTON.clickableItem(e -> {
             ItemStack cursorItem = e.getCursor();
@@ -64,10 +50,26 @@ public class MineOreTypeSelectorGUI implements InventoryProvider {
             }
             ItemStack icon = cursorItem.clone();
             icon.setAmount(1);
-            config.addOreType(new MineOreType(cursorItem.getType().name().toLowerCase(), icon, new ArrayList<>(), Hardness.UNDETERMINED, 10, ToolType.PICKAXE));
+            MineOreType oreType = new MineOreType(cursorItem.getType().name().toLowerCase(), icon, new ArrayList<>(), Hardness.UNDETERMINED, 10, ToolType.PICKAXE);
+            config.addOreType(oreType);
             player.setItemOnCursor(null);
-            init(player, contents);
+            addOreType(player, contents, oreType);
         }));
+    }
+
+    public void addOreType(Player player, InventoryContents contents, MineOreType oreType) {
+        ArrayList<Component> lore = new ArrayList<>();
+        lore.add(Component.empty());
+        lore.addAll(oreType.description());
+        lore.addAll(CLICK_ACTION);
+        ClickableItem item = ClickableItem.of(new ItemBuilder(oreType.icon()).lore(lore).build(), (e) -> {
+            if (e.isLeftClick()) {
+                guiManager.mineOreTypeGUI(oreType).open(player);
+            } else {
+                player.getInventory().addItem(oreType.spawnEggItemStack());
+            }
+        });
+        contents.add(item);
     }
 
     @Override

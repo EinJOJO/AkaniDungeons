@@ -39,7 +39,11 @@ public class AkaniDungeonPlugin extends JavaPlugin {
         commandManager = new PaperCommandManager(this);
         commandManager.getCommandCompletions().registerAsyncCompletion("oreTypes", (c) -> akaniDungeon.config().mineOreTypeConfig().types().stream().map(MineOreType::name).toList());
         commandManager.getCommandCompletions().registerStaticCompletion("oreHardness", () -> Arrays.stream(Hardness.values()).map(Enum::name).toList());
-        commandManager.getCommandContexts().registerContext(MineOreType.class, (c) -> akaniDungeon.config().mineOreTypeConfig().types().stream().filter(t -> t.name().equals(c.popFirstArg())).findFirst().orElseThrow());
+        commandManager.getCommandContexts().registerContext(MineOreType.class, (c) -> {
+            String input = c.popFirstArg();
+            System.out.println(input);
+            return akaniDungeon.config().mineOreTypeConfig().types().stream().filter(t -> t.name().equalsIgnoreCase(input)).findFirst().orElseThrow();
+        });
         commandManager.setDefaultExceptionHandler((command, registeredCommand, sender, args, t) -> {
             if (t instanceof NoSuchElementException ex) {
                 ((CommandSender) sender.getIssuer()).sendMessage("§cNicht gefunden.");

@@ -26,11 +26,14 @@ public class MineProgression {
      * Progresses the player's mine progression.
      *
      * @param ore the ore that the player is currently mining
+     * @return true if the progression was successful, false otherwise
      */
     public boolean progress(Player player, MineOre ore, float newDamage) {
         if (lastOre != ore || hasExpired()) {
             reset(player);
         } else if (!canProgressAgain()) {
+            return false;
+        } else if (isComplete()) {
             return false;
         }
         lastOre = ore;
