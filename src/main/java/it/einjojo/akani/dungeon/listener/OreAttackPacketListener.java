@@ -7,9 +7,11 @@ import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityAnimation;
+import it.einjojo.akani.dungeon.event.PlayerMineEvent;
+import it.einjojo.akani.dungeon.event.PlayerPreMineProgressEvent;
 import it.einjojo.akani.dungeon.mine.MineManager;
-import it.einjojo.akani.dungeon.mine.PlacedOre;
 import it.einjojo.akani.dungeon.mine.MineProgression;
+import it.einjojo.akani.dungeon.mine.PlacedOre;
 import it.einjojo.akani.dungeon.mine.tool.Tool;
 import it.einjojo.akani.dungeon.mine.tool.ToolFactory;
 import net.kyori.adventure.text.Component;
@@ -75,19 +77,25 @@ public class OreAttackPacketListener extends PacketListenerAbstract {
             denialAction(player, placedOre, Component.text("§cYou can't break this with that tool!"));
             return;
         }
-
-        if (!progression.progress(player, placedOre, tool.damage())) return;
+        var preMineProgressionEvent = new PlayerPreMineProgressEvent(player, placedOre, progression, tool.damage());
+        if (!preMineProgressionEvent.callEvent()) {
+            return;
+        }
+        if (!progression.progress(player, placedOre, preMineProgressionEvent.getProgress())) return;
         WrapperPlayServerEntityAnimation swingAnimation = new WrapperPlayServerEntityAnimation(player.getEntityId(), WrapperPlayServerEntityAnimation.EntityAnimationType.SWING_MAIN_ARM);
         event.getUser().sendPacket(swingAnimation);
         if (progression.isComplete()) {
             List<ItemStack> rewards = placedOre.type().breakRewards(itemStack);
-            TextComponent.Builder actionbarMessage = Component.text();
-            for (ItemStack reward : rewards) {
-                actionbarMessage.append(Component.text("§7+§a%s §7x §a%s".formatted(reward.getAmount(), reward.getType().name())));
-                actionbarMessage.appendSpace();
-                player.getInventory().addItem(reward);
+            PlayerMineEvent playerMineEvent = new PlayerMineEvent(player, placedOre, rewards);
+            if (playerMineEvent.callEvent()) {
+                TextComponent.Builder actionbarMessage = Component.text();
+                for (ItemStack reward : playerMineEvent.getDrops()) {
+                    actionbarMessage.append(Component.text("§7+§a%s §7x §a%s".formatted(reward.getAmount(), reward.getType().name())));
+                    actionbarMessage.appendSpace();
+                    player.getInventory().addItem(reward);
+                }
+                player.sendActionBar(actionbarMessage.build());
             }
-            player.sendActionBar(actionbarMessage.build());
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
                 placedOre.destroy(player);
             }, 20);

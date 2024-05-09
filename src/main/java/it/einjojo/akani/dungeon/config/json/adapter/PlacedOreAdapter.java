@@ -41,14 +41,15 @@ public class PlacedOreAdapter implements JsonSerializer<PlacedOre>, JsonDeserial
     @Override
     public JsonElement serialize(PlacedOre placedOre, Type type, JsonSerializationContext jsonSerializationContext) {
         var object = new JsonObject();
-        var location = new JsonObject();
-        location.addProperty("world", placedOre.location().getWorld().getName());
-        location.addProperty("x", placedOre.location().getBlockX());
-        location.addProperty("y", placedOre.location().getBlockY());
-        location.addProperty("z", placedOre.location().getBlockZ());
-        location.addProperty("pitch", placedOre.location().getPitch());
-        location.addProperty("yaw", placedOre.location().getYaw());
-        object.add("location", location);
+        var locationObject = new JsonObject();
+        Location loc = placedOre.location();
+        locationObject.addProperty("world", loc.getWorld().getName());
+        locationObject.addProperty("x", loc.getBlockX());
+        locationObject.addProperty("y", loc.getBlockY());
+        locationObject.addProperty("z", loc.getBlockZ());
+        locationObject.addProperty("pitch", loc.getPitch());
+        locationObject.addProperty("yaw", loc.getYaw());
+        object.add("location", locationObject);
         object.addProperty("type", placedOre.type().name());
         return object;
     }
