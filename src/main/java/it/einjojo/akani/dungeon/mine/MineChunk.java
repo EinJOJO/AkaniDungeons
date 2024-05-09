@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public record MineChunk(ChunkPosition position, List<MineOre> ores) {
+public record MineChunk(ChunkPosition position, List<PlacedOre> ores) {
 
 
     public void renderOres(Player player) {

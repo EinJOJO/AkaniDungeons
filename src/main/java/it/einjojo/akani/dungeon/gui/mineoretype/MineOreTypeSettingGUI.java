@@ -6,6 +6,7 @@ import fr.minuskube.inv.content.InventoryProvider;
 import fr.minuskube.inv.content.SlotPos;
 import it.einjojo.akani.core.paper.util.ItemBuilder;
 import it.einjojo.akani.dungeon.gui.GuiManager;
+import it.einjojo.akani.dungeon.input.PlayerChatInput;
 import it.einjojo.akani.dungeon.mine.BreakReward;
 import it.einjojo.akani.dungeon.mine.Hardness;
 import it.einjojo.akani.dungeon.mine.MineOreType;
@@ -34,14 +35,39 @@ public class MineOreTypeSettingGUI implements InventoryProvider {
 
     @Override
     public void init(Player player, InventoryContents contents) {
-        ClickableItem close = ClickableItem.of(new ItemBuilder(Material.BARRIER).displayName(Component.text("§cSchließen")).build(), e -> guiManager.mineOreTypeSelectorGUI().open(player));
-        ClickableItem icon = ClickableItem.empty(oreType.icon());
-        ClickableItem maxHp = ClickableItem.empty(oreType.icon());
-        contents.set(5, 4, icon);
+        ClickableItem close = ClickableItem.of(new ItemBuilder(Material.BARRIER)
+                .displayName(Component.text("§cSchließen")).build(), e -> guiManager.mineOreTypeSelectorGUI().open(player));
         contents.set(5, 0, close);
+        ClickableItem maxHp = ClickableItem.of(new ItemBuilder(Material.REDSTONE)
+                .displayName(Component.text("§cMax HP: §7" + oreType.maxHealth() + " ❤"))
+                .lore(List.of(
+                        Component.empty(),
+                        Component.text("§7Stelle die maximale Lebenspunkte ein."),
+                        Component.empty(),
+                        Component.text("§7▶ Aktuelle HP: §c" + oreType.maxHealth() + " ❤"),
+                        Component.empty()
+                )).build(), (e) -> {
+            e.getWhoClicked().closeInventory();
+            new PlayerChatInput(player, (input) -> {
+                try {
+                    float maxHpValue = Float.parseFloat(input);
+                    oreType.setMaxHealth(maxHpValue);
+                    guiManager.mineOreTypeSelectorGUI().open(player);
+                } catch (NumberFormatException ex) {
+                    player.sendMessage(Component.text("§cBitte gib eine gültige Zahl ein."));
+                }
+            }, () -> init(player, contents));
+        });
+        contents.set(1, 6, maxHp);
+        addIcon(contents);
         addToolType(player, contents);
         addItemList(contents);
         addHardnessSelector(player, contents);
+    }
+
+    protected void addIcon(InventoryContents contents) {
+        ClickableItem icon = ClickableItem.empty(new ItemBuilder(oreType.icon()).lore(oreType.description()).build());
+        contents.set(5, 4, icon);
     }
 
     protected void addToolType(Player player, InventoryContents contents) {

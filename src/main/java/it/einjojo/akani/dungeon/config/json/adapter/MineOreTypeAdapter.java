@@ -11,6 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.lang.reflect.Type;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -51,7 +52,10 @@ public class MineOreTypeAdapter implements JsonSerializer<MineOreType>, JsonDese
         // tool
         ToolType toolType = Optional.ofNullable(jsonObject.get("toolType")).map(jsonElement -> ToolType.valueOf(jsonElement.getAsString())).orElse(ToolType.PICKAXE);
 
-        return new MineOreType(name, itemBuilder.build(), breakReward, hardness, maxHP, toolType);
+        // respawnTime
+        Duration respawnTime = Optional.ofNullable(jsonObject.get("respawnTimeSeconds")).map(jsonElement -> Duration.ofSeconds(jsonElement.getAsLong())).orElse(Duration.ofMinutes(30));
+
+        return new MineOreType(name, itemBuilder.build(), breakReward, hardness, maxHP, toolType, respawnTime);
     }
 
     @Override
@@ -88,7 +92,7 @@ public class MineOreTypeAdapter implements JsonSerializer<MineOreType>, JsonDese
         jsonObject.addProperty("toolType", src.toolType().name());
 
         // respawnTime
-        jsonObject.addProperty("respawnTimeMinutes", src.respawnTime().toMinutes());
+        jsonObject.addProperty("respawnTimeSeconds", src.respawnTime().toSeconds());
 
         return jsonObject;
     }

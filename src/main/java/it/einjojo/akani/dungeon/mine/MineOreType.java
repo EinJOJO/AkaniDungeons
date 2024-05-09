@@ -18,7 +18,6 @@ import java.util.List;
 
 public class MineOreType {
     private static final NamespacedKey SPAWN_EGG_KEY = new NamespacedKey("akani", "mine_ore_spawn_egg");
-    private static final Duration RESPAWN_TIME = Duration.ofSeconds(10);
     private final String name;
     private final ItemStack icon;
     private final List<BreakReward> breakRewards;
@@ -26,8 +25,9 @@ public class MineOreType {
     private float maxHealth;
     private ToolType toolType;
     private Hardness hardness;
+    private Duration respawnTime;
 
-    public MineOreType(String name, ItemStack icon, List<BreakReward> breakRewards, Hardness hardness, float maxHealth, ToolType toolType) {
+    public MineOreType(String name, ItemStack icon, List<BreakReward> breakRewards, Hardness hardness, float maxHealth, ToolType toolType, Duration respawnTime) {
         this.breakRewards = breakRewards;
         this.hardness = hardness;
         this.icon = icon;
@@ -35,6 +35,7 @@ public class MineOreType {
         this.name = name;
         this.maxHealth = maxHealth;
         this.toolType = toolType;
+        this.respawnTime = respawnTime;
     }
 
     public static @Nullable String spawnEggName(ItemStack itemStack) {
@@ -65,7 +66,7 @@ public class MineOreType {
      * @return Time it takes for the ore to respawn
      */
     public Duration respawnTime() {
-        return RESPAWN_TIME;
+        return respawnTime;
     }
 
     public float maxHealth() {

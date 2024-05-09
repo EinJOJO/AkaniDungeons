@@ -1,9 +1,12 @@
 package it.einjojo.akani.dungeon;
 
 import co.aikar.commands.PaperCommandManager;
+import it.einjojo.akani.dungeon.command.BuildCommand;
 import it.einjojo.akani.dungeon.command.MineOreCommand;
 import it.einjojo.akani.dungeon.config.DungeonConfigManager;
 import it.einjojo.akani.dungeon.gui.GuiManager;
+import it.einjojo.akani.dungeon.listener.DungeonWorldListener;
+import it.einjojo.akani.dungeon.listener.InputListener;
 import it.einjojo.akani.dungeon.listener.MineListener;
 import it.einjojo.akani.dungeon.listener.OreAttackPacketListener;
 import it.einjojo.akani.dungeon.mine.Hardness;
@@ -21,6 +24,7 @@ public class AkaniDungeonPlugin extends JavaPlugin {
     private AkaniDungeon akaniDungeon;
     private PaperCommandManager commandManager;
     private GuiManager guiManager;
+    private DungeonWorldListener dungeonWorldListener;
 
     @Override
     public void onEnable() {
@@ -28,10 +32,12 @@ public class AkaniDungeonPlugin extends JavaPlugin {
         dungeonConfigManager.load();
         akaniDungeon = new AkaniDungeon(this, dungeonConfigManager);
         akaniDungeon.startSchedulers();
-        guiManager = new GuiManager(this, dungeonConfigManager.mineOreTypeConfig());
-        registerCommands();
+        guiManager = new GuiManager(this, dungeonConfigManager.mineOreTypeConfig(), akaniDungeon.mineOreTypeFactory());
         new OreAttackPacketListener(akaniDungeon.mineManager(), akaniDungeon.toolFactory(), this);
         new MineListener(this, akaniDungeon);
+        dungeonWorldListener = new DungeonWorldListener(this);
+        new InputListener(this);
+        registerCommands();
     }
 
 
@@ -56,6 +62,7 @@ public class AkaniDungeonPlugin extends JavaPlugin {
         commandManager.registerDependency(AkaniDungeon.class, akaniDungeon);
         commandManager.registerDependency(GuiManager.class, guiManager);
         commandManager.registerCommand(new MineOreCommand());
+        commandManager.registerCommand(new BuildCommand(dungeonWorldListener));
 
     }
 

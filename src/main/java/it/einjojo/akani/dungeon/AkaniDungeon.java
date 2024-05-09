@@ -3,7 +3,8 @@ package it.einjojo.akani.dungeon;
 import it.einjojo.akani.dungeon.config.DungeonConfigManager;
 import it.einjojo.akani.dungeon.mine.MineManager;
 import it.einjojo.akani.dungeon.mine.SyncOreRenderer;
-import it.einjojo.akani.dungeon.mine.factory.MineOreFactory;
+import it.einjojo.akani.dungeon.mine.factory.MineOreTypeFactory;
+import it.einjojo.akani.dungeon.mine.factory.PlacedOreFactory;
 import it.einjojo.akani.dungeon.mine.tool.ToolFactory;
 import it.einjojo.akani.dungeon.mobs.AsyncMobPopulateChunkSelector;
 import it.einjojo.akani.dungeon.mobs.SyncMobSpawner;
@@ -19,8 +20,9 @@ public class AkaniDungeon {
     private final SyncMobSpawner syncMobSpawner;
     private final SpawnableFactory spawnableFactory;
     private final ToolFactory toolFactory;
-    private final MineOreFactory mineOreFactory;
+    private final PlacedOreFactory placedOreFactory;
     private final MineManager mineManager;
+    private final MineOreTypeFactory mineOreTypeFactory;
 
     public AkaniDungeon(JavaPlugin plugin, DungeonConfigManager configManager) {
         this.plugin = plugin;
@@ -30,7 +32,8 @@ public class AkaniDungeon {
         syncOreRenderer = new SyncOreRenderer(mineManager);
         syncMobSpawner = new SyncMobSpawner(this);
         spawnableFactory = new DefaultSpawnableFactory();
-        mineOreFactory = new MineOreFactory();
+        placedOreFactory = new PlacedOreFactory();
+        mineOreTypeFactory = new MineOreTypeFactory();
         toolFactory = new ToolFactory(configManager.toolConfig());
 
     }
@@ -39,8 +42,8 @@ public class AkaniDungeon {
         return toolFactory;
     }
 
-    public MineOreFactory mineOreFactory() {
-        return mineOreFactory;
+    public PlacedOreFactory placedOreFactory() {
+        return placedOreFactory;
     }
 
     public MineManager mineManager() {
@@ -80,5 +83,9 @@ public class AkaniDungeon {
 
     public SpawnableFactory spawnableFactory() {
         return spawnableFactory;
+    }
+
+    public MineOreTypeFactory mineOreTypeFactory() {
+        return mineOreTypeFactory;
     }
 }

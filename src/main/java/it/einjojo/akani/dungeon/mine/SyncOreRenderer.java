@@ -75,7 +75,7 @@ public class SyncOreRenderer implements RepeatingTask {
     private void resetProgressions(Player player) {
         MineProgression progression = mineManager.progressionByPlayer(player.getUniqueId());
         if (progression == null) return;
-        MineOre lastOre = progression.lastOre();
+        PlacedOre lastOre = progression.lastOre();
         if (progression.isMining()) {
             return;
         }

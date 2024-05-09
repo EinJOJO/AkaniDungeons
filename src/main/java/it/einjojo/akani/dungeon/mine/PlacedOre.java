@@ -21,8 +21,8 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public record MineOre(int entityId, Location location, MineOreType type, Set<UUID> viewers,
-                      Map<UUID, Long> playerDestroyMap) {
+public record PlacedOre(int entityId, Location location, MineOreType type, Set<UUID> viewers,
+                        Map<UUID, Long> playerDestroyMap) {
 
 
     public void render(Player player, boolean ignoreDestroy) {

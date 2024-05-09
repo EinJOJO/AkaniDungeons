@@ -8,7 +8,7 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityAnimation;
 import it.einjojo.akani.dungeon.mine.MineManager;
-import it.einjojo.akani.dungeon.mine.MineOre;
+import it.einjojo.akani.dungeon.mine.PlacedOre;
 import it.einjojo.akani.dungeon.mine.MineProgression;
 import it.einjojo.akani.dungeon.mine.tool.Tool;
 import it.einjojo.akani.dungeon.mine.tool.ToolFactory;
@@ -47,8 +47,8 @@ public class OreAttackPacketListener extends PacketListenerAbstract {
         }
         WrapperPlayClientInteractEntity wrapper = new WrapperPlayClientInteractEntity(event);
         int entityID = wrapper.getEntityId();
-        MineOre mineOre = mineManager.oreByEntityId(entityID);
-        if (mineOre == null) {
+        PlacedOre placedOre = mineManager.oreByEntityId(entityID);
+        if (placedOre == null) {
             return;
         }
         MineProgression progression = mineManager.progressionByPlayer(event.getUser().getUUID());
@@ -59,28 +59,28 @@ public class OreAttackPacketListener extends PacketListenerAbstract {
         Player player = (Player) event.getPlayer();
         ItemStack itemStack = player.getInventory().getItemInMainHand();
         if (itemStack.getType().equals(Material.DEBUG_STICK)) {
-            player.sendMessage("§7Type: §c" + mineOre.type().name());
+            player.sendMessage("§7Type: §c" + placedOre.type().name());
             player.sendMessage("§7Destroyed: ");
-            for (Map.Entry<UUID, Long> entry : mineOre.playerDestroyMap().entrySet()) {
+            for (Map.Entry<UUID, Long> entry : placedOre.playerDestroyMap().entrySet()) {
                 player.sendMessage("§7 - " + entry.getKey() + " : §c" + entry.getValue());
             }
             return;
         }
-        if (mineOre.hasDestroyed(player.getUniqueId())) {
-            denialAction(player, mineOre, Component.text("§cYou already destroyed this!"));
+        if (placedOre.hasDestroyed(player.getUniqueId())) {
+            denialAction(player, placedOre, Component.text("§cYou already destroyed this!"));
             return;
         }
         Tool tool = toolFactory.fromItemStack(itemStack);
-        if (tool.type() == null || !mineOre.type().canBreak(itemStack)) {
-            denialAction(player, mineOre, Component.text("§cYou can't break this with that tool!"));
+        if (tool.type() == null || !placedOre.type().canBreak(itemStack)) {
+            denialAction(player, placedOre, Component.text("§cYou can't break this with that tool!"));
             return;
         }
 
-        if (!progression.progress(player, mineOre, tool.damage())) return;
+        if (!progression.progress(player, placedOre, tool.damage())) return;
         WrapperPlayServerEntityAnimation swingAnimation = new WrapperPlayServerEntityAnimation(player.getEntityId(), WrapperPlayServerEntityAnimation.EntityAnimationType.SWING_MAIN_ARM);
         event.getUser().sendPacket(swingAnimation);
         if (progression.isComplete()) {
-            List<ItemStack> rewards = mineOre.type().breakRewards(itemStack);
+            List<ItemStack> rewards = placedOre.type().breakRewards(itemStack);
             TextComponent.Builder actionbarMessage = Component.text();
             for (ItemStack reward : rewards) {
                 actionbarMessage.append(Component.text("§7+§a%s §7x §a%s".formatted(reward.getAmount(), reward.getType().name())));
@@ -89,13 +89,13 @@ public class OreAttackPacketListener extends PacketListenerAbstract {
             }
             player.sendActionBar(actionbarMessage.build());
             plugin.getServer().getScheduler().runTaskLater(plugin, () -> {
-                mineOre.destroy(player);
+                placedOre.destroy(player);
             }, 20);
         }
     }
 
-    protected void denialAction(Player player, MineOre mineOre, Component actionBarMessage) {
-        player.spawnParticle(Particle.ASH, mineOre.location().clone().add(0, 0.3f, 0), 3);
+    protected void denialAction(Player player, PlacedOre placedOre, Component actionBarMessage) {
+        player.spawnParticle(Particle.ASH, placedOre.location().clone().add(0, 0.3f, 0), 3);
         player.sendActionBar(actionBarMessage);
         player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.3f, 1);
     }

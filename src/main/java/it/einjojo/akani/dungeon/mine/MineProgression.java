@@ -14,11 +14,11 @@ public class MineProgression {
     private static final int DELAY_MILLIS = 800;
     private static final Component COMPLETED_PROGRESS = Component.text("✔").color(NamedTextColor.GREEN);
     private static final int ORE_TIMEOUT = 3 * 1000; // 3 seconds timeout
-    private MineOre lastOre;
+    private PlacedOre lastOre;
     private long lastOreTimeMillis;
     private float damage;
 
-    public @Nullable MineOre lastOre() {
+    public @Nullable PlacedOre lastOre() {
         return lastOre;
     }
 
@@ -28,7 +28,7 @@ public class MineProgression {
      * @param ore the ore that the player is currently mining
      * @return true if the progression was successful, false otherwise
      */
-    public boolean progress(Player player, MineOre ore, float newDamage) {
+    public boolean progress(Player player, PlacedOre ore, float newDamage) {
         if (lastOre != ore || hasExpired()) {
             reset(player);
         } else if (!canProgressAgain()) {

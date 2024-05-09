@@ -7,9 +7,8 @@ import it.einjojo.akani.core.paper.util.ItemBuilder;
 import it.einjojo.akani.dungeon.config.MineOreTypeConfig;
 import it.einjojo.akani.dungeon.gui.GUIItem;
 import it.einjojo.akani.dungeon.gui.GuiManager;
-import it.einjojo.akani.dungeon.mine.Hardness;
 import it.einjojo.akani.dungeon.mine.MineOreType;
-import it.einjojo.akani.dungeon.mine.tool.ToolType;
+import it.einjojo.akani.dungeon.mine.factory.MineOreTypeFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -25,11 +24,13 @@ public class MineOreTypeSelectorGUI implements InventoryProvider {
             Component.empty()
     );
     private final MineOreTypeConfig config;
+    private final MineOreTypeFactory factory;
     private final GuiManager guiManager;
 
 
-    public MineOreTypeSelectorGUI(MineOreTypeConfig config, GuiManager guiManager) {
+    public MineOreTypeSelectorGUI(MineOreTypeConfig config, MineOreTypeFactory factory, GuiManager guiManager) {
         this.config = config;
+        this.factory = factory;
         this.guiManager = guiManager;
     }
 
@@ -50,8 +51,9 @@ public class MineOreTypeSelectorGUI implements InventoryProvider {
             }
             ItemStack icon = cursorItem.clone();
             icon.setAmount(1);
-            MineOreType oreType = new MineOreType(cursorItem.getType().name().toLowerCase(), icon, new ArrayList<>(), Hardness.UNDETERMINED, 10, ToolType.PICKAXE);
+            MineOreType oreType = factory.createMineOreType(icon);
             config.addOreType(oreType);
+            player.getInventory().addItem(cursorItem);
             player.setItemOnCursor(null);
             addOreType(player, contents, oreType);
         }));

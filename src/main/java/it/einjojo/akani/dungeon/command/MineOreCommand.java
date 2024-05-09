@@ -7,12 +7,9 @@ import it.einjojo.akani.dungeon.gui.GuiManager;
 import it.einjojo.akani.dungeon.mine.BreakReward;
 import it.einjojo.akani.dungeon.mine.Hardness;
 import it.einjojo.akani.dungeon.mine.MineOreType;
-import it.einjojo.akani.dungeon.mine.tool.ToolType;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
 
 @CommandAlias("adminmine|amine")
 @CommandPermission("akani.mine.admin")
@@ -30,20 +27,19 @@ public class MineOreCommand extends BaseCommand {
     }
 
     @Subcommand("create")
-    @CommandCompletion("<erz-name>")
     @Description("Create a mine ore type.")
-    public void createType(Player sender, String name) {
+    public void createType(Player sender) {
         ItemStack itemInHand = sender.getInventory().getItemInMainHand().clone();
         if (itemInHand.getType().equals(Material.AIR)) {
             sender.sendMessage("§cHalte das Erz in der Hand, was der Spieler sehen soll.");
             return;
         }
         itemInHand.setAmount(1);
-        MineOreType type = new MineOreType(name, itemInHand, new ArrayList<>(), Hardness.UNDETERMINED, 10, ToolType.PICKAXE);
+        MineOreType type = core.mineOreTypeFactory().createMineOreType(itemInHand);
         core.config().mineOreTypeConfig().addOreType(type);
         core.config().mineOreTypeConfig().save();
         sender.getInventory().addItem(type.spawnEggItemStack());
-        sender.sendMessage("§7Das Erz §a" + name + "§7 wurde erstellt.");
+        sender.sendMessage("§7Das Erz §a" + type.name() + "§7 wurde erstellt.");
     }
 
     @Subcommand("addreward")
