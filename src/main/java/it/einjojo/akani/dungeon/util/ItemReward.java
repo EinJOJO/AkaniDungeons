@@ -1,4 +1,4 @@
-package it.einjojo.akani.dungeon.mine;
+package it.einjojo.akani.dungeon.util;
 
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -13,7 +13,7 @@ import java.util.Random;
  * @param max      the maximum amount of items that can be given
  * @param chance   the chance of the reward being given
  */
-public record BreakReward(ItemStack baseItem, short min, short max, float chance) {
+public record ItemReward(ItemStack baseItem, short min, short max, float chance) {
     private static final Random random = new Random();
 
     public @Nullable ItemStack reward(ItemStack usedTool) {

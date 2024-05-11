@@ -3,6 +3,7 @@ package it.einjojo.akani.dungeon;
 import it.einjojo.akani.core.api.AkaniCoreProvider;
 import it.einjojo.akani.core.paper.PaperAkaniCore;
 import it.einjojo.akani.dungeon.config.DungeonConfigManager;
+import it.einjojo.akani.dungeon.lootchest.LootChestManager;
 import it.einjojo.akani.dungeon.mine.MineManager;
 import it.einjojo.akani.dungeon.mine.SyncOreRenderer;
 import it.einjojo.akani.dungeon.mine.factory.MineOreTypeFactory;
@@ -27,6 +28,7 @@ public class AkaniDungeon {
     private final MineManager mineManager;
     private final MineOreTypeFactory mineOreTypeFactory;
     private final PaperAkaniCore core;
+    private final LootChestManager lootChestManager;
 
     public AkaniDungeon(JavaPlugin plugin, DungeonConfigManager configManager) {
         this.plugin = plugin;
@@ -41,6 +43,12 @@ public class AkaniDungeon {
         placedOreFactory = new PlacedOreFactory();
         mineOreTypeFactory = new MineOreTypeFactory();
         toolFactory = new ToolFactory(configManager.toolConfig());
+        this.lootChestManager = new LootChestManager();
+    }
+
+    public void load() {
+        mineManager.load();
+        lootChestManager.load();
     }
 
     public ToolFactory toolFactory() {
@@ -98,6 +106,12 @@ public class AkaniDungeon {
     public MineOreTypeFactory mineOreTypeFactory() {
         return mineOreTypeFactory;
     }
+
+    public LootChestManager lootChestManager() {
+        return lootChestManager;
+    }
+
+
 
     public PaperAkaniCore core() {
         return core;

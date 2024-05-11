@@ -38,7 +38,8 @@ public class AkaniDungeonPlugin extends JavaPlugin {
         }
         akaniDungeon = new AkaniDungeon(this, dungeonConfigManager);
         getServer().getScheduler().runTaskAsynchronously(this, () -> {
-            akaniDungeon.mineManager().load();
+            getSLF4JLogger().info("Loading dungeon");
+            akaniDungeon.load();
         });
         akaniDungeon.startSchedulers();
         guiManager = new GuiManager(this, dungeonConfigManager.mineOreTypeConfig(), akaniDungeon.mineOreTypeFactory());
@@ -87,4 +88,6 @@ public class AkaniDungeonPlugin extends JavaPlugin {
     @Override
     public void onDisable() {
     }
+
+
 }

@@ -8,15 +8,15 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class PlayerPreMineProgressEvent extends PlayerEvent implements Cancellable {
+public class AsyncPlayerPreMineProgressEvent extends PlayerEvent implements Cancellable {
     private static final HandlerList HANDLERS = new HandlerList();
     private final PlacedOre ore;
     private final MineProgression progression;
     private float progress;
     private boolean cancelled = false;
 
-    public PlayerPreMineProgressEvent(@NotNull Player who, PlacedOre ore, MineProgression progression, float progress) {
-        super(who);
+    public AsyncPlayerPreMineProgressEvent(@NotNull Player who, PlacedOre ore, MineProgression progression, float progress) {
+        super(who, true);
         this.ore = ore;
         this.progression = progression;
         this.progress = progress;

@@ -5,7 +5,7 @@ import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import it.einjojo.akani.dungeon.AkaniDungeon;
 import it.einjojo.akani.dungeon.gui.GuiManager;
-import it.einjojo.akani.dungeon.mine.BreakReward;
+import it.einjojo.akani.dungeon.util.ItemReward;
 import it.einjojo.akani.dungeon.mine.Hardness;
 import it.einjojo.akani.dungeon.mine.MineOreType;
 import org.bukkit.Material;
@@ -81,7 +81,7 @@ public class MineOreCommand extends BaseCommand {
             return;
         }
         itemInHand.setAmount(1);
-        BreakReward reward = new BreakReward(itemInHand, min, max, chance);
+        ItemReward reward = new ItemReward(itemInHand, min, max, chance);
         type.breakRewards().add(reward);
         core.config().mineOreTypeConfig().save();
         sender.sendMessage("§7Abbaubelohnung erstellt für §e" + type.name() + "§8: §7" + reward.baseItem().getType().name() + " " + min + "-" + max + " " + chance);
@@ -93,7 +93,7 @@ public class MineOreCommand extends BaseCommand {
     @CommandCompletion("@oreTypes")
     public void listRewards(Player sender, MineOreType type) {
         sender.sendMessage("§7Abbaubelohnungen für §e" + type.name() + "§8:");
-        for (BreakReward reward : type.breakRewards()) {
+        for (ItemReward reward : type.breakRewards()) {
             sender.sendMessage("§7- §e" + reward.baseItem().getType().name() + " " + reward.min() + "-" + reward.max() + " " + reward.chance());
         }
     }

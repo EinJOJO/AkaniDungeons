@@ -5,10 +5,10 @@ import com.google.gson.GsonBuilder;
 import it.einjojo.akani.dungeon.AkaniDungeonPlugin;
 import it.einjojo.akani.dungeon.config.json.JsonMineOreTypeConfig;
 import it.einjojo.akani.dungeon.config.json.JsonPlacedOreConfig;
-import it.einjojo.akani.dungeon.config.json.adapter.BreakRewardAdapter;
+import it.einjojo.akani.dungeon.config.json.adapter.ItemRewardAdapter;
 import it.einjojo.akani.dungeon.config.json.adapter.MineOreTypeAdapter;
 import it.einjojo.akani.dungeon.config.json.adapter.PlacedOreAdapter;
-import it.einjojo.akani.dungeon.mine.BreakReward;
+import it.einjojo.akani.dungeon.util.ItemReward;
 import it.einjojo.akani.dungeon.mine.MineOreType;
 import it.einjojo.akani.dungeon.mine.PlacedOre;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -28,7 +28,7 @@ public class DungeonConfigManager {
         gson = new GsonBuilder()
                 .registerTypeAdapter(PlacedOre.class, new PlacedOreAdapter(plugin))
                 .registerTypeAdapter(MineOreType.class, new MineOreTypeAdapter())
-                .registerTypeAdapter(BreakReward.class, new BreakRewardAdapter())
+                .registerTypeAdapter(ItemReward.class, new ItemRewardAdapter())
                 .setPrettyPrinting()
                 .create();
         mineOreTypeConfig = new JsonMineOreTypeConfig(gson, plugin.getDataFolder().toPath().resolve("oreTypes.json"));

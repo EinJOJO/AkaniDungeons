@@ -7,20 +7,21 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 /**
  * Event that is called when a player mines a block successfully.
  */
-public class PlayerMineEvent extends PlayerEvent implements Cancellable {
+public class AsyncPlayerMineEvent extends PlayerEvent implements Cancellable {
     private static final HandlerList HANDLERS = new HandlerList();
     private final PlacedOre ore;
-    private final List<ItemStack> drops;
+    private List<ItemStack> drops;
     private boolean cancelled = false;
 
-    public PlayerMineEvent(@NotNull Player who, PlacedOre ore, List<ItemStack> drops) {
-        super(who);
+    public AsyncPlayerMineEvent(@NotNull Player who, PlacedOre ore, List<ItemStack> drops) {
+        super(who, true);
         this.ore = ore;
         this.drops = drops;
     }
@@ -31,6 +32,10 @@ public class PlayerMineEvent extends PlayerEvent implements Cancellable {
 
     public List<ItemStack> getDrops() {
         return drops;
+    }
+
+    public void setDrops(@Nullable List<ItemStack> drops) {
+        this.drops = drops;
     }
 
     @Override

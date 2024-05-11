@@ -2,7 +2,7 @@ package it.einjojo.akani.dungeon.config.json.adapter;
 
 import com.google.gson.*;
 import it.einjojo.akani.core.paper.util.ItemBuilder;
-import it.einjojo.akani.dungeon.mine.BreakReward;
+import it.einjojo.akani.dungeon.util.ItemReward;
 import it.einjojo.akani.dungeon.mine.Hardness;
 import it.einjojo.akani.dungeon.mine.MineOreType;
 import it.einjojo.akani.dungeon.mine.tool.ToolType;
@@ -44,9 +44,9 @@ public class MineOreTypeAdapter implements JsonSerializer<MineOreType>, JsonDese
         float maxHP = Optional.ofNullable(jsonObject.get("maxHealth")).map(JsonElement::getAsFloat).orElse(10F);
 
         // break rewards
-        List<BreakReward> breakReward = new ArrayList<>();
+        List<ItemReward> itemReward = new ArrayList<>();
         jsonObject.getAsJsonArray("breakRewards").forEach(jsonElement -> {
-            breakReward.add(context.deserialize(jsonElement, BreakReward.class));
+            itemReward.add(context.deserialize(jsonElement, ItemReward.class));
         });
 
         // tool
@@ -55,7 +55,7 @@ public class MineOreTypeAdapter implements JsonSerializer<MineOreType>, JsonDese
         // respawnTime
         Duration respawnTime = Optional.ofNullable(jsonObject.get("respawnTimeSeconds")).map(jsonElement -> Duration.ofSeconds(jsonElement.getAsLong())).orElse(Duration.ofMinutes(30));
 
-        return new MineOreType(name, itemBuilder.build(), breakReward, hardness, maxHP, toolType, respawnTime);
+        return new MineOreType(name, itemBuilder.build(), itemReward, hardness, maxHP, toolType, respawnTime);
     }
 
     @Override
@@ -82,7 +82,7 @@ public class MineOreTypeAdapter implements JsonSerializer<MineOreType>, JsonDese
         //break rewards
         JsonArray breakRewards = new JsonArray();
         src.breakRewards().forEach(breakReward -> {
-            breakRewards.add(context.serialize(breakReward, BreakReward.class));
+            breakRewards.add(context.serialize(breakReward, ItemReward.class));
         });
         jsonObject.add("breakRewards", breakRewards);
 

@@ -8,7 +8,7 @@ import it.einjojo.akani.core.paper.util.ItemBuilder;
 import it.einjojo.akani.dungeon.gui.GUIItem;
 import it.einjojo.akani.dungeon.gui.GuiManager;
 import it.einjojo.akani.dungeon.input.PlayerChatInput;
-import it.einjojo.akani.dungeon.mine.BreakReward;
+import it.einjojo.akani.dungeon.util.ItemReward;
 import it.einjojo.akani.dungeon.mine.Hardness;
 import it.einjojo.akani.dungeon.mine.MineOreType;
 import it.einjojo.akani.dungeon.mine.tool.ToolType;
@@ -17,7 +17,6 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -118,7 +117,7 @@ public class MineOreTypeSettingGUI implements InventoryProvider {
             ItemStack cursor = event.getCursor();
             if (cursor != null) {
                 if (cursor.getType().equals(Material.AIR)) return;
-                oreType.breakRewards().add(new BreakReward(cursor.clone(), (short) 1, (short) 1, 1f));
+                oreType.breakRewards().add(new ItemReward(cursor.clone(), (short) 1, (short) 1, 1f));
                 Player clicker = (Player) event.getWhoClicked();
                 clicker.playSound(clicker, Sound.ENTITY_CHICKEN_EGG, 1, 3);
                 event.getWhoClicked().setItemOnCursor(null);

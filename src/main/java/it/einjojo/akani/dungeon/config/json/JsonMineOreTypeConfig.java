@@ -9,13 +9,13 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class JsonMineOreTypeConfig implements MineOreTypeConfig {
     private final Gson gson;
     private final Path filePath;
-    private final List<MineOreType> oreTypes = new ArrayList<>();
+    private final List<MineOreType> oreTypes = new LinkedList<>();
 
     public JsonMineOreTypeConfig(Gson gson, Path filePath) {
         this.gson = gson;

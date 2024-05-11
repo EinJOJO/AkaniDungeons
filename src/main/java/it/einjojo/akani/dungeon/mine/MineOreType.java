@@ -3,6 +3,7 @@ package it.einjojo.akani.dungeon.mine;
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import it.einjojo.akani.core.paper.util.ItemBuilder;
 import it.einjojo.akani.dungeon.mine.tool.ToolType;
+import it.einjojo.akani.dungeon.util.ItemReward;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Material;
@@ -20,15 +21,15 @@ public class MineOreType {
     private static final NamespacedKey SPAWN_EGG_KEY = new NamespacedKey("akani", "mine_ore_spawn_egg");
     private final String name;
     private final ItemStack icon;
-    private final List<BreakReward> breakRewards;
+    private final List<ItemReward> itemRewards;
     private final com.github.retrooper.packetevents.protocol.item.ItemStack protocolItemStack;
     private float maxHealth;
     private ToolType toolType;
     private Hardness hardness;
     private Duration respawnTime;
 
-    public MineOreType(String name, ItemStack icon, List<BreakReward> breakRewards, Hardness hardness, float maxHealth, ToolType toolType, Duration respawnTime) {
-        this.breakRewards = breakRewards;
+    public MineOreType(String name, ItemStack icon, List<ItemReward> itemRewards, Hardness hardness, float maxHealth, ToolType toolType, Duration respawnTime) {
+        this.itemRewards = itemRewards;
         this.hardness = hardness;
         this.icon = icon;
         protocolItemStack = SpigotConversionUtil.fromBukkitItemStack(icon);
@@ -109,9 +110,9 @@ public class MineOreType {
     }
 
     public List<ItemStack> breakRewards(ItemStack toolUsed) {
-        if (breakRewards == null || breakRewards.isEmpty()) return List.of();
+        if (itemRewards == null || itemRewards.isEmpty()) return List.of();
         List<ItemStack> rewards = new ArrayList<>();
-        for (BreakReward potentialReward : breakRewards) {
+        for (ItemReward potentialReward : itemRewards) {
             ItemStack is = potentialReward.reward(toolUsed);
             if (is != null) {
                 rewards.add(is);
@@ -128,8 +129,8 @@ public class MineOreType {
         return icon.clone();
     }
 
-    public List<BreakReward> breakRewards() {
-        return breakRewards;
+    public List<ItemReward> breakRewards() {
+        return itemRewards;
     }
 
     public Hardness hardness() {

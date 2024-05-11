@@ -15,7 +15,9 @@ public class DungeonMessageProvider implements MessageProvider {
     }
 
     @Override
-    public void insertMessages(MessageStorage messageStorage) {
+    public void insertMessages(MessageStorage ms) {
+        ms.registerMessage("de", "mine.action.invalid-tool", "<red>Du kannst diesen Block nicht mit diesem Werkzeug abbauen.");
+        ms.registerMessage("de", "mine.action.invalid-block", "<red>Du kannst diesen Block nicht abbauen.");
 
     }
 }

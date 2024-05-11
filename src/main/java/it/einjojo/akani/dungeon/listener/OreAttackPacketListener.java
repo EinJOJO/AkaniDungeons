@@ -7,8 +7,9 @@ import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityAnimation;
-import it.einjojo.akani.dungeon.event.PlayerMineEvent;
-import it.einjojo.akani.dungeon.event.PlayerPreMineProgressEvent;
+import it.einjojo.akani.dungeon.AkaniDungeonPlugin;
+import it.einjojo.akani.dungeon.event.AsyncPlayerMineEvent;
+import it.einjojo.akani.dungeon.event.AsyncPlayerPreMineProgressEvent;
 import it.einjojo.akani.dungeon.mine.MineManager;
 import it.einjojo.akani.dungeon.mine.MineProgression;
 import it.einjojo.akani.dungeon.mine.PlacedOre;
@@ -21,7 +22,6 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 import java.util.Map;
@@ -31,10 +31,10 @@ public class OreAttackPacketListener extends PacketListenerAbstract {
 
     private final MineManager mineManager;
     private final ToolFactory toolFactory;
-    private final JavaPlugin plugin;
+    private final AkaniDungeonPlugin plugin;
 
 
-    public OreAttackPacketListener(MineManager mineManager, ToolFactory toolFactory, JavaPlugin plugin) {
+    public OreAttackPacketListener(MineManager mineManager, ToolFactory toolFactory, AkaniDungeonPlugin plugin) {
         super(PacketListenerPriority.NORMAL);
         this.mineManager = mineManager;
         this.toolFactory = toolFactory;
@@ -77,7 +77,7 @@ public class OreAttackPacketListener extends PacketListenerAbstract {
             denialAction(player, placedOre, Component.text("§cYou can't break this with that tool!"));
             return;
         }
-        var preMineProgressionEvent = new PlayerPreMineProgressEvent(player, placedOre, progression, tool.damage());
+        var preMineProgressionEvent = new AsyncPlayerPreMineProgressEvent(player, placedOre, progression, tool.damage());
         if (!preMineProgressionEvent.callEvent()) {
             return;
         }
@@ -86,10 +86,10 @@ public class OreAttackPacketListener extends PacketListenerAbstract {
         event.getUser().sendPacket(swingAnimation);
         if (progression.isComplete()) {
             List<ItemStack> rewards = placedOre.type().breakRewards(itemStack);
-            PlayerMineEvent playerMineEvent = new PlayerMineEvent(player, placedOre, rewards);
-            if (playerMineEvent.callEvent()) {
+            AsyncPlayerMineEvent asyncPlayerMineEvent = new AsyncPlayerMineEvent(player, placedOre, rewards);
+            if (asyncPlayerMineEvent.callEvent() && asyncPlayerMineEvent.getDrops() != null) {
                 TextComponent.Builder actionbarMessage = Component.text();
-                for (ItemStack reward : playerMineEvent.getDrops()) {
+                for (ItemStack reward : asyncPlayerMineEvent.getDrops()) {
                     actionbarMessage.append(Component.text("§7+§a%s §7x §a%s".formatted(reward.getAmount(), reward.getType().name())));
                     actionbarMessage.appendSpace();
                     player.getInventory().addItem(reward);
