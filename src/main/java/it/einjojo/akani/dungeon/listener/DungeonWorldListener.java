@@ -16,7 +16,7 @@ import java.util.UUID;
 
 public class DungeonWorldListener implements Listener {
 
-    private final Set<UUID> BUILD_MODE = new HashSet<>();
+    private final Set<UUID> buildModeSet = new HashSet<>();
 
     public DungeonWorldListener(JavaPlugin plugin) {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
@@ -30,18 +30,18 @@ public class DungeonWorldListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        BUILD_MODE.remove(UUID.randomUUID());
+        buildModeSet.remove(UUID.randomUUID());
     }
 
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void cancelBlockBreak(BlockBreakEvent event) {
         if (isNotInBuildMode(event.getPlayer())) {
             event.setCancelled(true);
         }
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void cancelBlockPlace(BlockPlaceEvent event) {
         if (isNotInBuildMode(event.getPlayer())) {
             event.setBuild(false);
@@ -49,17 +49,16 @@ public class DungeonWorldListener implements Listener {
     }
 
 
-
     public void toggleBuild(UUID playerId) {
-        if (BUILD_MODE.contains(playerId)) {
-            BUILD_MODE.remove(playerId);
+        if (buildModeSet.contains(playerId)) {
+            buildModeSet.remove(playerId);
         } else {
-            BUILD_MODE.add(playerId);
+            buildModeSet.add(playerId);
         }
     }
 
     protected boolean isNotInBuildMode(Player player) {
-        return !BUILD_MODE.contains(player.getUniqueId());
+        return !buildModeSet.contains(player.getUniqueId());
     }
 
 }

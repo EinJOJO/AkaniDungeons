@@ -62,7 +62,7 @@ public record PlacedOre(int entityId, Location location, MineOreType type, Set<U
                 Optional.of(UUID.randomUUID()),
                 EntityTypes.ARMOR_STAND,
                 SpigotConversionUtil.fromBukkitLocation(location).getPosition(),
-                location().getPitch(),
+                location.getPitch(),
                 location.getYaw(),
                 location.getYaw(),
                 0,

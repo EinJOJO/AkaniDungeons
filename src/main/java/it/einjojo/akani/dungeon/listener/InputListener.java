@@ -26,12 +26,17 @@ public class InputListener implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
+    /**
+     * @param input The input session to register.
+     * @throws IllegalStateException If the player already has an active input session.
+     */
     public static void register(Input<?> input) {
         if (inputSessions.containsKey(input.playerUniqueId())) {
             throw new IllegalStateException("Player already has an active input session.");
         }
         inputSessions.put(input.playerUniqueId(), input);
     }
+
 
     public static void unregister(UUID player) {
         inputSessions.remove(player);

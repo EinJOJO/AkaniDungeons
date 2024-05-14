@@ -2,6 +2,7 @@ package it.einjojo.akani.dungeon;
 
 import co.aikar.commands.PaperCommandManager;
 import it.einjojo.akani.dungeon.command.BuildCommand;
+import it.einjojo.akani.dungeon.command.LootChestCommand;
 import it.einjojo.akani.dungeon.command.MineOreCommand;
 import it.einjojo.akani.dungeon.config.DungeonConfigManager;
 import it.einjojo.akani.dungeon.gui.GuiManager;
@@ -43,11 +44,16 @@ public class AkaniDungeonPlugin extends JavaPlugin {
         });
         akaniDungeon.startSchedulers();
         guiManager = new GuiManager(this, dungeonConfigManager.mineOreTypeConfig(), akaniDungeon.mineOreTypeFactory());
+        registerListener();
+        registerCommands();
+    }
+
+    protected void registerListener() {
         new OreAttackPacketListener(akaniDungeon.mineManager(), akaniDungeon.toolFactory(), this);
         new MineListener(this, akaniDungeon);
         dungeonWorldListener = new DungeonWorldListener(this);
         new InputListener(this);
-        registerCommands();
+        // LootChestListener is registered inside the manager
     }
 
 
@@ -74,6 +80,7 @@ public class AkaniDungeonPlugin extends JavaPlugin {
         commandManager.registerDependency(GuiManager.class, guiManager);
         commandManager.registerCommand(new MineOreCommand());
         commandManager.registerCommand(new BuildCommand(dungeonWorldListener));
+        commandManager.registerCommand(new LootChestCommand());
 
     }
 

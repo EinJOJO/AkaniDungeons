@@ -1,11 +1,12 @@
-package it.einjojo.akani.dungeon.lootchest;
+package it.einjojo.akani.dungeon.lootchest.handler;
 
+import it.einjojo.akani.dungeon.lootchest.DefaultPlacedLootChest;
 import org.bukkit.entity.Player;
 
 import java.time.Duration;
 import java.util.UUID;
 
-public interface PlacedChestObserver {
+public interface IDefaultPlacedChestHandler {
 
     /**
      * Called when a chest is opened
@@ -13,7 +14,7 @@ public interface PlacedChestObserver {
      * @param chest  the chest that was opened
      * @param player the player that opened the chest
      */
-    void onChestOpen(PlacedLootChest chest, Player player);
+    void onChestOpen(DefaultPlacedLootChest chest, Player player);
 
     /**
      * Called when a chest is closed
@@ -21,7 +22,7 @@ public interface PlacedChestObserver {
      * @param chest  the chest that was closed
      * @param player the player that closed the chest
      */
-    void onChestClose(PlacedLootChest chest, Player player);
+    void onChestClose(DefaultPlacedLootChest chest, Player player);
 
     /**
      * Called when a chest is locked
@@ -30,7 +31,7 @@ public interface PlacedChestObserver {
      * @param player   the player that locked the chest
      * @param duration the duration the chest was locked for
      */
-    void onLock(PlacedLootChest chest, UUID player, Duration duration);
+    boolean preLock(DefaultPlacedLootChest chest, UUID player, Duration duration);
 
     /**
      * Called when a chest is unlocked
@@ -38,6 +39,10 @@ public interface PlacedChestObserver {
      * @param chest  the chest that was unlocked
      * @param player the player that unlocked the chest
      */
-    void onUnlock(PlacedLootChest chest, UUID player);
+    void postUnlock(DefaultPlacedLootChest chest, UUID player);
+
+    void spawnChest(DefaultPlacedLootChest chest, Player player);
+    void despawnChest(DefaultPlacedLootChest chest, Player player);
+
 
 }

@@ -15,8 +15,7 @@ public class LootChestItemsGui implements InventoryProvider {
 
     @Override
     public void init(Player player, InventoryContents contents) {
-        SlotIterator iterator = contents.newIterator(SlotIterator.Type.HORIZONTAL, 1, 0);
-        contents.pagination().addToIterator(iterator);
+
     }
 
     @Override
