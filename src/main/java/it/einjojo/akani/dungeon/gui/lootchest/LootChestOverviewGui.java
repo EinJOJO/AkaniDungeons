@@ -10,6 +10,7 @@ import it.einjojo.akani.dungeon.lootchest.LootChest;
 import it.einjojo.akani.dungeon.lootchest.LootChestManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -55,7 +56,7 @@ public class LootChestOverviewGui implements InventoryProvider {
                         loreField("Reihen", String.valueOf(lootChest.slotSize() / 9)),
                         loreField("Belohnungen", lootChest.potentialRewards().size() + " Items"),
                         loreField("ParticleSpawner", lootChest.particleSpawner().getClass().getSimpleName()),
-                        Component.newline(),
+                        Component.empty(),
                         Component.text("§7Klicke um die Einstellungen zu öffnen.").color(NamedTextColor.GRAY)
                 ))
                 .build(), e -> {
@@ -64,7 +65,7 @@ public class LootChestOverviewGui implements InventoryProvider {
     }
 
     Component loreField(String key, String value) {
-        return Component.text("§8• §7" + key + "§8: ").append(Component.text(value).color(NamedTextColor.YELLOW));
+        return Component.text("§8• §7" + key + "§8: ").append(Component.text(value).color(NamedTextColor.YELLOW)).decoration(TextDecoration.ITALIC, false);
     }
 
 

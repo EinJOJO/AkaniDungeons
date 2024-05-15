@@ -89,7 +89,7 @@ public class LootChestCommand extends BaseCommand {
     }
 
     @Subcommand("setup-scan")
-    @CommandCompletion("@lootChests|name")
+    @CommandCompletion("@lootChests")
     @Syntax("<chestName>")
     public void onCreateChestsByScan(Player player, @Single String chestName) {
         if (lastScanResult == null || lastScanResult.isEmpty()) {
@@ -112,7 +112,13 @@ public class LootChestCommand extends BaseCommand {
     }
 
     @Subcommand("create-type")
+    @Syntax("<name>")
+    @CommandCompletion("<name>")
     public void createType(Player sender, @Single String name) {
+        if (lootChestManager().chestByName(name) != null) {
+            sendMessage(sender, "§cLootChest-Typ §e" + name + " §cexistiert bereits.");
+            return;
+        }
         lootChestManager().persistChest(lootChestManager().createLootChest(name));
         sendMessage(sender, "§aLootChest-Typ §e" + name + " §aerstellt.");
         sendMessage(sender, "§7Nutze §e/lc gui §7um die Lootboxen zu verwalten.");

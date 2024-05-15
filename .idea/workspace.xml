@@ -4,25 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5cc949d3-5baf-413b-a507-ac4496d6ac28" name="Changes" comment="performance improvement">
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/lootchest/particle/EpicParticleSpawner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/lootchest/particle/LegendaryParticleSpawner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/lootchest/particle/NormalParticleSpawner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/lootchest/particle/ParticleSpawner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/lootchest/particle/ParticleSpawnerFactory.java" afterDir="false" />
+    <list default="true" id="5cc949d3-5baf-413b-a507-ac4496d6ac28" name="Changes" comment="loot chest">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeonPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/AkaniDungeonPlugin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/DungeonMessageProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/DungeonMessageProvider.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/command/LootChestCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/command/LootChestCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/lootchest/LootChestOverviewGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/lootchest/LootChestOverviewGui.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/lootchest/LootChestSettingsGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/lootchest/LootChestSettingsGui.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/lootchest/DefaultPlacedLootChest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/lootchest/DefaultPlacedLootChest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/lootchest/LootChest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/lootchest/LootChest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/lootchest/LootChestManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/lootchest/LootChestManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/lootchest/LootChestTickTask.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/lootchest/LootChestTickTask.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/lootchest/PlacedLootChestFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/lootchest/PlacedLootChestFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/lootchest/handler/DefaultPlacedChestHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/lootchest/handler/DefaultPlacedChestHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/util/ChunkPosition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/util/ChunkPosition.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -344,7 +329,7 @@
       <workItem from="1715605575320" duration="11284000" />
       <workItem from="1715717266267" duration="10573000" />
       <workItem from="1715737015016" duration="1273000" />
-      <workItem from="1715802449855" duration="8112000" />
+      <workItem from="1715802449855" duration="8542000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit with basic plugin structure and mob spawning functionality.">
       <option name="closed" value="true" />
@@ -626,7 +611,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715738235156</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="loot chest">
+      <option name="closed" value="true" />
+      <created>1715811278256</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1715811278256</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -641,7 +634,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Implemented functionality to create new mine ore types and added a GUI for ore type selection. Updated rendering and unrendering methods for mine ores." />
     <MESSAGE value="Updated mine ore type GUI to display information about the ore type and its rewards." />
     <MESSAGE value="Updated mine ore rendering to display ore type names in different colors based on their status, added functionality to give rewards upon ore destruction." />
     <MESSAGE value="Commit message: Updated mine ore rendering to display ore type names in different colors based on their status, added functionality to give rewards upon ore destruction. Made changes to MineChunk, SyncOreRenderer, MineOre, ChunkRing, and other related classes to implement the new rendering and reward system." />
@@ -666,6 +658,7 @@
     <MESSAGE value="lootchest usw." />
     <MESSAGE value="arbeit" />
     <MESSAGE value="performance improvement" />
-    <option name="LAST_COMMIT_MESSAGE" value="performance improvement" />
+    <MESSAGE value="loot chest" />
+    <option name="LAST_COMMIT_MESSAGE" value="loot chest" />
   </component>
 </project>
