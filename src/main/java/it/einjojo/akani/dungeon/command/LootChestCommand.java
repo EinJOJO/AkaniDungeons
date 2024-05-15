@@ -94,10 +94,21 @@ public class LootChestCommand extends BaseCommand {
     public void onCreateChestsByScan(Player player, @Single String chestName) {
         if (lastScanResult == null || lastScanResult.isEmpty()) {
             scanRegion(player, null);
-            if (lastScanResult == null || lastScanResult.isEmpty()) {
-                sendMessage(player, "§cSetup ohne Locations nicht möglich.");
-                return;
-            }
+            plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
+                while (currentScanTask != null && !currentScanTask.isCancelled()) {
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException ignore) {
+                    }
+                }
+                // scan finished
+                if (lastScanResult == null || lastScanResult.isEmpty()) {
+                    sendMessage(player, "§cKeine Lootboxen gefunden.");
+                    return;
+                }
+                plugin.getServer().getScheduler().runTask(plugin, () -> onCreateChestsByScan(player, chestName)); // run sync
+            });
+            return;
         }
         LootChest type = plugin.akaniDungeon().lootChestManager().chestByName(chestName);
         if (type == null) {

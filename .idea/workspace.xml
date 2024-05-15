@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5cc949d3-5baf-413b-a507-ac4496d6ac28" name="Changes" comment="loot chest">
+    <list default="true" id="5cc949d3-5baf-413b-a507-ac4496d6ac28" name="Changes" comment="Updated loot chest GUI to include additional decoration and tooltip information. Created functionality to prevent duplicate loot chest types from being created. Fixed syntax and command completion for loot chest setup commands.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/command/LootChestCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/command/LootChestCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/lootchest/LootChestOverviewGui.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/it/einjojo/akani/dungeon/gui/lootchest/LootChestOverviewGui.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -329,7 +328,7 @@
       <workItem from="1715605575320" duration="11284000" />
       <workItem from="1715717266267" duration="10573000" />
       <workItem from="1715737015016" duration="1273000" />
-      <workItem from="1715802449855" duration="8542000" />
+      <workItem from="1715802449855" duration="9069000" />
     </task>
     <task id="LOCAL-00001" summary="Initial commit with basic plugin structure and mob spawning functionality.">
       <option name="closed" value="true" />
@@ -619,7 +618,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715811278256</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="Updated loot chest GUI to include additional decoration and tooltip information. Created functionality to prevent duplicate loot chest types from being created. Fixed syntax and command completion for loot chest setup commands.">
+      <option name="closed" value="true" />
+      <created>1715811731097</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1715811731097</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -634,7 +641,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Updated mine ore type GUI to display information about the ore type and its rewards." />
     <MESSAGE value="Updated mine ore rendering to display ore type names in different colors based on their status, added functionality to give rewards upon ore destruction." />
     <MESSAGE value="Commit message: Updated mine ore rendering to display ore type names in different colors based on their status, added functionality to give rewards upon ore destruction. Made changes to MineChunk, SyncOreRenderer, MineOre, ChunkRing, and other related classes to implement the new rendering and reward system." />
     <MESSAGE value="Rendere Erze auf sehr schlaue Art und weise" />
@@ -659,6 +665,7 @@
     <MESSAGE value="arbeit" />
     <MESSAGE value="performance improvement" />
     <MESSAGE value="loot chest" />
-    <option name="LAST_COMMIT_MESSAGE" value="loot chest" />
+    <MESSAGE value="Updated loot chest GUI to include additional decoration and tooltip information. Created functionality to prevent duplicate loot chest types from being created. Fixed syntax and command completion for loot chest setup commands." />
+    <option name="LAST_COMMIT_MESSAGE" value="Updated loot chest GUI to include additional decoration and tooltip information. Created functionality to prevent duplicate loot chest types from being created. Fixed syntax and command completion for loot chest setup commands." />
   </component>
 </project>
