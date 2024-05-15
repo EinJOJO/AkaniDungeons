@@ -54,7 +54,7 @@ public record DefaultPlacedLootChest(LootChest lootChest, Set<UUID> viewers, Set
     }
 
     private void spawnParticles(Player player) {
-        if (player.getLocation().distanceSquared(location) < PARTICLE_RENDER_DISTANCE_SQUARED) {
+        if (player.getLocation().distanceSquared(location) < PARTICLE_RENDER_DISTANCE_SQUARED && canOpen(player.getUniqueId())) {
 
         }
     }

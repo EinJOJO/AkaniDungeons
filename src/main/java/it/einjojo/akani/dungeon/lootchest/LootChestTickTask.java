@@ -45,14 +45,16 @@ public class LootChestTickTask implements RepeatingTask {
         Collection<? extends Player> affectedPlayers = Bukkit.getOnlinePlayers();
         if (affectedPlayers.isEmpty()) return;
         for (ChunkPosition chunk : loadedChunks()) {
-            for (PlacedLootChest chest : tickingChests.getOrDefault(chunk, List.of())) {
+            List<PlacedLootChest> chestsInChunk = tickingChests.get(chunk);
+            if (chestsInChunk == null) continue;
+            for (PlacedLootChest chest : chestsInChunk) {
                 chest.tick(affectedPlayers);
             }
         }
     }
 
-    private List<ChunkPosition> loadedChunks() {
-        List<ChunkPosition> loadedChunks = new LinkedList<>();
+    private Set<ChunkPosition> loadedChunks() {
+        Set<ChunkPosition> loadedChunks = new HashSet<>();
         for (Player player : Bukkit.getOnlinePlayers()) {
             RING.setZero(ChunkPosition.of(player.getLocation()));
             for (List<ChunkPosition> chunks : RING.chunks().values()) {

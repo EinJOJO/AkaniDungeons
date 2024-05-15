@@ -16,10 +16,8 @@ import java.security.SecureRandom;
 import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class DefaultPlacedChestHandler implements IDefaultPlacedChestHandler {
-    private static final AtomicInteger HOLOGRAM_ENTITY_ID = new AtomicInteger(255_650_000);
     private static final BlockData CHEST_BLOCKDATA = Material.CHEST.createBlockData();
     private static final int CHEST_BLOCK_ID = 54;
     private static final BlockData UNRENDER_BLOCKDATA = Material.AIR.createBlockData();

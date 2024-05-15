@@ -24,6 +24,8 @@ public record ChunkPosition(int x, int z) {
         return new Location(world, cx, world.getHighestBlockYAt(cx, cz), cz);
     }
 
+
+
     public Chunk toChunk(World world) {
         return world.getChunkAt(x, z);
     }

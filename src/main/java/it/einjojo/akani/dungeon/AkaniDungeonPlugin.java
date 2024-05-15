@@ -10,6 +10,7 @@ import it.einjojo.akani.dungeon.listener.DungeonWorldListener;
 import it.einjojo.akani.dungeon.listener.InputListener;
 import it.einjojo.akani.dungeon.listener.MineListener;
 import it.einjojo.akani.dungeon.listener.OreAttackPacketListener;
+import it.einjojo.akani.dungeon.lootchest.LootChest;
 import it.einjojo.akani.dungeon.mine.Hardness;
 import it.einjojo.akani.dungeon.mine.MineOreType;
 import org.bukkit.command.CommandSender;
@@ -61,6 +62,7 @@ public class AkaniDungeonPlugin extends JavaPlugin {
         commandManager = new PaperCommandManager(this);
         commandManager.enableUnstableAPI("help");
         commandManager.enableUnstableAPI("brigadier");
+        commandManager.getCommandCompletions().registerAsyncCompletion("lootChests", (c) -> akaniDungeon.lootChestManager().lootChests().stream().map(LootChest::name).toList());
         commandManager.getCommandCompletions().registerAsyncCompletion("oreTypes", (c) -> akaniDungeon.config().mineOreTypeConfig().types().stream().map(MineOreType::name).toList());
         commandManager.getCommandCompletions().registerStaticCompletion("oreHardness", () -> Arrays.stream(Hardness.values()).map(Enum::name).toList());
         commandManager.getCommandContexts().registerContext(MineOreType.class, (c) -> {

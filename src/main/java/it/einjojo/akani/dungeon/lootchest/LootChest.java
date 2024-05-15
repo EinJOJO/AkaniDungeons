@@ -1,7 +1,9 @@
 package it.einjojo.akani.dungeon.lootchest;
 
+import it.einjojo.akani.dungeon.lootchest.particle.ParticleSpawner;
 import it.einjojo.akani.dungeon.util.ItemReward;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.time.Duration;
@@ -12,9 +14,11 @@ import java.util.Random;
 public class LootChest {
     private static final Random RANDOM = new Random();
     private final String name;
-    private final Duration lockDuration;
-    private final int slotSize;
     private final List<ItemReward> potentialRewards;
+    private Material guiIconMaterial;
+    private int slotSize;
+    private Duration lockDuration;
+    private ParticleSpawner particleSpawner;
     private Component displayName;
 
     /**
@@ -24,13 +28,14 @@ public class LootChest {
      * @param displayName      display name of the chest
      * @param potentialRewards list of potential rewards
      */
-    public LootChest(String name, Duration lockDuration, int rows, Component displayName, List<ItemReward> potentialRewards) {
-
+    public LootChest(String name, Duration lockDuration, int rows, Component displayName, List<ItemReward> potentialRewards, ParticleSpawner particleSpawner, Material guiIconMaterial) {
         this.name = name;
         this.lockDuration = lockDuration;
         this.slotSize = 9 * rows;
         this.displayName = displayName;
         this.potentialRewards = potentialRewards;
+        this.particleSpawner = particleSpawner;
+        this.guiIconMaterial = guiIconMaterial;
     }
 
     public String name() {
@@ -69,5 +74,29 @@ public class LootChest {
             loot.add(itemStack);
         }
         return loot;
+    }
+
+    public void setLockDuration(Duration lockDuration) {
+        this.lockDuration = lockDuration;
+    }
+
+    public void setSlotSize(int slotSize) {
+        this.slotSize = slotSize;
+    }
+
+    public ParticleSpawner particleSpawner() {
+        return particleSpawner;
+    }
+
+    public void setParticleSpawner(ParticleSpawner particleSpawner) {
+        this.particleSpawner = particleSpawner;
+    }
+
+    public Material guiIconMaterial() {
+        return guiIconMaterial;
+    }
+
+    public void setGuiIconMaterial(Material guiIconMaterial) {
+        this.guiIconMaterial = guiIconMaterial;
     }
 }

@@ -1,6 +1,7 @@
 package it.einjojo.akani.dungeon.command;
 
 import co.aikar.commands.BaseCommand;
+import co.aikar.commands.CommandHelp;
 import co.aikar.commands.annotation.*;
 import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
@@ -9,11 +10,14 @@ import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.block.BlockType;
 import it.einjojo.akani.dungeon.AkaniDungeonPlugin;
+import it.einjojo.akani.dungeon.gui.lootchest.LootChestOverviewGui;
 import it.einjojo.akani.dungeon.lootchest.LootChest;
+import it.einjojo.akani.dungeon.lootchest.LootChestManager;
 import it.einjojo.akani.dungeon.lootchest.PlacedLootChestFactory;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -23,19 +27,19 @@ import java.util.List;
 
 @CommandAlias("lc|lootchest")
 public class LootChestCommand extends BaseCommand {
-    private static final LootChest TEST_CHEST = new LootChest("test", Duration.ofSeconds(30), 3, Component.text("test"), new LinkedList<>());
     private BukkitTask currentScanTask;
     private List<Location> lastScanResult;
     @Dependency
     private AkaniDungeonPlugin plugin;
+    private Component lcPrefix;
 
-    @Subcommand("scan-region")
+    @Subcommand("scan")
     @CommandCompletion("[material]|cancel")
     public void scanRegion(Player player, @Single @Optional String arg) {
         if (arg != null && arg.equalsIgnoreCase("cancel")) {
             if (currentScanTask != null) {
                 currentScanTask.cancel();
-                player.sendMessage("Scan abgebrochen.");
+                sendMessage(player, "§aScan abgebrochen.");
             }
             return;
         }
@@ -44,32 +48,33 @@ public class LootChestCommand extends BaseCommand {
             try {
                 scanMaterial = Material.valueOf(arg.toUpperCase());
             } catch (IllegalArgumentException ex) {
-                player.sendMessage("Ungültiges Material: " + arg);
+                sendMessage(player, "§cUngültiges Material: " + arg);
                 return;
             }
         }
 
         if (currentScanTask != null && !currentScanTask.isCancelled()) {
-            player.sendMessage("Ein Scan läuft bereits.");
+            sendMessage(player, "§cEin Chest-Scan läuft bereits...");
             return;
         }
         Region selection;
         try {
             selection = BukkitAdapter.adapt(player).getSelection();
         } catch (IncompleteRegionException ex) {
-            player.sendMessage("Keine Auswahl gefunden. Mach mit Worldedit.");
+            sendMessage(player, "§cKeine Auswahl getroffen.");
+            sendMessage(player, "§cErstelle mit Worldedit eine Region.");
             return;
         }
         World world = selection.getWorld();
         BlockType searching = BukkitAdapter.asBlockType(scanMaterial);
         currentScanTask = plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             if (world == null) {
-                player.sendMessage("Keine Welt gefunden.");
+                sendMessage(player, "§cKeine Welt gefunden.");
                 return;
             }
             List<Location> lootBoxes = new LinkedList<>();
             long started = System.currentTimeMillis();
-            player.sendMessage("Scan gestartet...");
+            sendMessage(player, "§eChest-Scan gestartet...");
             for (BlockVector3 blockVector3 : selection) {
                 if (world.getBlock(blockVector3).getBlockType() == searching) {
                     lootBoxes.add(BukkitAdapter.adapt(player.getWorld(), blockVector3));
@@ -77,24 +82,67 @@ public class LootChestCommand extends BaseCommand {
             }
             lastScanResult = lootBoxes;
             Duration elapsed = Duration.ofMillis(System.currentTimeMillis() - started);
-            player.sendMessage("Scan abgeschlossen in %dm %ds".formatted(elapsed.toMinutesPart(), elapsed.toSecondsPart()));
-            player.sendMessage("Gefundene Lootboxen: " + lootBoxes.size());
+            sendMessage(player, "§aScan abgeschlossen §7in %dm %ds".formatted(elapsed.toMinutesPart(), elapsed.toSecondsPart()));
+            sendMessage(player, "§7Gefundene Lootboxen: §a" + lootBoxes.size());
             currentScanTask = null;
         });
     }
 
     @Subcommand("setup-scan")
-    public void onCreateChestsByScan(Player player) {
-        if (lastScanResult == null) {
+    @CommandCompletion("@lootChests|name")
+    @Syntax("<chestName>")
+    public void onCreateChestsByScan(Player player, @Single String chestName) {
+        if (lastScanResult == null || lastScanResult.isEmpty()) {
             scanRegion(player, null);
+            if (lastScanResult == null || lastScanResult.isEmpty()) {
+                sendMessage(player, "§cSetup ohne Locations nicht möglich.");
+                return;
+            }
+        }
+        LootChest type = plugin.akaniDungeon().lootChestManager().chestByName(chestName);
+        if (type == null) {
+            sendMessage(player, "§cLootChest-Typ §e" + chestName + " §cnicht gefunden.");
             return;
         }
         var plcFactory = new PlacedLootChestFactory();
         for (Location location : lastScanResult) {
-            plugin.akaniDungeon().lootChestManager().persist(plcFactory.createSimplePlacedLootChest(TEST_CHEST, location));
+            lootChestManager().persistPlacedChest(plcFactory.createSimplePlacedLootChest(type, location));
         }
-        player.sendMessage("Lootboxen erstellt.");
+        sendMessage(player, "§aStandard-Lootboxen erstellt.");
     }
 
+    @Subcommand("create-type")
+    public void createType(Player sender, @Single String name) {
+        lootChestManager().persistChest(lootChestManager().createLootChest(name));
+        sendMessage(sender, "§aLootChest-Typ §e" + name + " §aerstellt.");
+        sendMessage(sender, "§7Nutze §e/lc gui §7um die Lootboxen zu verwalten.");
+        sendMessage(sender, "§7Nutze §e/lc setup-scan §7um die Lootboxen in der Welt zu erstellen.");
+        LootChestOverviewGui.reset();
+    }
+
+    @Subcommand("gui")
+    public void openGui(Player player) {
+        LootChestOverviewGui.inventory(lootChestManager()).open(player);
+    }
+
+    private LootChestManager lootChestManager() {
+        return plugin.akaniDungeon().lootChestManager();
+    }
+
+    private void sendMessage(CommandSender receiver, String message) {
+        receiver.sendMessage(prefix().append(Component.text(message)));
+    }
+
+    @HelpCommand
+    public void help(CommandHelp help) {
+        help.showHelp();
+    }
+
+    private Component prefix() {
+        if (lcPrefix == null) {
+            lcPrefix = plugin.akaniDungeon().core().miniMessage().deserialize("<gray>[<b><gradient:#FF512F:#F09819>LootChest</gradient></b>] ");
+        }
+        return lcPrefix;
+    }
 
 }
