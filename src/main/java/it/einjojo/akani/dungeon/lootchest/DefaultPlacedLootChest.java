@@ -10,6 +10,7 @@ import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
+import java.util.Collection;
 import java.util.Queue;
 import java.util.Set;
 import java.util.UUID;
@@ -31,24 +32,31 @@ public record DefaultPlacedLootChest(LootChest lootChest, Set<UUID> viewers, Set
     private static final short PARTICLE_RENDER_DISTANCE_SQUARED = 576;
 
 
-    public void tick() {
+    public void tick(Collection<? extends Player> affectedPlayers) {
         checkUnlock();
-        for (Player player : Bukkit.getOnlinePlayers()) {
+        for (Player player : affectedPlayers) {
             if (player.getLocation().distanceSquared(location) < CHEST_RENDER_DISTANCE_SQUARED) {
                 if (viewers.add(player.getUniqueId())) {
                     handler.spawnChest(this, player);
                 }
                 spawnParticles(player);
             } else {
-                if (viewers.remove(player.getUniqueId())) {
-                    handler.despawnChest(this, player);
-                }
+                unrender(player);
             }
         }
     }
 
-    private void spawnParticles(Player player) {
+    @Override
+    public void unrender(Player player) {
+        if (viewers.remove(player.getUniqueId())) {
+            handler.despawnChest(this, player);
+        }
+    }
 
+    private void spawnParticles(Player player) {
+        if (player.getLocation().distanceSquared(location) < PARTICLE_RENDER_DISTANCE_SQUARED) {
+
+        }
     }
 
 

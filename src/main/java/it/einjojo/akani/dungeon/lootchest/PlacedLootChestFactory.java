@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.PriorityQueue;
 
 public class PlacedLootChestFactory {
-    private static final BlockData BARRIER_BLOCKDATA = Material.BARRIER.createBlockData();
+    private static final BlockData CHEST_BLOCKDATA = Material.CHEST.createBlockData();
     private final IDefaultPlacedChestHandler defaultHandler = new DefaultPlacedChestHandler();
 
     public PlacedLootChest createSimplePlacedLootChest(LootChest lootChest, Location location) {
@@ -18,12 +18,8 @@ public class PlacedLootChestFactory {
     }
 
     public PlacedLootChest createDefaultPlacedLootChest(LootChest lootChest, Location location, IDefaultPlacedChestHandler handler) {
-        placeBarrierBlock(location);
+        location.getBlock().setBlockData(CHEST_BLOCKDATA);
         return new DefaultPlacedLootChest(lootChest, new HashSet<>(), new HashSet<>(), new PriorityQueue<>(), location, handler);
-    }
-
-    public void placeBarrierBlock(Location location) {
-        location.getBlock().setBlockData(BARRIER_BLOCKDATA);
     }
 
 
