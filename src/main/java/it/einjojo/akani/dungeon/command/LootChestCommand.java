@@ -34,7 +34,9 @@ public class LootChestCommand extends BaseCommand {
     private Component lcPrefix;
 
     @Subcommand("scan")
+    @Description("Scannt eine World-Region nach Lootboxen.")
     @CommandCompletion("[material]|cancel")
+    @Syntax("[material]|cancel")
     public void scanRegion(Player player, @Single @Optional String arg) {
         if (arg != null && arg.equalsIgnoreCase("cancel")) {
             if (currentScanTask != null) {
@@ -91,6 +93,7 @@ public class LootChestCommand extends BaseCommand {
     @Subcommand("setup-scan")
     @CommandCompletion("@lootChests")
     @Syntax("<chestName>")
+    @Description("Erstellt Lootboxen an den gescannten Positionen.")
     public void onCreateChestsByScan(Player player, @Single String chestName) {
         if (lastScanResult == null || lastScanResult.isEmpty()) {
             scanRegion(player, null);
@@ -151,6 +154,8 @@ public class LootChestCommand extends BaseCommand {
     }
 
     @HelpCommand
+    @CatchUnknown
+    @Default
     public void help(CommandHelp help) {
         help.showHelp();
     }
