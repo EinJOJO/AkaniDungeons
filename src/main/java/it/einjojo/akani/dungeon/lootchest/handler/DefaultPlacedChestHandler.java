@@ -29,10 +29,9 @@ public class DefaultPlacedChestHandler implements IDefaultPlacedChestHandler {
         Inventory inv = chest.getInventory();
         int slot = 0;
         List<ItemStack> loot = chest.lootChest().generateRandomLoot();
-        int maxSkip = (loot.isEmpty()) ? 0 : inv.getSize() / loot.size(); // e.g. 27 / 4 items = 6
+        player.sendMessage("!" + loot.size());
         for (ItemStack itemStack : loot) {
-            inv.setItem(slot, itemStack);
-            slot = (slot + RANDOM.nextInt(maxSkip)) % inv.getSize(); // overwrite if unlucky :)
+            inv.setItem(RANDOM.nextInt(chest.lootChest().slotSize()), itemStack);
         }
         player.openInventory(chest.getInventory());
         sendBlockAction(chest, player, true);

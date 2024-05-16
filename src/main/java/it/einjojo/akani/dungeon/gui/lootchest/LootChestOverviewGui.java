@@ -6,12 +6,17 @@ import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
 import it.einjojo.akani.core.paper.util.ItemBuilder;
+import it.einjojo.akani.dungeon.gui.GUIItem;
+import it.einjojo.akani.dungeon.input.PlayerChatInput;
 import it.einjojo.akani.dungeon.lootchest.LootChest;
 import it.einjojo.akani.dungeon.lootchest.LootChestManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
+import org.bukkit.Bukkit;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
@@ -42,6 +47,18 @@ public class LootChestOverviewGui implements InventoryProvider {
 
     @Override
     public void init(Player player, InventoryContents contents) {
+        player.playSound(player, Sound.ENTITY_CHICKEN_EGG, 1, 1);
+        contents.fillRow(5, GUIItem.BACKGROUND.emptyClickableItem());
+        contents.set(5, 4, GUIItem.ADD_BUTTON.clickableItem((e) -> {
+            e.getWhoClicked().closeInventory();
+            new PlayerChatInput(player, (input) -> {
+
+                lootChestManager.persistChest(lootChestManager.createLootChest(input));
+                Bukkit.getScheduler().runTask(lootChestManager.plugin(), () -> {
+                    inventory(lootChestManager).open(player);
+                });
+            });
+        }));
         for (LootChest chestType : lootChestManager.lootChests()) {
             contents.add(chestItem(chestType));
         }
@@ -57,9 +74,24 @@ public class LootChestOverviewGui implements InventoryProvider {
                         loreField("Belohnungen", lootChest.potentialRewards().size() + " Items"),
                         loreField("ParticleSpawner", lootChest.particleSpawner().getClass().getSimpleName()),
                         Component.empty(),
-                        Component.text("§7Klicke um die Einstellungen zu öffnen.").color(NamedTextColor.GRAY)
+                        Component.text("§7Linksklicke um die Einstellungen zu öffnen.").color(NamedTextColor.GRAY),
+                        Component.text("§7Rechtsklicke um eine Placerchest zu erhalten.").color(NamedTextColor.GRAY)
                 ))
                 .build(), e -> {
+
+            Player clicker = (Player) e.getWhoClicked();
+            clicker.playSound(clicker, Sound.UI_BUTTON_CLICK, 1, 1.5f);
+            ItemStack cursor = e.getCursor();
+            if (!cursor.getType().isAir()) {
+                lootChest.setGuiIconMaterial(cursor.getType());
+                e.getWhoClicked().setItemOnCursor(null);
+                e.setCurrentItem(chestItem(lootChest).getItem());
+                return;
+            }
+            if (e.isRightClick()) {
+                clicker.getInventory().addItem(lootChest.chestPlacerItem());
+                return;
+            }
             LootChestSettingsGui.inventory(lootChest).open((Player) e.getWhoClicked());
         });
     }

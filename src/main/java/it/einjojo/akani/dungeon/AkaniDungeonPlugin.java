@@ -23,13 +23,19 @@ import java.util.NoSuchElementException;
 
 public class AkaniDungeonPlugin extends JavaPlugin {
     private static final Logger log = LoggerFactory.getLogger(AkaniDungeonPlugin.class);
+    private static AkaniDungeonPlugin singleton;
     private AkaniDungeon akaniDungeon;
     private PaperCommandManager commandManager;
     private GuiManager guiManager;
     private DungeonWorldListener dungeonWorldListener;
 
+    public static AkaniDungeonPlugin get() {
+        return singleton;
+    }
+
     @Override
     public void onEnable() {
+        singleton = this;
         DungeonConfigManager dungeonConfigManager = new DungeonConfigManager(this);
         try {
             dungeonConfigManager.load();
@@ -56,7 +62,6 @@ public class AkaniDungeonPlugin extends JavaPlugin {
         new InputListener(this);
         // LootChestListener is registered inside the manager
     }
-
 
     public void registerCommands() {
         commandManager = new PaperCommandManager(this);

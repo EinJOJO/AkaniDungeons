@@ -20,7 +20,7 @@ public class LootChestManager {
 
     public LootChestManager(JavaPlugin plugin) {
         this.plugin = plugin;
-        lootChestListener = new LootChestListener(plugin);
+        lootChestListener = new LootChestListener(plugin, this);
         lootChestRenderTask = new LootChestTickTask();
     }
 
@@ -85,5 +85,15 @@ public class LootChestManager {
         lootChests.remove(lootChest);
     }
 
+    public JavaPlugin plugin() {
+        return plugin;
+    }
 
+    public LootChestListener lootChestListener() {
+        return lootChestListener;
+    }
+
+    public LootChestTickTask lootChestRenderTask() {
+        return lootChestRenderTask;
+    }
 }

@@ -5,16 +5,53 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
-/**
- * Represents a reward that can be obtained by breaking a block.
- *
- * @param baseItem the item that will be given as a reward
- * @param min      the minimum amount of items that can be given
- * @param max      the maximum amount of items that can be given
- * @param chance   the chance of the reward being given
- */
-public record ItemReward(ItemStack baseItem, short min, short max, float chance) {
+public class ItemReward {
     private static final Random random = new Random();
+    private ItemStack baseItem;
+    private short min;
+    private short max;
+    private float chance;
+
+    public ItemReward(ItemStack baseItem, short min, short max, float chance) {
+        this.baseItem = baseItem;
+        this.min = min;
+        this.max = max;
+        this.chance = chance;
+    }
+
+    public ItemStack baseItem() {
+        return baseItem.clone();
+    }
+
+    public void setBaseItem(ItemStack baseItem) {
+        this.baseItem = baseItem;
+    }
+
+    public short min() {
+        return min;
+    }
+
+    public void setMin(short min) {
+        if (min > max) setMax(min);
+        this.min = min;
+    }
+
+    public short max() {
+        return max;
+    }
+
+    public void setMax(short max) {
+        if (max < min) setMin(max);
+        this.max = max;
+    }
+
+    public float chance() {
+        return chance;
+    }
+
+    public void setChance(float chance) {
+        this.chance = chance;
+    }
 
     public @Nullable ItemStack reward(ItemStack usedTool) {
         if (random.nextDouble() > chance) {

@@ -4,8 +4,10 @@ import fr.minuskube.inv.ClickableItem;
 import fr.minuskube.inv.SmartInventory;
 import fr.minuskube.inv.content.InventoryContents;
 import fr.minuskube.inv.content.InventoryProvider;
+import it.einjojo.akani.core.paper.util.ItemBuilder;
 import it.einjojo.akani.dungeon.gui.GUIItem;
 import it.einjojo.akani.dungeon.lootchest.LootChest;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class LootChestSettingsGui implements InventoryProvider {
@@ -30,6 +32,9 @@ public class LootChestSettingsGui implements InventoryProvider {
             LootChestOverviewGui.inventory(null).open(player);
         }));
         contents.fillRow(0, i);
+        contents.set(1, 2, ClickableItem.of(new ItemBuilder(Material.CHEST).build(), e -> {
+            LootChestItemsGui.inventory(lootChest).open(player);
+        }));
         contents.fillRow(5, i);
 
     }

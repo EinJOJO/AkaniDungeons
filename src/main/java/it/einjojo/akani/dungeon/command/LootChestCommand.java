@@ -137,7 +137,6 @@ public class LootChestCommand extends BaseCommand {
         sendMessage(sender, "§aLootChest-Typ §e" + name + " §aerstellt.");
         sendMessage(sender, "§7Nutze §e/lc gui §7um die Lootboxen zu verwalten.");
         sendMessage(sender, "§7Nutze §e/lc setup-scan §7um die Lootboxen in der Welt zu erstellen.");
-        LootChestOverviewGui.reset();
     }
 
     @Subcommand("gui")

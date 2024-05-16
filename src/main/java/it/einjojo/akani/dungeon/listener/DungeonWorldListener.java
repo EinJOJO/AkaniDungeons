@@ -6,6 +6,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -45,6 +46,14 @@ public class DungeonWorldListener implements Listener {
     public void cancelBlockPlace(BlockPlaceEvent event) {
         if (isNotInBuildMode(event.getPlayer())) {
             event.setBuild(false);
+        }
+    }
+
+    @EventHandler
+    public void cancelInteractions(PlayerInteractEvent event) {
+        if (isNotInBuildMode(event.getPlayer())) {
+            event.setUseInteractedBlock(PlayerInteractEvent.Result.DENY);
+            event.setUseItemInHand(PlayerInteractEvent.Result.DENY);
         }
     }
 
