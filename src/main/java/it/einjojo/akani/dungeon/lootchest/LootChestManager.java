@@ -60,7 +60,7 @@ public class LootChestManager {
 
     public LootChest createLootChest(String name) {
 
-        return new LootChest(name, Duration.ofMinutes(30), 9 * 3, Component.text(name).color(NamedTextColor.GRAY),
+        return new LootChest(name, Duration.ofMinutes(30), 3, Component.text(name).color(NamedTextColor.GRAY),
                 new LinkedList<>(), new ParticleSpawnerFactory().createParticleSpawner("normal"), Material.CHEST);
     }
 

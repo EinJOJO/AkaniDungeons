@@ -113,6 +113,6 @@ public record DefaultPlacedLootChest(LootChest lootChest, Set<UUID> viewers, Set
 
     @Override
     public @NotNull Inventory getInventory() {
-        return Bukkit.createInventory(this, 27, lootChest.displayName());
+        return Bukkit.createInventory(this, lootChest.slotSize(), lootChest.displayName());
     }
 }

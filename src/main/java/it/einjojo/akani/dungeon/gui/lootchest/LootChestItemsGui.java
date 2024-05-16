@@ -69,11 +69,11 @@ public class LootChestItemsGui implements InventoryProvider {
             boolean shift = e.isShiftClick();
             boolean right = e.isRightClick();
             boolean left = e.isLeftClick();
-
+            player.sendMessage("§7L" + left + " R" + right + " S" + shift);
 
             if (left && !shift) {
+                player.closeInventory();
                 new PlayerChatInput(player, (input) -> {
-                    player.closeInventory();
                     try {
                         itemReward.setMax(Short.parseShort(input));
                     } catch (NumberFormatException ex) {
@@ -82,8 +82,8 @@ public class LootChestItemsGui implements InventoryProvider {
                     reopen(player);
                 });
             } else if (left) {
+                player.closeInventory();
                 new PlayerChatInput(player, (input) -> {
-                    player.closeInventory();
                     try {
                         itemReward.setMin(Short.parseShort(input));
                     } catch (NumberFormatException ex) {
