@@ -16,7 +16,7 @@ public interface PlacedLootChest extends InventoryHolder {
      * For disconnecting players
      * @param player
      */
-    void unrender(Player player);
+    void tryDespawn(Player player);
 
     Location location();
 

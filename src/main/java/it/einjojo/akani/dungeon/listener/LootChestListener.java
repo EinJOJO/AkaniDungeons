@@ -35,7 +35,7 @@ public class LootChestListener implements Listener, PacketListener {
     @EventHandler
     public void removeFromViewers(PlayerQuitEvent event) {
         for (PlacedLootChest lootChest : placedLootChestMap.values()) {
-            lootChest.unrender(event.getPlayer());
+            lootChest.tryDespawn(event.getPlayer());
         }
     }
 
