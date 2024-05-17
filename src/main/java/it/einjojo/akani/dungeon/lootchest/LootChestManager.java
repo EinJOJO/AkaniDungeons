@@ -1,6 +1,5 @@
 package it.einjojo.akani.dungeon.lootchest;
 
-import it.einjojo.akani.dungeon.listener.LootChestListener;
 import it.einjojo.akani.dungeon.lootchest.particle.ParticleSpawnerFactory;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

@@ -128,6 +128,7 @@ public record DefaultPlacedLootChest(LootChest lootChest, Set<UUID> viewers, Set
      * Opening the chest will open the inventory with the loot and lock the chest
      */
     public boolean open(Player player) {
+        sendBlockAction(player, true);
         if (!canOpen(player.getUniqueId())) {
             return false;
         }
@@ -138,7 +139,6 @@ public record DefaultPlacedLootChest(LootChest lootChest, Set<UUID> viewers, Set
         }
         player.openInventory(inv);
         player.playSound(player, Sound.BLOCK_ENDER_CHEST_OPEN, 1, 1.5f);
-        sendBlockAction(player, true);
         lock(player.getUniqueId(), lootChest.lockDuration());
         return true;
     }

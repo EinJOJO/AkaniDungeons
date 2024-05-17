@@ -1,9 +1,8 @@
-package it.einjojo.akani.dungeon.listener;
+package it.einjojo.akani.dungeon.lootchest;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
-import it.einjojo.akani.dungeon.lootchest.*;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -92,7 +91,8 @@ public class LootChestListener implements Listener, PacketListener {
         if (!(event.getHand() == EquipmentSlot.HAND)) return;
         Player player = event.getPlayer();
         event.setCancelled(true);
-        if (plc.open(player)) {
+        if (!plc.open(player)) {
+            player.sendActionBar("§cDie Lootbox ist leer.");
         }
     }
 
