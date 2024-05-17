@@ -1,5 +1,6 @@
-package it.einjojo.akani.dungeon.lootchest;
+package it.einjojo.akani.dungeon.lootchest.bukkit;
 
+import it.einjojo.akani.dungeon.lootchest.PlacedLootChest;
 import it.einjojo.akani.dungeon.util.ChunkPosition;
 import it.einjojo.akani.dungeon.util.ChunkRing;
 import it.einjojo.akani.dungeon.util.RepeatingTask;

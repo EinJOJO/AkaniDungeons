@@ -1,14 +1,19 @@
 package it.einjojo.akani.dungeon.lootchest;
 
+import it.einjojo.akani.dungeon.lootchest.bukkit.LootChestListener;
+import it.einjojo.akani.dungeon.lootchest.bukkit.LootChestTickTask;
 import it.einjojo.akani.dungeon.lootchest.particle.ParticleSpawnerFactory;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class LootChestManager {
 
@@ -16,6 +21,7 @@ public class LootChestManager {
     private final LootChestListener lootChestListener;
     private final LootChestTickTask lootChestRenderTask;
     private final List<LootChest> lootChests = new LinkedList<>();
+    private final Map<Location, PlacedLootChest> placedLootChestMap = new HashMap<>();
 
     public LootChestManager(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -48,13 +54,18 @@ public class LootChestManager {
     }
 
     public void register(PlacedLootChest lootChest) {
-        lootChestListener.registerPlacedLootChest(lootChest);
+        placedLootChestMap.put(lootChest.location(), lootChest);
         lootChestRenderTask.add(lootChest);
     }
 
     public void unregister(PlacedLootChest lootChest) {
-        lootChestListener.unregisterPlacedLootChest(lootChest);
+        placedLootChestMap.remove(lootChest.location());
         lootChestRenderTask.remove(lootChest);
+    }
+
+
+    public Map<Location, PlacedLootChest> placedLootChestMap() {
+        return placedLootChestMap;
     }
 
     public LootChest createLootChest(String name) {

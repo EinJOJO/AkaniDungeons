@@ -1,8 +1,9 @@
-package it.einjojo.akani.dungeon.lootchest;
+package it.einjojo.akani.dungeon.lootchest.bukkit;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import it.einjojo.akani.dungeon.lootchest.*;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -15,13 +16,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class LootChestListener implements Listener, PacketListener {
     private final JavaPlugin plugin;
     private final LootChestManager lootChestManager;
-    private final Map<Location, PlacedLootChest> placedLootChestMap = new HashMap<>();
 
 
     public LootChestListener(JavaPlugin plugin, LootChestManager lootChestManager) {
@@ -33,21 +30,14 @@ public class LootChestListener implements Listener, PacketListener {
 
     @EventHandler
     public void removeFromViewers(PlayerQuitEvent event) {
-        for (PlacedLootChest lootChest : placedLootChestMap.values()) {
+        for (PlacedLootChest lootChest : lootChestManager.placedLootChestMap().values()) {
             lootChest.tryDespawn(event.getPlayer());
         }
     }
 
-    public void registerPlacedLootChest(PlacedLootChest placedLootChest) {
-        placedLootChestMap.put(placedLootChest.location(), placedLootChest);
-    }
-
-    public void unregisterPlacedLootChest(PlacedLootChest placedLootChest) {
-        placedLootChestMap.remove(placedLootChest.location());
-    }
 
     public PlacedLootChest placedLootChest(Location location) {
-        return placedLootChestMap.get(location);
+        return lootChestManager.placedLootChestMap().get(location);
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
