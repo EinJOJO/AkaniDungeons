@@ -45,7 +45,7 @@ public class AkaniDungeon {
         mineOreTypeFactory = new MineOreTypeFactory();
         toolFactory = new ToolFactory(configManager.toolConfig());
         //loot chest
-        lootChestManager = new LootChestManager(plugin);
+        lootChestManager = new LootChestManager(plugin, configManager.lootChestConfig());
     }
 
     public void load() {
@@ -64,7 +64,6 @@ public class AkaniDungeon {
     public MineManager mineManager() {
         return mineManager;
     }
-
 
 
     public void sendMessage(CommandSender sender, String key) {

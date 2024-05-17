@@ -4,6 +4,11 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class NormalParticleSpawner implements ParticleSpawner {
+    public static final String NAME = "normal";
+    @Override
+    public String name() {
+        return NAME;
+    }
 
     @Override
     public void spawnParticle(Player receiver, Location location) {

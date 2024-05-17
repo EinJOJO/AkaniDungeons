@@ -3,14 +3,16 @@ package it.einjojo.akani.dungeon.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.einjojo.akani.dungeon.AkaniDungeonPlugin;
+import it.einjojo.akani.dungeon.config.json.JsonLootChestConfig;
 import it.einjojo.akani.dungeon.config.json.JsonMineOreTypeConfig;
 import it.einjojo.akani.dungeon.config.json.JsonPlacedOreConfig;
 import it.einjojo.akani.dungeon.config.json.adapter.ItemRewardAdapter;
 import it.einjojo.akani.dungeon.config.json.adapter.MineOreTypeAdapter;
 import it.einjojo.akani.dungeon.config.json.adapter.PlacedOreAdapter;
-import it.einjojo.akani.dungeon.util.ItemReward;
+import it.einjojo.akani.dungeon.lootchest.LootChestConfig;
 import it.einjojo.akani.dungeon.mine.MineOreType;
 import it.einjojo.akani.dungeon.mine.PlacedOre;
+import it.einjojo.akani.dungeon.util.ItemReward;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class DungeonConfigManager {
@@ -21,6 +23,7 @@ public class DungeonConfigManager {
     private final MineOreTypeConfig mineOreTypeConfig;
     private final ToolConfig toolConfig;
     private final PlacedOreConfig placedOreConfig;
+    private final LootChestConfig lootChestConfig;
 
 
     public DungeonConfigManager(AkaniDungeonPlugin plugin) {
@@ -36,6 +39,7 @@ public class DungeonConfigManager {
         mobBiomesConfig = new MobBiomesConfig.Dummy();
         mobSpawnerConfig = new MobSpawnerConfig.Dummy();
         this.placedOreConfig = new JsonPlacedOreConfig(gson, plugin.getDataFolder().toPath().resolve("placedOres.json"));
+        lootChestConfig = new JsonLootChestConfig(plugin.getDataFolder().toPath().resolve("lootChests.json"), gson);
     }
 
     public void load() {
@@ -45,6 +49,10 @@ public class DungeonConfigManager {
 
     public void save() {
         mineOreTypeConfig.save();
+    }
+
+    public LootChestConfig lootChestConfig() {
+        return lootChestConfig;
     }
 
     public JavaPlugin plugin() {
