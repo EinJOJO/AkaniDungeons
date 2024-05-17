@@ -18,6 +18,8 @@ public interface PlacedLootChest extends InventoryHolder {
      */
     void tryDespawn(Player player);
 
+    void trySpawn(Player player);
+
     Location location();
 
     boolean open(Player player);

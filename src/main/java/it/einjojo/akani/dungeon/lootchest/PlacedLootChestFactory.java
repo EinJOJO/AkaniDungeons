@@ -13,7 +13,7 @@ public class PlacedLootChestFactory {
     private static final BlockData CHEST_BLOCKDATA = Material.CHEST.createBlockData();
 
 
-    public PlacedLootChest createDefaultPlacedLootChest(@NotNull LootChest lootChest, @NotNull Location location) {
+    public PlacedLootChest createSimplePlacedLootChest(@NotNull LootChest lootChest, @NotNull Location location) {
         Preconditions.checkNotNull(lootChest, "lootChest cannot be null");
         Preconditions.checkNotNull(location, "location cannot be null");
         location.getBlock().setBlockData(CHEST_BLOCKDATA);

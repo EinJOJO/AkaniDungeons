@@ -29,7 +29,8 @@ import java.util.*;
  * @param location
  */
 public record DefaultPlacedLootChest(LootChest lootChest, Set<UUID> viewers, Set<UUID> lockedPlayers,
-                                     Queue<PlayerTimestamp> canReopenTimes, Location location) implements PlacedLootChest {
+                                     Queue<PlayerTimestamp> canReopenTimes,
+                                     Location location) implements PlacedLootChest {
     private static final short CHEST_RENDER_DISTANCE_SQUARED = 4096;
     private static final short PARTICLE_RENDER_DISTANCE_SQUARED = 576;
     private static final BlockData CHEST_BLOCKDATA = Material.CHEST.createBlockData();
@@ -67,12 +68,11 @@ public record DefaultPlacedLootChest(LootChest lootChest, Set<UUID> viewers, Set
         }
     }
 
-    private void trySpawnParticles(Player player) {
+    public void trySpawnParticles(Player player) {
         if (player.getLocation().distanceSquared(location) < PARTICLE_RENDER_DISTANCE_SQUARED && canOpen(player.getUniqueId())) {
             lootChest().particleSpawner().spawnParticle(player, location);
         }
     }
-
 
     /**
      * Lock the chest for a player
