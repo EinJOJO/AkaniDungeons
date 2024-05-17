@@ -113,7 +113,7 @@ public class LootChestCommand extends BaseCommand {
             });
             return;
         }
-        LootChest type = plugin.akaniDungeon().lootChestManager().chestByName(chestName);
+        LootChest type = plugin.akaniDungeon().lootChestManager().lootChestByName(chestName);
         if (type == null) {
             sendMessage(player, "§cLootChest-Typ §e" + chestName + " §cnicht gefunden.");
             return;
@@ -129,11 +129,11 @@ public class LootChestCommand extends BaseCommand {
     @Syntax("<name>")
     @CommandCompletion("<name>")
     public void createType(Player sender, @Single String name) {
-        if (lootChestManager().chestByName(name) != null) {
+        if (lootChestManager().lootChestByName(name) != null) {
             sendMessage(sender, "§cLootChest-Typ §e" + name + " §cexistiert bereits.");
             return;
         }
-        lootChestManager().persistChest(lootChestManager().createLootChest(name));
+        lootChestManager().persistLootChest(lootChestManager().createLootChest(name));
         sendMessage(sender, "§aLootChest-Typ §e" + name + " §aerstellt.");
         sendMessage(sender, "§7Nutze §e/lc gui §7um die Lootboxen zu verwalten.");
         sendMessage(sender, "§7Nutze §e/lc setup-scan §7um die Lootboxen in der Welt zu erstellen.");

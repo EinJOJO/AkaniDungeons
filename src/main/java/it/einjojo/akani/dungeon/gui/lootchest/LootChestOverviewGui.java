@@ -53,7 +53,7 @@ public class LootChestOverviewGui implements InventoryProvider {
             e.getWhoClicked().closeInventory();
             new PlayerChatInput(player, (input) -> {
 
-                lootChestManager.persistChest(lootChestManager.createLootChest(input));
+                lootChestManager.persistLootChest(lootChestManager.createLootChest(input));
                 Bukkit.getScheduler().runTask(lootChestManager.plugin(), () -> {
                     inventory(lootChestManager).open(player);
                 });

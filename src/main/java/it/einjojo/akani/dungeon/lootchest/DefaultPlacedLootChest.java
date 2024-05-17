@@ -3,6 +3,8 @@ package it.einjojo.akani.dungeon.lootchest;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.util.Vector3i;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerBlockAction;
+import it.einjojo.akani.dungeon.lootchest.event.PlayerLootChestCloseEvent;
+import it.einjojo.akani.dungeon.lootchest.event.PlayerLootChestOpenEvent;
 import it.einjojo.akani.dungeon.util.PlayerTimestamp;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -54,7 +56,6 @@ public record DefaultPlacedLootChest(LootChest lootChest, Set<UUID> viewers, Set
     public void trySpawn(Player player) {
         if (viewers.add(player.getUniqueId())) {
             player.sendBlockChange(location, CHEST_BLOCKDATA);
-
             if (!canOpen(player.getUniqueId())) {
                 sendBlockAction(player, true);
             }
@@ -121,26 +122,32 @@ public record DefaultPlacedLootChest(LootChest lootChest, Set<UUID> viewers, Set
 
     @Override
     public void onClose(InventoryCloseEvent event) {
-
+        new PlayerLootChestCloseEvent((Player) event.getPlayer(), this).callEvent();
     }
 
     /**
      * Opening the chest will open the inventory with the loot and lock the chest
      */
     public boolean open(Player player) {
+        if (!Bukkit.isPrimaryThread()) {
+            throw new IllegalStateException("open() must be called from the main thread");
+        }
         sendBlockAction(player, true);
         if (!canOpen(player.getUniqueId())) {
             return false;
         }
-        Inventory inv = getInventory();
-        List<ItemStack> loot = lootChest.generateRandomLoot();
-        for (ItemStack itemStack : loot) {
-            inv.setItem(RANDOM.nextInt(lootChest.slotSize()), itemStack);
+        if (new PlayerLootChestOpenEvent(player, this).callEvent()) {
+            Inventory inv = getInventory();
+            List<ItemStack> loot = lootChest.generateRandomLoot();
+            for (ItemStack itemStack : loot) {
+                inv.setItem(RANDOM.nextInt(lootChest.slotSize()), itemStack);
+            }
+            player.openInventory(inv);
+            player.playSound(player, Sound.BLOCK_ENDER_CHEST_OPEN, 1, 1.5f);
+            lock(player.getUniqueId(), lootChest.lockDuration());
+            return true;
         }
-        player.openInventory(inv);
-        player.playSound(player, Sound.BLOCK_ENDER_CHEST_OPEN, 1, 1.5f);
-        lock(player.getUniqueId(), lootChest.lockDuration());
-        return true;
+        return false;
     }
 
 

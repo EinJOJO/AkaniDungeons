@@ -36,10 +36,6 @@ public class LootChestListener implements Listener, PacketListener {
     }
 
 
-    public PlacedLootChest placedLootChest(Location location) {
-        return lootChestManager.placedLootChestMap().get(location);
-    }
-
     @EventHandler(priority = EventPriority.NORMAL)
     public void placeLootChest(PlayerInteractEvent event) {
         Block clickedBlock = event.getClickedBlock();
@@ -51,7 +47,7 @@ public class LootChestListener implements Listener, PacketListener {
         }
 
         LootChest.chestTypeNameFromItemStack(event.getItem()).ifPresent(name -> {
-            LootChest resolved = lootChestManager.chestByName(name);
+            LootChest resolved = lootChestManager.lootChestByName(name);
             if (resolved == null) {
                 return;
             }
@@ -65,25 +61,24 @@ public class LootChestListener implements Listener, PacketListener {
                 default -> clickedBlock.getLocation();
             };
             lootChestManager.persistPlacedChest(new PlacedLootChestFactory().createSimplePlacedLootChest(resolved, location));
+            event.setCancelled(true);
         });
     }
 
 
     @EventHandler
-    public void onInteractWithLootChestLocation(PlayerInteractEvent event) {
+    public void openChestOnInteract(PlayerInteractEvent event) {
         if (!event.hasBlock()) {
             return;
         }
-        PlacedLootChest plc = placedLootChest(event.getClickedBlock().getLocation());
+        PlacedLootChest plc = lootChestManager.placedLootChestByLocation(event.getClickedBlock().getLocation());
         if (plc == null) {
             return;
         }
         if (!(event.getHand() == EquipmentSlot.HAND)) return;
         Player player = event.getPlayer();
         event.setCancelled(true);
-        if (!plc.open(player)) {
-            player.sendActionBar("§cDie Lootbox ist leer.");
-        }
+        plc.open(player);
     }
 
 

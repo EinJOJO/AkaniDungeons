@@ -77,7 +77,7 @@ public class AkaniDungeon {
         syncOreRenderer.start(plugin, 5);
         syncMobSpawner.start(plugin, configManager.mobSpawnerConfig().spawnerInterval());
         mineManager.start(plugin, 20 * 60);
-        lootChestManager.startTickTask();
+        lootChestManager.startTasks();
     }
 
     public DungeonConfigManager config() {

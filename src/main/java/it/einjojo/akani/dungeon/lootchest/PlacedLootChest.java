@@ -14,6 +14,7 @@ public interface PlacedLootChest extends InventoryHolder {
 
     /**
      * For disconnecting players
+     *
      * @param player
      */
     void tryDespawn(Player player);
@@ -22,6 +23,11 @@ public interface PlacedLootChest extends InventoryHolder {
 
     Location location();
 
+    /**
+     * @param player The player to check
+     * @return true if the player can open the chest
+     * @throws IllegalStateException if thread is not main
+     */
     boolean open(Player player);
 
     boolean canOpen(UUID player);
