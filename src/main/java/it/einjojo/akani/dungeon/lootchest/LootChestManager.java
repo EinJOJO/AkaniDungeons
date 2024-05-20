@@ -44,19 +44,31 @@ public class LootChestManager {
     }
 
     public void load() {
-
+        config.load();
+        lootChests.clear();
+        lootChests.addAll(config.lootChests());
+        for (PlacedLootChest mapValue : placedLootChestMap.values()) {
+            lootChestRenderTask.remove(mapValue);
+        }
+        placedLootChestMap.clear();
+        for (PlacedLootChest placedLootChest : config.placedChests()) {
+            register(placedLootChest);
+        }
     }
 
     public void save() {
-
+        config.setLootChests(lootChests);
+        config.save();
     }
 
     public void persistPlacedChest(PlacedLootChest lootChest) {
         register(lootChest);
+        config.placedChests().add(lootChest);
     }
 
     public void deletePlacedChest(PlacedLootChest lootChest) {
-
+        unregister(lootChest);
+        config.placedChests().remove(lootChest);
     }
 
     /**

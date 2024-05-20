@@ -133,6 +133,9 @@ public class JsonLootChestConfig implements LootChestConfig {
             int rows = json.get("rows").getAsInt();
             int lockedMinutes = json.get("lockDurationMinutes").getAsInt();
             List<ItemReward> potentialRewards = new LinkedList<>();
+            for (JsonElement element : json.getAsJsonArray("potentialRewards")) {
+                potentialRewards.add(gson.fromJson(element, ItemReward.class));
+            }
             ParticleSpawner spawner = particleSpawnerFactory.createParticleSpawner(json.get("particleSpawner").getAsString());
             Material guiIconMaterial = Material.valueOf(json.get("guiIconMaterial").getAsString());
             return new LootChest(name, Duration.ofMinutes(lockedMinutes), rows, displayName, potentialRewards, spawner, guiIconMaterial);
@@ -151,6 +154,11 @@ public class JsonLootChestConfig implements LootChestConfig {
         json.addProperty("lockDurationMinutes", lootChest.lockDuration().toMinutes());
         json.addProperty("particleSpawner", lootChest.particleSpawner().name());
         json.addProperty("guiIconMaterial", lootChest.guiIconMaterial().name());
+        List<JsonObject> rewards = new LinkedList<>();
+        for (ItemReward reward : lootChest.potentialRewards()) {
+            rewards.add(gson.toJsonTree(reward).getAsJsonObject());
+        }
+        json.add("potentialRewards", gson.toJsonTree(rewards));
         return json;
     }
 
@@ -163,8 +171,39 @@ public class JsonLootChestConfig implements LootChestConfig {
         return null;
     }
 
+    private JsonObject jsonFromPlacedLootChest(PlacedLootChest chest) {
+        JsonObject json = new JsonObject();
+        JsonObject location = new JsonObject();
+        json.addProperty("chestName", chest.lootChest().name());
+        location.addProperty("x", chest.location().getX());
+        location.addProperty("y", chest.location().getY());
+        location.addProperty("z", chest.location().getZ());
+        location.addProperty("world", chest.location().getWorld().getName());
+        json.add("location", location);
+        return json;
+    }
+
     @Override
     public boolean save() {
-        return false;
+        JsonObject json = new JsonObject();
+        json.addProperty("chestTickRate", chestTickRate);
+        json.addProperty("saveTickRate", saveTickRate);
+        List<JsonObject> lootChestJsons = new LinkedList<>();
+        for (LootChest lootChest : lootChests) {
+            lootChestJsons.add(jsonFromLootChest(lootChest));
+        }
+        json.add("lootChests", gson.toJsonTree(lootChestJsons));
+        List<JsonObject> placedChestJsons = new LinkedList<>();
+        for (PlacedLootChest placedLootChest : placedChests) {
+            placedChestJsons.add(jsonFromPlacedLootChest(placedLootChest));
+        }
+        json.add("placedChests", gson.toJsonTree(placedChestJsons));
+        try {
+            Files.writeString(filePath, gson.toJson(json));
+            return true;
+        } catch (IOException e) {
+            e.fillInStackTrace();
+            return false;
+        }
     }
 }

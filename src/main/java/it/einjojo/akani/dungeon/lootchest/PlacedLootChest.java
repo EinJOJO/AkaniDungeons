@@ -10,6 +10,8 @@ import java.util.UUID;
 
 public interface PlacedLootChest extends InventoryHolder {
 
+    LootChest lootChest();
+
     void tick(Collection<? extends Player> affectedPlayers);
 
     /**

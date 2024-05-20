@@ -152,6 +152,20 @@ public class LootChestCommand extends BaseCommand {
         receiver.sendMessage(prefix().append(Component.text(message)));
     }
 
+    @Subcommand("reload")
+    @Description("Lädt die Lootboxen neu.")
+    public void reload(CommandSender sender) {
+        lootChestManager().load();
+        sendMessage(sender, "§aLootboxen neu geladen.");
+    }
+
+    @Subcommand("save")
+    @Description("Speichert die Lootboxen manuell.")
+    public void save(CommandSender sender) {
+        lootChestManager().save();
+        sendMessage(sender, "§aLootboxen gespeichert.");
+    }
+
     @HelpCommand
     @CatchUnknown
     @Default

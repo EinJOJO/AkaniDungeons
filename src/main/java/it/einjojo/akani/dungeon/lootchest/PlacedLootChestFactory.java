@@ -17,7 +17,7 @@ public class PlacedLootChestFactory {
         Preconditions.checkNotNull(lootChest, "lootChest cannot be null");
         Preconditions.checkNotNull(location, "location cannot be null");
         location.getBlock().setBlockData(CHEST_BLOCKDATA);
-        return new DefaultPlacedLootChest(lootChest, new HashSet<>(), new HashSet<>(), new PriorityQueue<>(), location);
+        return new DefaultPlacedLootChest(lootChest, new HashSet<>(), new HashSet<>(), new PriorityQueue<>(), location, location.clone().toCenterLocation().add(0, 1, 0));
     }
 
 
