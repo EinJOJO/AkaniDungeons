@@ -146,7 +146,7 @@ public class LootChestCommand extends BaseCommand {
         sendMessage(sender, "§7Platzierte Lootboxen §8(Seite §e" + (pageInt + 1) + "§8/§e" + pages + "§8)");
         for (int i = pageInt * pageSize; i < (pageInt + 1) * pageSize && i < locations.size(); i++) {
             Location location = locations.get(i);
-            Component comp = Component.text("§7%d. - §e%d %d %d".formatted(i, location.getBlockX(), location.getBlockY(), location.getBlockZ())).clickEvent(ClickEvent.runCommand("minecraft:tp %d %d %s".formatted(location.getBlockX(), location.getBlockY(), location.getBlockZ())));
+            Component comp = Component.text("§7%d. - §e%d %d %d".formatted(i, location.getBlockX(), location.getBlockY(), location.getBlockZ())).clickEvent(ClickEvent.runCommand("/minecraft:tp %d %d %s".formatted(location.getBlockX(), location.getBlockY(), location.getBlockZ())));
             sender.sendMessage(comp);
         }
         Component prev = Component.text("§7<<").clickEvent(ClickEvent.runCommand("/lc list-placed %d".formatted(pageInt - 1)));
