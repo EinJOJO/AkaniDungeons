@@ -26,7 +26,7 @@ public class PlacedLootChestFactory {
         } else {
             location.getBlock().setBlockData(CHEST_BLOCKDATA);
         }
-        return new DefaultPlacedLootChest(lootChest, new HashSet<>(), new HashSet<>(), new PriorityQueue<>(), location, location.clone().toCenterLocation().add(0, 1, 0));
+        return new DefaultPlacedLootChest(lootChest, new HashSet<>(), new HashSet<>(), new PriorityQueue<>(), location, location.clone().toCenterLocation());
     }
 
     private JavaPlugin javaPlugin() {

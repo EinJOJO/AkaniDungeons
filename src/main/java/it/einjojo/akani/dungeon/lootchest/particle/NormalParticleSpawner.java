@@ -1,10 +1,13 @@
 package it.einjojo.akani.dungeon.lootchest.particle;
 
+import it.einjojo.akani.dungeon.util.ParticleUtil;
+import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 public class NormalParticleSpawner implements ParticleSpawner {
     public static final String NAME = "normal";
+
     @Override
     public String name() {
         return NAME;
@@ -12,6 +15,6 @@ public class NormalParticleSpawner implements ParticleSpawner {
 
     @Override
     public void spawnParticle(Player receiver, Location location) {
-        receiver.spawnParticle(org.bukkit.Particle.VILLAGER_HAPPY, location, 1, 0.0D, 0.0D, 0.0D, 0.0D);
+        ParticleUtil.spawnCircle(receiver, location, 1f, Color.WHITE);
     }
 }
