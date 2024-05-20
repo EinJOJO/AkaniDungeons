@@ -5,10 +5,5 @@ public interface Spawnable<ENTITY> {
 
     boolean forceSpawnOnLag();
 
-    default void postSpawnObject(Object object) {
-        postSpawn((ENTITY)(object));
-    }
-
-    void postSpawn(ENTITY entity);
 
 }

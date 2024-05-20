@@ -1,12 +1,22 @@
 package it.einjojo.akani.dungeon.config;
 
 import it.einjojo.akani.dungeon.util.ChunkPosition;
+import org.bukkit.block.Biome;
 
+import java.util.List;
 import java.util.Map;
 
 public interface MobSpawnerConfig {
 
     Map<ChunkPosition, Double> refillOverwrites();
+
+    Map<Biome, List<String>> biomeAssignments();
+
+    List<String> mobIds(Biome biome);
+
+    void addMobId(Biome biome, String mobId);
+
+    void removeMobId(Biome biome, String mobId);
 
     void addRefillOverwrite(ChunkPosition chunkPosition, double refill);
 
@@ -28,7 +38,41 @@ public interface MobSpawnerConfig {
 
     int spawnerInterval();
 
+    boolean load();
+
+    boolean save();
+
     public static class Dummy implements MobSpawnerConfig {
+
+        @Override
+        public void addMobId(Biome biome, String mobId) {
+
+        }
+
+        @Override
+        public void removeMobId(Biome biome, String mobId) {
+
+        }
+
+        @Override
+        public boolean load() {
+            return false;
+        }
+
+        @Override
+        public boolean save() {
+            return false;
+        }
+
+        @Override
+        public Map<Biome, List<String>> biomeAssignments() {
+            return Map.of();
+        }
+
+        @Override
+        public List<String> mobIds(Biome biome) {
+            return List.of();
+        }
 
         @Override
         public Map<ChunkPosition, Double> refillOverwrites() {

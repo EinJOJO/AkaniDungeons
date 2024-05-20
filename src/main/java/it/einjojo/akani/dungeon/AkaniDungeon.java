@@ -11,8 +11,6 @@ import it.einjojo.akani.dungeon.mine.factory.PlacedOreFactory;
 import it.einjojo.akani.dungeon.mine.tool.ToolFactory;
 import it.einjojo.akani.dungeon.mobs.AsyncMobPopulateChunkSelector;
 import it.einjojo.akani.dungeon.mobs.SyncMobSpawner;
-import it.einjojo.akani.dungeon.mobs.factory.DefaultSpawnableFactory;
-import it.einjojo.akani.dungeon.mobs.factory.SpawnableFactory;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -22,7 +20,6 @@ public class AkaniDungeon {
     private final AsyncMobPopulateChunkSelector asyncMobPopulateChunkSelector;
     private final SyncOreRenderer syncOreRenderer;
     private final SyncMobSpawner syncMobSpawner;
-    private final SpawnableFactory spawnableFactory;
     private final ToolFactory toolFactory;
     private final PlacedOreFactory placedOreFactory;
     private final MineManager mineManager;
@@ -36,11 +33,10 @@ public class AkaniDungeon {
         core = (PaperAkaniCore) AkaniCoreProvider.get();
         core.registerMessageProvider(new DungeonMessageProvider());
         this.configManager = configManager;
-        asyncMobPopulateChunkSelector = new AsyncMobPopulateChunkSelector(this);
+        syncMobSpawner = new SyncMobSpawner();
+        asyncMobPopulateChunkSelector = new AsyncMobPopulateChunkSelector(config().mobSpawnerConfig(), syncMobSpawner);
         mineManager = new MineManager(configManager.placedOreConfig());
         syncOreRenderer = new SyncOreRenderer(mineManager);
-        syncMobSpawner = new SyncMobSpawner(this);
-        spawnableFactory = new DefaultSpawnableFactory();
         placedOreFactory = new PlacedOreFactory();
         mineOreTypeFactory = new MineOreTypeFactory();
         toolFactory = new ToolFactory(configManager.toolConfig());
@@ -73,8 +69,8 @@ public class AkaniDungeon {
 
     public void startSchedulers() {
         asyncMobPopulateChunkSelector.start(plugin, configManager.mobSpawnerConfig().selectorInterval());
-        syncOreRenderer.start(plugin, 5);
         syncMobSpawner.start(plugin, configManager.mobSpawnerConfig().spawnerInterval());
+        syncOreRenderer.start(plugin, 5);
         mineManager.start(plugin, 20 * 60);
         lootChestManager.startTasks();
     }
@@ -91,21 +87,10 @@ public class AkaniDungeon {
         return plugin;
     }
 
-    public AsyncMobPopulateChunkSelector asyncMobPopulateChunkSelector() {
-        return asyncMobPopulateChunkSelector;
-    }
-
     public SyncOreRenderer syncOreRenderer() {
         return syncOreRenderer;
     }
 
-    public SyncMobSpawner syncMobSpawner() {
-        return syncMobSpawner;
-    }
-
-    public SpawnableFactory spawnableFactory() {
-        return spawnableFactory;
-    }
 
     public MineOreTypeFactory mineOreTypeFactory() {
         return mineOreTypeFactory;

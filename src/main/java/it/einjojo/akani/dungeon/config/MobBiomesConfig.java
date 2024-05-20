@@ -5,6 +5,7 @@ import org.bukkit.block.Biome;
 import java.util.List;
 import java.util.Map;
 
+@Deprecated
 public interface MobBiomesConfig {
 
     Map<Biome, List<String>> biomeAssignments();

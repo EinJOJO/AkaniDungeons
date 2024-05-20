@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import it.einjojo.akani.dungeon.AkaniDungeonPlugin;
 import it.einjojo.akani.dungeon.config.json.JsonLootChestConfig;
 import it.einjojo.akani.dungeon.config.json.JsonMineOreTypeConfig;
+import it.einjojo.akani.dungeon.config.json.JsonMobSpawnerConfig;
 import it.einjojo.akani.dungeon.config.json.JsonPlacedOreConfig;
 import it.einjojo.akani.dungeon.config.json.adapter.ItemRewardAdapter;
 import it.einjojo.akani.dungeon.config.json.adapter.MineOreTypeAdapter;
@@ -37,18 +38,20 @@ public class DungeonConfigManager {
         mineOreTypeConfig = new JsonMineOreTypeConfig(gson, plugin.getDataFolder().toPath().resolve("oreTypes.json"));
         toolConfig = new ToolConfig.Dummy();
         mobBiomesConfig = new MobBiomesConfig.Dummy();
-        mobSpawnerConfig = new MobSpawnerConfig.Dummy();
+        mobSpawnerConfig = new JsonMobSpawnerConfig(plugin.getDataFolder().toPath().resolve("mobSpawners.json"), gson);
         this.placedOreConfig = new JsonPlacedOreConfig(gson, plugin.getDataFolder().toPath().resolve("placedOres.json"));
         lootChestConfig = new JsonLootChestConfig(plugin.getDataFolder().toPath().resolve("lootChests.json"), gson);
     }
 
     public void load() {
         mineOreTypeConfig.load();
+        mobSpawnerConfig.load();
     }
 
 
     public void save() {
         mineOreTypeConfig.save();
+        mobSpawnerConfig.save();
     }
 
     public LootChestConfig lootChestConfig() {

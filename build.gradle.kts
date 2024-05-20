@@ -15,6 +15,8 @@ repositories {
     maven("https://repo.oraxen.com/releases")
     maven("https://repo.codemc.io/repository/maven-releases/")
     maven("https://repo.xenondevs.xyz/releases")
+    maven("https://mvn.lumine.io/repository/maven-public/")
+
 }
 
 dependencies {
@@ -30,6 +32,7 @@ dependencies {
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit") {
         isTransitive = false
     }
+    compileOnly("io.lumine:Mythic-Dist:5.6.1")
 }
 
 java {

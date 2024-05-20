@@ -1,7 +1,9 @@
 package it.einjojo.akani.dungeon;
 
 import co.aikar.commands.PaperCommandManager;
+import io.lumine.mythic.bukkit.MythicBukkit;
 import it.einjojo.akani.dungeon.command.BuildCommand;
+import it.einjojo.akani.dungeon.command.ChunkMobsCommand;
 import it.einjojo.akani.dungeon.command.LootChestCommand;
 import it.einjojo.akani.dungeon.command.MineOreCommand;
 import it.einjojo.akani.dungeon.config.DungeonConfigManager;
@@ -15,14 +17,11 @@ import it.einjojo.akani.dungeon.mine.Hardness;
 import it.einjojo.akani.dungeon.mine.MineOreType;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
 public class AkaniDungeonPlugin extends JavaPlugin {
-    private static final Logger log = LoggerFactory.getLogger(AkaniDungeonPlugin.class);
     private static AkaniDungeonPlugin singleton;
     private AkaniDungeon akaniDungeon;
     private PaperCommandManager commandManager;
@@ -40,7 +39,7 @@ public class AkaniDungeonPlugin extends JavaPlugin {
         try {
             dungeonConfigManager.load();
         } catch (Exception e) {
-            log.error("Error loading config", e);
+            getSLF4JLogger().error("Error loading config", e);
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
@@ -67,6 +66,7 @@ public class AkaniDungeonPlugin extends JavaPlugin {
         commandManager = new PaperCommandManager(this);
         commandManager.enableUnstableAPI("help");
         commandManager.enableUnstableAPI("brigadier");
+        commandManager.getCommandCompletions().registerAsyncCompletion("mythicmobs", (c) -> MythicBukkit.inst().getMobManager().getMobNames());
         commandManager.getCommandCompletions().registerAsyncCompletion("lootChests", (c) -> akaniDungeon.lootChestManager().lootChests().stream().map(LootChest::name).toList());
         commandManager.getCommandCompletions().registerAsyncCompletion("oreTypes", (c) -> akaniDungeon.config().mineOreTypeConfig().types().stream().map(MineOreType::name).toList());
         commandManager.getCommandCompletions().registerStaticCompletion("oreHardness", () -> Arrays.stream(Hardness.values()).map(Enum::name).toList());
@@ -80,7 +80,7 @@ public class AkaniDungeonPlugin extends JavaPlugin {
                 ((CommandSender) sender.getIssuer()).sendMessage("§cNicht gefunden.");
                 return true;
             }
-            log.warn("Exception in command {}", command.getName(), t);
+            getSLF4JLogger().warn("Exception in command {}", command.getName(), t);
             return false;
         }, false);
         commandManager.registerDependency(AkaniDungeon.class, akaniDungeon);
@@ -88,6 +88,7 @@ public class AkaniDungeonPlugin extends JavaPlugin {
         commandManager.registerCommand(new MineOreCommand());
         commandManager.registerCommand(new BuildCommand(dungeonWorldListener));
         commandManager.registerCommand(new LootChestCommand());
+        commandManager.registerCommand(new ChunkMobsCommand(akaniDungeon.config().mobSpawnerConfig()));
 
     }
 
