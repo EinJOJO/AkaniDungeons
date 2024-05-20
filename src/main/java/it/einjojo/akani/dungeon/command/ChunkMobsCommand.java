@@ -60,6 +60,23 @@ public class ChunkMobsCommand extends BaseCommand {
         return mobString.toString();
     }
 
+    @Subcommand("minMobs")
+    @CommandCompletion("@range:0-10")
+    public void setMinMobs(Player player, int minMobs) {
+        mobSpawnerConfig.setMinMobsPerChunk(minMobs);
+        sendMessage(player, "§7- §cMin Mobs set to §7" + minMobs);
+    }
+
+    @Subcommand("maxMobs")
+    @CommandCompletion("@range:1-10")
+    public void setMaxMobs(Player player, int maxMobs) {
+        mobSpawnerConfig.setMaxMobsPerChunk(maxMobs);
+        sendMessage(player, "§7- §cMax Mobs set to §7" + maxMobs);
+    }
+
+
+
+
     @Subcommand("biome add")
     @CommandCompletion("@mythicmobs")
     public void addMobToBiome(Player player, String mobId) {
