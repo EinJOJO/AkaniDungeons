@@ -15,6 +15,7 @@ import it.einjojo.akani.dungeon.lootchest.LootChest;
 import it.einjojo.akani.dungeon.lootchest.LootChestManager;
 import it.einjojo.akani.dungeon.lootchest.PlacedLootChestFactory;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -123,6 +124,39 @@ public class LootChestCommand extends BaseCommand {
             lootChestManager().persistPlacedChest(plcFactory.createSimplePlacedLootChest(type, location));
         }
         sendMessage(player, "§aStandard-Lootboxen erstellt.");
+    }
+
+    @Subcommand("list-placed")
+    @Description("Listet alle platzierten Lootboxen auf.")
+    public void listPlacedChests(Player sender, @Default("0") @Single String page) {
+        int pageInt;
+        try {
+            pageInt = Integer.parseInt(page);
+        } catch (NumberFormatException ex) {
+            sendMessage(sender, "§cUngültige Seitenzahl: " + page);
+            return;
+        }
+        List<Location> locations = new LinkedList<>(lootChestManager().placedLootChestMap().keySet());
+        int pageSize = 10;
+        int pages = (int) Math.ceil(locations.size() / (double) pageSize);
+        if (pageInt < 0 || pageInt >= pages) {
+            sendMessage(sender, "§cUngültige Seitenzahl: " + page);
+            return;
+        }
+        sendMessage(sender, "§7Platzierte Lootboxen §8(Seite §e" + (pageInt + 1) + "§8/§e" + pages + "§8)");
+        for (int i = pageInt * pageSize; i < (pageInt + 1) * pageSize && i < locations.size(); i++) {
+            Location location = locations.get(i);
+            Component comp = Component.text("§7%d. - §e%d %d %d".formatted(i, location.getBlockX(), location.getBlockY(), location.getBlockZ())).clickEvent(ClickEvent.runCommand("minecraft:tp %d %d %s".formatted(location.getBlockX(), location.getBlockY(), location.getBlockZ())));
+            sender.sendMessage(comp);
+        }
+        Component prev = Component.text("§7<<").clickEvent(ClickEvent.runCommand("/lc list-placed %d".formatted(pageInt - 1)));
+        Component next = Component.text("§7>>").clickEvent(ClickEvent.runCommand("/lc list-placed %d".formatted(pageInt + 1)));
+        if (pageInt > 0) {
+            sender.sendMessage(prev);
+        }
+        if (pageInt < pages - 1) {
+            sender.sendMessage(next);
+        }
     }
 
     @Subcommand("create-type")

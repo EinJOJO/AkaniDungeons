@@ -77,6 +77,15 @@ public class JsonLootChestConfig implements LootChestConfig {
 
     @Override
     public boolean load() {
+        if (Files.notExists(filePath)) {
+            try {
+                Files.createFile(filePath);
+            } catch (IOException e) {
+                e.fillInStackTrace();
+                return false;
+            }
+        }
+        log.info("Loading loot chests from file {}", filePath);
         try (BufferedReader reader = Files.newBufferedReader(filePath)) {
             JsonObject json = gson.fromJson(reader, JsonObject.class);
             chestTickRate = json.get("chestTickRate").getAsInt();
@@ -185,6 +194,7 @@ public class JsonLootChestConfig implements LootChestConfig {
 
     @Override
     public boolean save() {
+        log.info("Saving loot chests to file {}", filePath);
         JsonObject json = new JsonObject();
         json.addProperty("chestTickRate", chestTickRate);
         json.addProperty("saveTickRate", saveTickRate);

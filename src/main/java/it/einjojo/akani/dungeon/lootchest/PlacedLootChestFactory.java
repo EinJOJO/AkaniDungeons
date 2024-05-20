@@ -1,9 +1,12 @@
 package it.einjojo.akani.dungeon.lootchest;
 
 import com.google.common.base.Preconditions;
+import it.einjojo.akani.dungeon.AkaniDungeonPlugin;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
@@ -16,8 +19,18 @@ public class PlacedLootChestFactory {
     public PlacedLootChest createSimplePlacedLootChest(@NotNull LootChest lootChest, @NotNull Location location) {
         Preconditions.checkNotNull(lootChest, "lootChest cannot be null");
         Preconditions.checkNotNull(location, "location cannot be null");
-        location.getBlock().setBlockData(CHEST_BLOCKDATA);
+        if (!Bukkit.isPrimaryThread()) {
+            Bukkit.getScheduler().runTask(javaPlugin(), () -> {
+                location.getBlock().setBlockData(CHEST_BLOCKDATA);
+            });
+        } else {
+            location.getBlock().setBlockData(CHEST_BLOCKDATA);
+        }
         return new DefaultPlacedLootChest(lootChest, new HashSet<>(), new HashSet<>(), new PriorityQueue<>(), location, location.clone().toCenterLocation().add(0, 1, 0));
+    }
+
+    private JavaPlugin javaPlugin() {
+        return AkaniDungeonPlugin.get();
     }
 
 

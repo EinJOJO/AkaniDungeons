@@ -42,14 +42,18 @@ public class LootChestItemsGui implements InventoryProvider {
 
     @Override
     public void init(Player player, InventoryContents contents) {
-        contents.fillRow(0, GUIItem.BACKGROUND.emptyClickableItem());
-        contents.fillRow(5, GUIItem.BACKGROUND.emptyClickableItem());
+        contents.fillRow(0, GUIItem.BACKGROUND.clickableItem(this::returnHome));
+        contents.fillRow(5, GUIItem.BACKGROUND.clickableItem(this::returnHome));
         contents.set(5, 4, GUIItem.ADD_BUTTON.clickableItem(this::onClick));
         int i = 0;
         for (ItemReward itemReward : lootChest.potentialRewards()) {
             contents.set(1 + i / 9, i, createItemReward(itemReward));
             i++;
         }
+    }
+
+    private void returnHome(InventoryClickEvent e) {
+        LootChestSettingsGui.inventory(lootChest).open((Player) e.getWhoClicked());
     }
 
     private ClickableItem createItemReward(ItemReward itemReward) {
@@ -60,17 +64,15 @@ public class LootChestItemsGui implements InventoryProvider {
                         Component.text("§7Chance: §e" + itemReward.chance()),
                         Component.empty(),
                         Component.text("§7Linksklick: §eMax-Wert §7setzen"),
-                        Component.text("§7Shift-Linksklick: §eMin-Wert §7setzen"),
+                        Component.text("§eMin-Wert §7 in Config setzen"),
                         Component.text("§7Rechtsklick §eChance §7setzen"),
-                        Component.text("§7Shift-Rechtsklick §cLöschen")
+                        Component.text("§7§cLöschen in Config")
                 ))
                 .build(), (e) -> {
             Player player = (Player) e.getWhoClicked();
             boolean shift = e.isShiftClick();
             boolean right = e.isRightClick();
             boolean left = e.isLeftClick();
-            player.sendMessage("§7L" + left + " R" + right + " S" + shift);
-
             if (left && !shift) {
                 player.closeInventory();
                 new PlayerChatInput(player, (input) -> {
