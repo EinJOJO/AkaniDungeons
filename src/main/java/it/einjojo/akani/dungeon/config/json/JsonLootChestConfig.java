@@ -16,6 +16,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -128,7 +129,9 @@ public class JsonLootChestConfig implements LootChestConfig {
                 log.warn("Failed to load placed loot chest from json because no lootChest with the name {} was found.", chestName);
                 return null;
             }
-            return factory.createSimplePlacedLootChest(lootChest, new Location(Bukkit.getWorld(world), x, y, z));
+            World bukkitWorld = Bukkit.getWorld(world);
+            if (bukkitWorld == null) return null;
+            return factory.createSimplePlacedLootChest(lootChest, new Location(bukkitWorld, x, y, z));
         } catch (Exception e) {
             log.warn("Failed to load placed loot chest from json: {}", json, e);
             return null;
@@ -182,6 +185,9 @@ public class JsonLootChestConfig implements LootChestConfig {
 
     private JsonObject jsonFromPlacedLootChest(PlacedLootChest chest) {
         JsonObject json = new JsonObject();
+        if (chest.location().getWorld() == null) {
+            return null;
+        }
         JsonObject location = new JsonObject();
         json.addProperty("chestName", chest.lootChest().name());
         location.addProperty("x", chest.location().getX());
@@ -205,7 +211,10 @@ public class JsonLootChestConfig implements LootChestConfig {
         json.add("lootChests", gson.toJsonTree(lootChestJsons));
         List<JsonObject> placedChestJsons = new LinkedList<>();
         for (PlacedLootChest placedLootChest : placedChests) {
-            placedChestJsons.add(jsonFromPlacedLootChest(placedLootChest));
+            var jsonFromPlacedLootChest = jsonFromPlacedLootChest(placedLootChest);
+            if (jsonFromPlacedLootChest != null) {
+                placedChestJsons.add(jsonFromPlacedLootChest);
+            }
         }
         json.add("placedChests", gson.toJsonTree(placedChestJsons));
         try {
