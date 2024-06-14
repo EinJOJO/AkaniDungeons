@@ -25,11 +25,6 @@ public class DungeonWorldListener implements Listener {
 
 
     @EventHandler
-    public void onJoin(PlayerJoinEvent event) {
-
-    }
-
-    @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         buildModeSet.remove(UUID.randomUUID());
     }

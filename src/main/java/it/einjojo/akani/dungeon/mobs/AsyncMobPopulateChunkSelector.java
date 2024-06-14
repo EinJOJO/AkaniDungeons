@@ -106,7 +106,7 @@ public class AsyncMobPopulateChunkSelector implements RepeatingTask {
                 syncMobSpawner.add(spawnableFactory.create(mobIdIterator.next(), chunkPos.randomSpawnableLocation(world)));
             }
         }
-        logger.info("Skipped {} chunks and refilled {} with {} refill-rate ", skipped, chunks.size() - skipped, refill);
+        logger.debug("Skipped {} chunks and refilled {} with {} refill-rate ", skipped, chunks.size() - skipped, refill);
     }
 
     @Override

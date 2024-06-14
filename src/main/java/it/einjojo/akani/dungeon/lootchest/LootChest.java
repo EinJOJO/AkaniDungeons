@@ -26,6 +26,8 @@ public class LootChest {
     private Duration lockDuration;
     private ParticleSpawner particleSpawner;
     private Component displayName;
+    private transient LootChestChangeObserver observer;
+
 
     /**
      * @param name             identifier for the loot chest
@@ -68,6 +70,7 @@ public class LootChest {
 
     public void setDisplayName(Component displayName) {
         this.displayName = displayName;
+        callChangeObserver();
     }
 
     public Duration lockDuration() {
@@ -103,10 +106,12 @@ public class LootChest {
 
     public void setLockDuration(Duration lockDuration) {
         this.lockDuration = lockDuration;
+        callChangeObserver();
     }
 
     public void setSlotSize(int slotSize) {
         this.slotSize = slotSize;
+        callChangeObserver();
     }
 
     public ParticleSpawner particleSpawner() {
@@ -115,6 +120,7 @@ public class LootChest {
 
     public void setParticleSpawner(ParticleSpawner particleSpawner) {
         this.particleSpawner = particleSpawner;
+        callChangeObserver();
     }
 
     public Material guiIconMaterial() {
@@ -123,5 +129,20 @@ public class LootChest {
 
     public void setGuiIconMaterial(Material guiIconMaterial) {
         this.guiIconMaterial = guiIconMaterial;
+        callChangeObserver();
+    }
+
+    public void callChangeObserver() {
+        if (observer != null) {
+            observer.onChange(this);
+        }
+    }
+
+    public LootChestChangeObserver getObserver() {
+        return observer;
+    }
+
+    public void setObserver(LootChestChangeObserver observer) {
+        this.observer = observer;
     }
 }

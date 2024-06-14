@@ -16,8 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class LootChestManager {
-
+public class LootChestManager implements LootChestChangeObserver {
     private final JavaPlugin plugin;
     private final LootChestListener lootChestListener;
     private final LootChestTickTask lootChestRenderTask;
@@ -25,6 +24,7 @@ public class LootChestManager {
     private final AsyncLootChestSaveTask asyncSaveTask;
     private final LootChestConfig config;
     private final Map<Location, PlacedLootChest> placedLootChestMap = new HashMap<>();
+    private boolean saveRequired = false;
 
     public LootChestManager(JavaPlugin plugin, LootChestConfig config) {
         this.plugin = plugin;
@@ -57,6 +57,7 @@ public class LootChestManager {
     }
 
     public void save() {
+        if (!saveRequired) return;
         config.setLootChests(lootChests);
         config.save();
     }
@@ -64,11 +65,13 @@ public class LootChestManager {
     public void persistPlacedChest(PlacedLootChest lootChest) {
         register(lootChest);
         config.placedChests().add(lootChest);
+        saveRequired = true;
     }
 
     public void deletePlacedChest(PlacedLootChest lootChest) {
         unregister(lootChest);
         config.placedChests().remove(lootChest);
+        saveRequired = true;
     }
 
     /**
@@ -124,11 +127,14 @@ public class LootChestManager {
         if (lootChestByName(lootChest.name()) != null) {
             throw new IllegalArgumentException("Chest with name " + lootChest.name() + " already exists.");
         }
+        lootChest.setObserver(this);
         lootChests.add(lootChest);
+        saveRequired = true;
     }
 
     public void deleteLootChest(LootChest lootChest) {
         lootChests.remove(lootChest);
+        saveRequired = true;
     }
 
     public JavaPlugin plugin() {
@@ -141,5 +147,10 @@ public class LootChestManager {
 
     public LootChestTickTask lootChestRenderTask() {
         return lootChestRenderTask;
+    }
+
+    @Override
+    public void onChange(LootChest lootChest) {
+        saveRequired = true;
     }
 }
