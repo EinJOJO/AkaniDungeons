@@ -134,6 +134,7 @@ public class LootChestManager implements LootChestChangeObserver {
 
     public void deleteLootChest(LootChest lootChest) {
         lootChests.remove(lootChest);
+        lootChest.setObserver(null);
         saveRequired = true;
     }
 
