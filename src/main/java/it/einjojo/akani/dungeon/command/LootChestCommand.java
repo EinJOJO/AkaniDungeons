@@ -1,8 +1,8 @@
 package it.einjojo.akani.dungeon.command;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.CommandHelp;
-import co.aikar.commands.annotation.*;
+import it.einjojo.akani.util.commands.BaseCommand;
+import it.einjojo.akani.util.commands.CommandHelp;
+import it.einjojo.akani.util.commands.annotation.*;
 import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
@@ -175,7 +175,7 @@ public class LootChestCommand extends BaseCommand {
 
     @Subcommand("gui")
     public void openGui(Player player) {
-        LootChestOverviewGui.inventory(lootChestManager()).open(player);
+        new LootChestOverviewGui(player, lootChestManager()).open();
     }
 
     private LootChestManager lootChestManager() {

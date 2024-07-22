@@ -2,6 +2,7 @@ package it.einjojo.akani.dungeon.gui.lootchest;
 
 import it.einjojo.akani.core.paper.util.ItemBuilder;
 import it.einjojo.akani.dungeon.gui.GUIItem;
+import it.einjojo.akani.dungeon.gui.ParentableGui;
 import it.einjojo.akani.dungeon.input.PlayerChatInput;
 import it.einjojo.akani.dungeon.lootchest.LootChest;
 import it.einjojo.akani.dungeon.util.ItemReward;
@@ -14,16 +15,30 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
 /**
  * @since 1.2.0
  */
-public class LootChestItemsGui extends Gui {
+public class LootChestItemsGui extends Gui implements ParentableGui {
     private final LootChest lootChest;
+    private Gui parent;
     private final PaginationManager paginationManager = new PaginationManager(this);
+
+    @Nullable
+    @Override
+    public Gui getParent() {
+        return parent;
+    }
+
+    @Override
+    public void setParent(Gui parent) {
+        this.parent = parent;
+    }
 
     public LootChestItemsGui(@NotNull Player player, LootChest lootChest) {
         super(player, "lootChestItems", Component.text("Items: ", NamedTextColor.GRAY)
@@ -34,12 +49,12 @@ public class LootChestItemsGui extends Gui {
 
     @Override
     public void onOpen(InventoryOpenEvent event) {
-        Icon returningBackground = GUIItem.BACKGROUND.icon().onClick(this::returnHome);
+        Icon returningBackground = GUIItem.BACKGROUND.icon().onClick(this::openParent);
         fillRow(returningBackground, 0);
         fillRow(returningBackground, 5);
         addPaginationItems();
         renderItems();
-        addItem(GUIItem.PLUS_SKULL.icon().setName("§cItem hinzufügen").onClick(this::handleAddClickEvent));
+        addItem(GUIItem.PLUS_SKULL.icon().setName("§cItem hinzufügen").setLore("§7Ziehe das Item hinein.").onClick(this::handleAddClickEvent));
     }
 
     private void renderItems() {
@@ -135,10 +150,11 @@ public class LootChestItemsGui extends Gui {
     }
 
     private void handleAddClickEvent(InventoryClickEvent event) {
-
+        ItemStack toAdd = event.getCursor();
+        if (toAdd.getType().isAir()) return;
+        ItemReward newReward = new ItemReward(toAdd.clone(), (short) toAdd.getAmount(), (short) toAdd.getAmount(), 1.0f);
+        lootChest.potentialRewards().add(newReward);
+        renderItems();
     }
 
-    private void returnHome(InventoryClickEvent e) {
-        new LootChestConfigureGui(player, lootChest).open();
-    }
 }
