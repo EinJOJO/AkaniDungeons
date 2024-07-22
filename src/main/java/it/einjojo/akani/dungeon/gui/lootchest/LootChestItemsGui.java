@@ -1,132 +1,144 @@
 package it.einjojo.akani.dungeon.gui.lootchest;
 
-import fr.minuskube.inv.ClickableItem;
-import fr.minuskube.inv.InventoryListener;
-import fr.minuskube.inv.SmartInventory;
-import fr.minuskube.inv.content.InventoryContents;
-import fr.minuskube.inv.content.InventoryProvider;
 import it.einjojo.akani.core.paper.util.ItemBuilder;
-import it.einjojo.akani.dungeon.AkaniDungeonPlugin;
 import it.einjojo.akani.dungeon.gui.GUIItem;
 import it.einjojo.akani.dungeon.input.PlayerChatInput;
 import it.einjojo.akani.dungeon.lootchest.LootChest;
 import it.einjojo.akani.dungeon.util.ItemReward;
+import it.einjojo.akani.util.inventory.Gui;
+import it.einjojo.akani.util.inventory.Icon;
+import it.einjojo.akani.util.inventory.pagination.PaginationManager;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
+import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class LootChestItemsGui implements InventoryProvider {
+/**
+ * @since 1.2.0
+ */
+public class LootChestItemsGui extends Gui {
     private final LootChest lootChest;
+    private final PaginationManager paginationManager = new PaginationManager(this);
 
-    public LootChestItemsGui(LootChest lootChest) {
+    public LootChestItemsGui(@NotNull Player player, LootChest lootChest) {
+        super(player, "lootChestItems", Component.text("Items: ", NamedTextColor.GRAY)
+                .append(lootChest.displayName()), 6);
         this.lootChest = lootChest;
-    }
-
-    public static SmartInventory inventory(LootChest lootChest) {
-        var provider = new LootChestItemsGui(lootChest);
-        return SmartInventory.builder()
-                .id("lootChestItemsGui")
-                .provider(provider)
-                .size(6, 9)
-                .listener(new InventoryListener<>(InventoryDragEvent.class, (e) -> {
-                    e.getWhoClicked().sendMessage("DRAG");
-                }))
-                .title("§6Lootkiste: " + lootChest.name())
-                .build();
+        paginationManager.registerPageSlotsBetween(9, 9 * 5 - 1);
     }
 
     @Override
-    public void init(Player player, InventoryContents contents) {
-        contents.fillRow(0, GUIItem.BACKGROUND.clickableItem(this::returnHome));
-        contents.fillRow(5, GUIItem.BACKGROUND.clickableItem(this::returnHome));
-        contents.set(5, 4, GUIItem.ADD_BUTTON.clickableItem(this::onClick));
-        int i = 0;
+    public void onOpen(InventoryOpenEvent event) {
+        Icon returningBackground = GUIItem.BACKGROUND.icon().onClick(this::returnHome);
+        fillRow(returningBackground, 0);
+        fillRow(returningBackground, 5);
+        addPaginationItems();
+        renderItems();
+        addItem(GUIItem.PLUS_SKULL.icon().setName("§cItem hinzufügen").onClick(this::handleAddClickEvent));
+    }
+
+    private void renderItems() {
+        paginationManager.getItems().clear();
         for (ItemReward itemReward : lootChest.potentialRewards()) {
-            contents.set(1 + i / 9, i, createItemReward(itemReward));
-            i++;
+            paginationManager.addItem(createItemRewardIcon(itemReward));
         }
+        paginationManager.update();
     }
 
-    private void returnHome(InventoryClickEvent e) {
-        LootChestSettingsGui.inventory(lootChest).open((Player) e.getWhoClicked());
+    private void addPaginationItems() {
+        addItem(GUIItem.LEFT_SKULL.icon().setName("§cVorherige Seite").onClick(e -> {
+            paginationManager.goPreviousPage();
+            paginationManager.update();
+        }));
+        addItem(GUIItem.RIGHT_SKULL.icon().setName("§cNächste Seite").onClick(e -> {
+            paginationManager.goNextPage();
+            paginationManager.update();
+        }));
     }
 
-    private ClickableItem createItemReward(ItemReward itemReward) {
-        return ClickableItem.of(new ItemBuilder(itemReward.baseItem())
+    private Icon createItemRewardIcon(ItemReward itemReward) {
+        return new Icon(new ItemBuilder(itemReward.baseItem())
                 .lore(List.of(
                         Component.text("§7min: §e" + itemReward.min()),
                         Component.text("§7max: §e" + itemReward.max()),
                         Component.text("§7Chance: §e" + itemReward.chance()),
                         Component.empty(),
-                        Component.text("§7Linksklick: §eMax-Wert §7setzen"),
-                        Component.text("§eMin-Wert §7 in Config setzen"),
-                        Component.text("§7Rechtsklick §eChance §7setzen"),
-                        Component.text("§7§cLöschen in Config")
+                        Component.text("§7[Linksklick]: §eMax-Wert §7setzen"),
+                        Component.text("§7[Shift + Linksklick]: §eMin-Wert §7setzen"),
+                        Component.text("§7[Rechtsklick] §eChance §7setzen"),
+                        Component.text("§7[Shift + Rechtsklick] §cLöschen")
                 ))
-                .build(), (e) -> {
-            Player player = (Player) e.getWhoClicked();
+                .build()).onClick(e -> {
             boolean shift = e.isShiftClick();
             boolean right = e.isRightClick();
             boolean left = e.isLeftClick();
             if (left && !shift) {
                 player.closeInventory();
+                player.sendMessage("§7Bitte gib den neuen Max-Wert ein:");
                 new PlayerChatInput(player, (input) -> {
                     try {
                         itemReward.setMax(Short.parseShort(input));
+                        playSuccessSound();
                     } catch (NumberFormatException ex) {
                         player.sendMessage("§cUngültige Zahl");
+                        playBadInputSound();
                     }
-                    reopen(player);
+                    threadSafeOpen();
                 });
             } else if (left) {
                 player.closeInventory();
+                player.sendMessage("§7Bitte gib den neuen Min-Wert ein:");
                 new PlayerChatInput(player, (input) -> {
                     try {
                         itemReward.setMin(Short.parseShort(input));
+                        playSuccessSound();
                     } catch (NumberFormatException ex) {
                         player.sendMessage("§cUngültige Zahl");
+                        playBadInputSound();
                     }
-                    reopen(player);
+                    threadSafeOpen();
                 });
             } else if (right && shift) {
-                player.closeInventory();
                 lootChest.potentialRewards().remove(itemReward);
-                reopen(player);
+                renderItems();
             } else if (right) {
                 player.closeInventory();
+                player.sendMessage("§7Bitte gib die neue Chance ein:");
                 new PlayerChatInput(player, (input) -> {
                     try {
                         itemReward.setChance(Float.parseFloat(input));
+                        playSuccessSound();
                     } catch (NumberFormatException ex) {
                         player.sendMessage("§cUngültige Zahl");
                     }
-                    reopen(player);
+                    threadSafeOpen();
                 });
             }
-
         });
     }
 
-    public void reopen(Player player) {
-        Bukkit.getScheduler().runTask(AkaniDungeonPlugin.get(), () -> inventory(lootChest).open(player));
+    private void playBadInputSound() {
+        player.playSound(player.getLocation(), Sound.ENTITY_VILLAGER_NO, 1, 0.5f);
     }
 
-    public void onClick(InventoryClickEvent event) {
-        ItemStack toAdd = event.getCursor();
-        if (toAdd.getType().isAir()) return;
-        ItemReward newReward = new ItemReward(toAdd.clone(), (short) toAdd.getAmount(), (short) toAdd.getAmount(), 1.0f);
-        lootChest.potentialRewards().add(newReward);
-        event.setCancelled(true);
-        inventory(lootChest).open((Player) event.getWhoClicked());
+    private void playSuccessSound() {
+        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
     }
 
-    @Override
-    public void update(Player player, InventoryContents contents) {
+    private void threadSafeOpen() {
+        runTaskLater(1, (s) -> open());
+    }
 
+    private void handleAddClickEvent(InventoryClickEvent event) {
+
+    }
+
+    private void returnHome(InventoryClickEvent e) {
+        new LootChestConfigureGui(player, lootChest).open();
     }
 }
