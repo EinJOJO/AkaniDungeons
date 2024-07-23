@@ -50,6 +50,7 @@ public class LootChestItemsGui extends Gui implements ParentableGui {
     @Override
     public void onOpen(InventoryOpenEvent event) {
         Icon returningBackground = GUIItem.BACKGROUND.icon().onClick(this::openParent);
+        paginationManager.getItems().clear();
         fillRow(returningBackground, 0);
         fillRow(returningBackground, 5);
         addPaginationItems();

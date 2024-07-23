@@ -46,6 +46,7 @@ public class MineOreTypeSelectorGUI extends Gui {
     public void onOpen(InventoryOpenEvent event) {
         fillRow(GUIItem.BACKGROUND.icon(), 0);
         fillRow(GUIItem.BACKGROUND.icon(), 5);
+        paginationManager.getItems().clear();
         for (int i = 0; i < config.types().size(); i++) {
             addOreType(config.types().get(i));
         }
