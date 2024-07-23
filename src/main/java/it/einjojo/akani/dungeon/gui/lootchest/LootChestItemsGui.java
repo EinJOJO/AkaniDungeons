@@ -54,6 +54,7 @@ public class LootChestItemsGui extends Gui implements ParentableGui {
         fillRow(returningBackground, 5);
         addPaginationItems();
         renderItems();
+        player.sendMessage("Open");
         addItem(GUIItem.PLUS_SKULL.icon().setName("§cItem hinzufügen").setLore("§7Ziehe das Item hinein.").onClick(this::handleAddClickEvent));
     }
 

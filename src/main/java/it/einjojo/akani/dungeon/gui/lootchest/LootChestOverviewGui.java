@@ -26,6 +26,7 @@ public class LootChestOverviewGui extends Gui {
     public LootChestOverviewGui(Player player, LootChestManager lootChestManager) {
         super(player, "lootChestOverview", Component.text("Lootkisten", NamedTextColor.GOLD), 6);
         this.lootChestManager = lootChestManager;
+        paginationManager.registerPageSlotsBetween(9, 9 * 5 - 1);
     }
 
     @Override
@@ -36,6 +37,7 @@ public class LootChestOverviewGui extends Gui {
         for (LootChest chestType : lootChestManager.lootChests()) {
             paginationManager.addItem(createLootChestIcon(chestType));
         }
+        paginationManager.update();
     }
 
 

@@ -49,6 +49,7 @@ public class MineOreTypeSelectorGUI extends Gui {
         for (int i = 0; i < config.types().size(); i++) {
             addOreType(config.types().get(i));
         }
+        paginationManager.update();
         addItem(5 * 9 + 4, GUIItem.ADD_BUTTON.icon().onClick(this::handleAddClick));
     }
 

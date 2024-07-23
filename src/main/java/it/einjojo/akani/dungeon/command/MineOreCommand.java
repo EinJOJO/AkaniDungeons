@@ -28,7 +28,7 @@ public class MineOreCommand extends BaseCommand {
     @Subcommand("gui")
     @Description("Open the mine ore type selector GUI.")
     public void openTypesGui(Player sender) {
-        new MineOreTypeSelectorGUI(sender, core.config().mineOreTypeConfig(), core.mineOreTypeFactory());
+        new MineOreTypeSelectorGUI(sender, core.config().mineOreTypeConfig(), core.mineOreTypeFactory()).open();
     }
 
     @Subcommand("create")
