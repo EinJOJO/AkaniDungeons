@@ -68,6 +68,7 @@ public class MineListener implements Listener {
             return;
         }
         PlacedOre ore = akaniDungeon.placedOreFactory().createPlacedOre(location.subtract(0, 0.3f, 0).setDirection(event.getPlayer().getLocation().getDirection()), oreType);
+        mineManager().storage().createPlacedOre(ore);
         mineManager().registerPlacedOre(ore);
         event.getPlayer().sendMessage("§aErz platziert.");
         ore.render(event.getPlayer());
