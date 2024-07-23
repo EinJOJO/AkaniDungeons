@@ -3,6 +3,7 @@ package it.einjojo.akani.dungeon.gui.mineoretype;
 import it.einjojo.akani.core.paper.util.ItemBuilder;
 import it.einjojo.akani.dungeon.config.MineOreTypeConfig;
 import it.einjojo.akani.dungeon.gui.GUIItem;
+import it.einjojo.akani.dungeon.gui.PaginatedGui;
 import it.einjojo.akani.dungeon.mine.MineOreType;
 import it.einjojo.akani.dungeon.mine.factory.MineOreTypeFactory;
 import it.einjojo.akani.util.inventory.Gui;
@@ -23,14 +24,13 @@ import java.util.List;
  * This GUI is the overview of all mine ore types.
  * It allows the player to select a mine ore type to edit or to get a spawn egg.
  */
-public class MineOreTypeSelectorGUI extends Gui {
+public class MineOreTypeSelectorGUI extends PaginatedGui {
     private static final List<Component> CLICK_ACTION = List.of(
             Component.empty(),
             Component.text("§7[§cLinksklick§7] Einstellungen"),
             Component.text("§7[§cRechtsklick§7] Spawn-Ei"),
             Component.empty()
     );
-    private final PaginationManager paginationManager = new PaginationManager(this);
     private final MineOreTypeConfig config;
     private final MineOreTypeFactory factory;
 

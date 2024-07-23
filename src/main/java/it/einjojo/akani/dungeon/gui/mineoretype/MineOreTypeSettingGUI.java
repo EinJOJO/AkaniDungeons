@@ -68,15 +68,15 @@ public class MineOreTypeSettingGUI extends Gui implements ParentableGui {
                 }
             });
         });
-        addItem(9 + 6, icon);
+        addItem(9 + 7, icon);
     }
 
     protected void addOreIcon() {
-        addItem(new ItemBuilder(oreType.icon()).lore(oreType.description()).build());
+        addItem(9 + 1, new ItemBuilder(oreType.icon()).lore(oreType.description()).build());
     }
 
     protected void addToolType() {
-        addItem(9 + 4, new Icon(new ItemBuilder(ToolType.material(oreType().toolType(), oreType.hardness()))
+        addItem(9 + 5, new Icon(new ItemBuilder(ToolType.material(oreType().toolType(), oreType.hardness()))
                 .displayName(Component.text("§c" + oreType.toolType().name()))
                 .lore(List.of(
                         Component.empty(),
@@ -106,7 +106,7 @@ public class MineOreTypeSettingGUI extends Gui implements ParentableGui {
         lore.add(Component.empty());
         lore.add(Component.text("§7▶ Aktuelle Items:"));
         oreType.breakRewards().forEach(item -> lore.add(Component.text("§c" + item.baseItem().getType().name() + "§7: min(" + item.min() + ") max(" + item.max() + ")  :  §c" + item.chance() * 100 + "%")));
-        addItem(9 + 2, new Icon(new ItemBuilder(Material.COMPOSTER).displayName(Component.text("§cItems")).lore(lore).build()).onClick(event -> {
+        addItem(9 + 3, new Icon(new ItemBuilder(Material.COMPOSTER).displayName(Component.text("§cItems")).lore(lore).build()).onClick(event -> {
             ItemStack cursor = event.getCursor();
             if (cursor.getType().equals(Material.AIR)) return;
             oreType.breakRewards().add(new ItemReward(cursor.clone(), (short) 1, (short) 1, 1f));
@@ -115,7 +115,7 @@ public class MineOreTypeSettingGUI extends Gui implements ParentableGui {
             event.getWhoClicked().setItemOnCursor(null);
             addItemList();
         }));
-    }
+    } // TODO make it configurable.
 
 
     protected void addHardnessSelector() {

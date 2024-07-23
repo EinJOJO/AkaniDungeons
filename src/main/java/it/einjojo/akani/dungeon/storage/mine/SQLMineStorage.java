@@ -68,6 +68,14 @@ public class SQLMineStorage {
                         pitch FLOAT          NOT NULL,
                         yaw   FLOAT          NOT NULL
                     );""");
+            statement.executeUpdate("""
+                    CREATE TABLE IF NOT EXISTS dungeons_mine_placed_destroyed
+                    (
+                        destroyer_player_uuid VARCHAR(32) NOT NULL,
+                        placed_ore_id         INT         NOT NULL,
+                        destroyed_at          TIMESTAMP   NOT NULL,
+                        expiry                TIMESTAMP   NOT NULL
+                    );""");
         } catch (SQLException ex) {
             throw new StorageException("initializing placed mine ore storage", ex);
         }

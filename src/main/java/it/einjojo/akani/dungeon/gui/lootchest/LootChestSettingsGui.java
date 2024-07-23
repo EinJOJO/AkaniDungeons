@@ -27,7 +27,7 @@ public class LootChestSettingsGui extends Gui implements ParentableGui {
         Icon background = GUIItem.BACKGROUND.icon().onClick(this::openParent);
         fillRow(background, 0);
         fillRow(background, 5);
-        addItem(11, new Icon(Material.CHEST).onClick(e -> {
+        addItem(11, new Icon(Material.CHEST).setName("§7Items verwalten").onClick(e -> {
             var gui = new LootChestItemsGui(player, lootChest);
             gui.setParent(this);
             gui.open();

@@ -2,12 +2,11 @@ package it.einjojo.akani.dungeon.gui.lootchest;
 
 import it.einjojo.akani.core.paper.util.ItemBuilder;
 import it.einjojo.akani.dungeon.gui.GUIItem;
+import it.einjojo.akani.dungeon.gui.PaginatedGui;
 import it.einjojo.akani.dungeon.input.PlayerChatInput;
 import it.einjojo.akani.dungeon.lootchest.LootChest;
 import it.einjojo.akani.dungeon.lootchest.LootChestManager;
-import it.einjojo.akani.util.inventory.Gui;
 import it.einjojo.akani.util.inventory.Icon;
-import it.einjojo.akani.util.inventory.pagination.PaginationManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
@@ -19,9 +18,8 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-public class LootChestOverviewGui extends Gui {
+public class LootChestOverviewGui extends PaginatedGui {
     private final LootChestManager lootChestManager;
-    private final PaginationManager paginationManager = new PaginationManager(this);
 
     public LootChestOverviewGui(Player player, LootChestManager lootChestManager) {
         super(player, "lootChestOverview", Component.text("Lootkisten", NamedTextColor.GOLD), 6);
@@ -34,6 +32,7 @@ public class LootChestOverviewGui extends Gui {
         fillRow(GUIItem.BACKGROUND.icon(), 0);
         fillRow(GUIItem.BACKGROUND.icon(), 5);
         addItem(5 * 9 + 4, GUIItem.PLUS_SKULL.icon().setName("§aLootchest erstellen").onClick(this::handleAddClick));
+        addPaginationItems();
         paginationManager.getItems().clear();
         for (LootChest chestType : lootChestManager.lootChests()) {
             paginationManager.addItem(createLootChestIcon(chestType));

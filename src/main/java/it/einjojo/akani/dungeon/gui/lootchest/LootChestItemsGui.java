@@ -2,6 +2,7 @@ package it.einjojo.akani.dungeon.gui.lootchest;
 
 import it.einjojo.akani.core.paper.util.ItemBuilder;
 import it.einjojo.akani.dungeon.gui.GUIItem;
+import it.einjojo.akani.dungeon.gui.PaginatedGui;
 import it.einjojo.akani.dungeon.gui.ParentableGui;
 import it.einjojo.akani.dungeon.input.PlayerChatInput;
 import it.einjojo.akani.dungeon.lootchest.LootChest;
@@ -24,10 +25,9 @@ import java.util.List;
 /**
  * @since 1.2.0
  */
-public class LootChestItemsGui extends Gui implements ParentableGui {
+public class LootChestItemsGui extends PaginatedGui implements ParentableGui {
     private final LootChest lootChest;
     private Gui parent;
-    private final PaginationManager paginationManager = new PaginationManager(this);
 
     @Nullable
     @Override
@@ -55,8 +55,10 @@ public class LootChestItemsGui extends Gui implements ParentableGui {
         fillRow(returningBackground, 5);
         addPaginationItems();
         renderItems();
-        player.sendMessage("Open");
-        addItem(9 * 5 + 4, GUIItem.PLUS_SKULL.icon().setName("§cItem hinzufügen").setLore("§7Ziehe das Item hinein.").onClick(this::handleAddClickEvent));
+        addItem(9 * 5 + 4, GUIItem.PLUS_SKULL.icon()
+                .setName("§cItem hinzufügen")
+                .setLore("§7Ziehe das Item hinein.")
+                .onClick(this::handleAddClickEvent));
     }
 
     private void renderItems() {
@@ -67,16 +69,6 @@ public class LootChestItemsGui extends Gui implements ParentableGui {
         paginationManager.update();
     }
 
-    private void addPaginationItems() {
-        addItem(GUIItem.LEFT_SKULL.icon().setName("§cVorherige Seite").onClick(e -> {
-            paginationManager.goPreviousPage();
-            paginationManager.update();
-        }));
-        addItem(GUIItem.RIGHT_SKULL.icon().setName("§cNächste Seite").onClick(e -> {
-            paginationManager.goNextPage();
-            paginationManager.update();
-        }));
-    }
 
     private Icon createItemRewardIcon(ItemReward itemReward) {
         return new Icon(new ItemBuilder(itemReward.baseItem())
