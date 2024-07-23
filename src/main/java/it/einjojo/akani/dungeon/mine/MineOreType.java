@@ -55,6 +55,8 @@ public class MineOreType {
         );
     }
 
+
+
     public void setToolType(ToolType toolType) {
         this.toolType = toolType;
     }
@@ -131,6 +133,10 @@ public class MineOreType {
 
     public List<ItemReward> breakRewards() {
         return itemRewards;
+    }
+
+    public void setRespawnTime(Duration respawnTime) {
+        this.respawnTime = respawnTime;
     }
 
     public Hardness hardness() {

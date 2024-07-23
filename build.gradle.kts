@@ -30,6 +30,10 @@ dependencies {
         isTransitive = false
     }
     compileOnly("io.lumine:Mythic-Dist:5.6.1")
+    testImplementation(platform("org.junit:junit-bom:5.10.0"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation("org.mariadb.jdbc:mariadb-java-client:3.3.3")
+
 }
 
 java {
@@ -69,5 +73,8 @@ tasks {
         //relocate("co.aikar.commands", "it.einjojo.akani.essentials.command.acf")
         //relocate("fr.mrmicky.fastboard", "it.einjojo.akani.essentials.scoreboard.fastboard")
 
+    }
+    test {
+        useJUnitPlatform()
     }
 }

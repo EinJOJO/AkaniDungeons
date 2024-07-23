@@ -67,8 +67,8 @@ public class MineListener implements Listener {
             event.getPlayer().sendMessage("§cOre type not found. Maybe deleted?");
             return;
         }
-        PlacedOre ore = akaniDungeon.placedOreFactory().createMineOre(location.subtract(0, 0.3f, 0).setDirection(event.getPlayer().getLocation().getDirection()), oreType);
-        mineManager().registerOre(ore);
+        PlacedOre ore = akaniDungeon.placedOreFactory().createPlacedOre(location.subtract(0, 0.3f, 0).setDirection(event.getPlayer().getLocation().getDirection()), oreType);
+        mineManager().registerPlacedOre(ore);
         event.getPlayer().sendMessage("§aErz platziert.");
         ore.render(event.getPlayer());
     }

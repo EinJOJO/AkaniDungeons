@@ -11,8 +11,12 @@ import it.einjojo.akani.dungeon.mine.factory.PlacedOreFactory;
 import it.einjojo.akani.dungeon.mine.tool.ToolFactory;
 import it.einjojo.akani.dungeon.mobs.AsyncMobPopulateChunkSelector;
 import it.einjojo.akani.dungeon.mobs.SyncMobSpawner;
+import it.einjojo.akani.dungeon.storage.SQLConnectionProvider;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class AkaniDungeon {
     private final JavaPlugin plugin;
@@ -35,7 +39,7 @@ public class AkaniDungeon {
         this.configManager = configManager;
         syncMobSpawner = new SyncMobSpawner();
         asyncMobPopulateChunkSelector = new AsyncMobPopulateChunkSelector(config().mobSpawnerConfig(), syncMobSpawner);
-        mineManager = new MineManager(configManager.placedOreConfig());
+        mineManager = new MineManager(configManager.mineOreTypeConfig(), () -> core.dataSourceProxy().getConnection());
         syncOreRenderer = new SyncOreRenderer(mineManager);
         placedOreFactory = new PlacedOreFactory();
         mineOreTypeFactory = new MineOreTypeFactory();
