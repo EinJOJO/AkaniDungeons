@@ -48,15 +48,6 @@ public class MineOreCommand extends BaseCommand {
         sender.sendMessage("§7Das Erz §a" + type.name() + "§7 wurde erstellt.");
     }
 
-    @Subcommand("save")
-    @Syntax("")
-    @Description("Save the placed mine ore types.")
-    public void savePlaced(Player sender) {
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            core.mineManager().save();
-            sender.sendMessage("§7Platzierte Erze gespeichert.");
-        });
-    }
 
     @Subcommand("reload|rl")
     @Syntax("")
