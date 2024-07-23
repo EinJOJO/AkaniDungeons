@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
@@ -80,7 +81,7 @@ public class SQLMineStorage {
         String sql = """
                 INSERT INTO dungeons_mine_placed (type, x, y, z, pitch, yaw, world)
                 VALUES (?, ?, ?, ?, ?, ?, ?);""";
-        try (var connection = connectionProvider.getConnection(); var ps = connection.prepareStatement(sql)) {
+        try (var connection = connectionProvider.getConnection(); var ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, placedOre.type().name());
             ps.setDouble(2, (float) placedOre.location().x());
             ps.setDouble(3, placedOre.location().y());
