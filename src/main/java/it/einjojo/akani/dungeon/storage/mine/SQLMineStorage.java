@@ -65,8 +65,7 @@ public class SQLMineStorage {
                         y     DOUBLE         NOT NULL,
                         z     DOUBLE         NOT NULL,
                         pitch FLOAT          NOT NULL,
-                        yaw   FLOAT          NOT NULL,
-                        FOREIGN KEY (type) REFERENCES dungeons_mine_type (name)
+                        yaw   FLOAT          NOT NULL
                     );""");
         } catch (SQLException ex) {
             throw new StorageException("initializing placed mine ore storage", ex);
