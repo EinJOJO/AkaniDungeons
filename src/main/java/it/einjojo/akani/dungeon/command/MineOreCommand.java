@@ -1,10 +1,11 @@
 package it.einjojo.akani.dungeon.command;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.CommandHelp;
-import co.aikar.commands.annotation.*;
+import it.einjojo.akani.dungeon.AkaniDungeonPlugin;
+import it.einjojo.akani.dungeon.gui.mineoretype.MineOreTypeSelectorGUI;
+import it.einjojo.akani.util.commands.BaseCommand;
+import it.einjojo.akani.util.commands.CommandHelp;
+import it.einjojo.akani.util.commands.annotation.*;
 import it.einjojo.akani.dungeon.AkaniDungeon;
-import it.einjojo.akani.dungeon.gui.GuiManager;
 import it.einjojo.akani.dungeon.util.ItemReward;
 import it.einjojo.akani.dungeon.mine.Hardness;
 import it.einjojo.akani.dungeon.mine.MineOreType;
@@ -19,8 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class MineOreCommand extends BaseCommand {
     @Dependency
     private AkaniDungeon core;
-    @Dependency
-    private GuiManager guiManager;
+
     @Dependency
     private JavaPlugin plugin;
 
@@ -28,7 +28,7 @@ public class MineOreCommand extends BaseCommand {
     @Subcommand("gui")
     @Description("Open the mine ore type selector GUI.")
     public void openTypesGui(Player sender) {
-        guiManager.mineOreTypeSelectorGUI().open(sender);
+        new MineOreTypeSelectorGUI(sender, core.config().mineOreTypeConfig(), core.mineOreTypeFactory());
     }
 
     @Subcommand("create")
