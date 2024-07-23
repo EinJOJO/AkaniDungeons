@@ -1,6 +1,5 @@
 package it.einjojo.akani.dungeon.gui.lootchest;
 
-import it.einjojo.akani.core.paper.util.ItemBuilder;
 import it.einjojo.akani.dungeon.gui.GUIItem;
 import it.einjojo.akani.dungeon.gui.ParentableGui;
 import it.einjojo.akani.dungeon.lootchest.LootChest;
@@ -9,7 +8,6 @@ import it.einjojo.akani.util.inventory.Gui;
 import it.einjojo.akani.util.inventory.Icon;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 
 public class LootChestSettingsGui extends Gui implements ParentableGui {
@@ -37,17 +35,24 @@ public class LootChestSettingsGui extends Gui implements ParentableGui {
 
 
     private void placeParticleSettings() {
-        addItem(new Icon(Material.YELLOW_STAINED_GLASS_PANE).setName("§6Legendär").onClick(e -> {
-            lootChest.setParticleSpawner(new ParticleSpawnerFactory().createLegendaryParticleSpawner());
-        }), 9 * 2 + 2);
+        int row = 9 * 2;
+        var factory = new ParticleSpawnerFactory();
+        addItem(row + 2, new Icon(Material.YELLOW_STAINED_GLASS_PANE).setName("§6Legendär").onClick(e -> {
+            lootChest.setParticleSpawner(factory.createLegendaryParticleSpawner());
+        }));
+        addItem(row + 3, new Icon(Material.PURPLE_STAINED_GLASS_PANE).setName("§5Episch").onClick(e -> {
+            lootChest.setParticleSpawner(factory.createEpicParticleSpawner());
+        }));
 
-        addItem(new Icon(Material.PURPLE_STAINED_GLASS_PANE).setName("§5Episch").onClick(e -> {
-            lootChest.setParticleSpawner(new ParticleSpawnerFactory().createEpicParticleSpawner());
-        }), 9 * 2 + 3);
-
-        addItem(new Icon(Material.WHITE_STAINED_GLASS_PANE).setName("§fNormal").onClick(e -> {
-            lootChest.setParticleSpawner(new ParticleSpawnerFactory().createNormalParticleSpawner());
-        }), 9 * 2 + 4);
+        addItem(row + 4, new Icon(Material.WHITE_STAINED_GLASS_PANE).setName("§fNormal").onClick(e -> {
+            lootChest.setParticleSpawner(factory.createNormalParticleSpawner());
+        }));
+        addItem(row + 5, new Icon(Material.BLUE_STAINED_GLASS_PANE).setName("§9Sehr selten").onClick(e -> {
+            lootChest.setParticleSpawner(factory.createVeryRareParticleSpawner());
+        }));
+        addItem(row + 6, new Icon(Material.GREEN_STAINED_GLASS_PANE).setName("§aSelten").onClick(e -> {
+            lootChest.setParticleSpawner(factory.createRareParticleSpawner());
+        }));
 
 
     }
