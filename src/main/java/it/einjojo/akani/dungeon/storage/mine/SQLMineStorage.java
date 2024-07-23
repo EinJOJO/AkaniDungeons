@@ -79,8 +79,8 @@ public class SQLMineStorage {
             throw new IllegalArgumentException("placed ore already exists in database");
         }
         String sql = """
-                INSERT INTO dungeons_mine_placed (type, x, y, z, pitch, yaw)
-                VALUES (?, ?, ?, ?, ?, ?);""";
+                INSERT INTO dungeons_mine_placed (type, x, y, z, pitch, yaw, world)
+                VALUES (?, ?, ?, ?, ?, ?, ?);""";
         try (var connection = connectionProvider.getConnection(); var ps = connection.prepareStatement(sql)) {
             ps.setString(1, placedOre.type().name());
             ps.setDouble(2, (float) placedOre.location().x());
@@ -88,6 +88,7 @@ public class SQLMineStorage {
             ps.setDouble(4, placedOre.location().z());
             ps.setFloat(5, placedOre.location().getPitch());
             ps.setFloat(6, placedOre.location().getYaw());
+            ps.setString(7, placedOre.location().getWorld().getName());
             ps.executeUpdate();
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
