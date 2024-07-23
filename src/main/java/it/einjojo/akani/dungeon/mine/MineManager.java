@@ -64,16 +64,17 @@ public class MineManager {
 
     public void unregisterPlacedOre(PlacedOre ore) {
         oreMap.remove(ore.entityId());
-        oreChunkMap.get(ChunkPosition.of(ore.location())).ores().remove(ore);
+        MineChunk chunk = oreChunkMap.get(ChunkPosition.of(ore.location()));
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            ore.unrender(player);
+        }
+        chunk.ores().remove(ore);
     }
 
     public void load() {
         oreChunkMap.clear();
         for (PlacedOre ore : oreMap.values()) {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                ore.unrender(player);
-            }
-            oreMap.remove(ore.entityId());
+            unregisterPlacedOre(ore);
         }
         for (PlacedOre placedOre : storage.loadAllPlacedOres(new PlacedOreFactory(),
                 (name) -> config.types().stream().filter(type -> type.name().equals(name)).findFirst().orElseThrow())) {
