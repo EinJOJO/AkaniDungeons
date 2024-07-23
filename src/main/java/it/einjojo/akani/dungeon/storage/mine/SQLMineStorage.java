@@ -160,7 +160,7 @@ public class SQLMineStorage {
      */
     public @Nullable PlacedOre loadPlacedOre(int id, PlacedOreFactory factory, Function<String, MineOreType> oreTypeByNameLookupFunction) {
         String sql = """
-                SELECT id, type, x, y, z, pitch, yaw
+                SELECT id, type, x, y, z, pitch, yaw, world
                 FROM dungeons_mine_placed
                 WHERE id = ?;""";
         try (var connection = connectionProvider.getConnection(); var ps = connection.prepareStatement(sql)) {
@@ -184,7 +184,7 @@ public class SQLMineStorage {
      */
     public @NotNull List<PlacedOre> loadAllPlacedOres(PlacedOreFactory placedOreFactory, Function<String, MineOreType> oreTypeByNameLookupFunction) {
         String sql = """
-                SELECT id, type, x, y, z, pitch, yaw
+                SELECT id, type, x, y, z, pitch, yaw, world
                 FROM dungeons_mine_placed;""";
         List<PlacedOre> list = new LinkedList<>();
         try (var connection = connectionProvider.getConnection(); var ps = connection.prepareStatement(sql)) {
