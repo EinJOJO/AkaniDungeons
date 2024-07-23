@@ -33,7 +33,7 @@ public class LootChestOverviewGui extends Gui {
     public void onOpen(InventoryOpenEvent event) {
         fillRow(GUIItem.BACKGROUND.icon(), 0);
         fillRow(GUIItem.BACKGROUND.icon(), 5);
-        addItem(5 * 9 + 4, GUIItem.ADD_BUTTON.icon().onClick(this::handleAddClick));
+        addItem(5 * 9 + 4, GUIItem.PLUS_SKULL.icon().setName("§aLootchest erstellen").onClick(this::handleAddClick));
         paginationManager.getItems().clear();
         for (LootChest chestType : lootChestManager.lootChests()) {
             paginationManager.addItem(createLootChestIcon(chestType));
