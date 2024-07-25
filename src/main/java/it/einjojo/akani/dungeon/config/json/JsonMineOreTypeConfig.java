@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 public class JsonMineOreTypeConfig implements MineOreTypeConfig {
     private final Gson gson;
@@ -48,6 +49,7 @@ public class JsonMineOreTypeConfig implements MineOreTypeConfig {
             }
         }
         oreTypes.add(oreType);
+        CompletableFuture.runAsync(this::save);
     }
 
     public void save() {

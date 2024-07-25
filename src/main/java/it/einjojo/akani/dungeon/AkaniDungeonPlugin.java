@@ -1,5 +1,6 @@
 package it.einjojo.akani.dungeon;
 
+import it.einjojo.akani.dungeon.listener.*;
 import it.einjojo.akani.util.commands.PaperCommandManager;
 import io.lumine.mythic.bukkit.MythicBukkit;
 import it.einjojo.akani.dungeon.command.BuildCommand;
@@ -7,10 +8,6 @@ import it.einjojo.akani.dungeon.command.ChunkMobsCommand;
 import it.einjojo.akani.dungeon.command.LootChestCommand;
 import it.einjojo.akani.dungeon.command.MineOreCommand;
 import it.einjojo.akani.dungeon.config.DungeonConfigManager;
-import it.einjojo.akani.dungeon.listener.DungeonWorldListener;
-import it.einjojo.akani.dungeon.listener.InputListener;
-import it.einjojo.akani.dungeon.listener.MineListener;
-import it.einjojo.akani.dungeon.listener.OreAttackPacketListener;
 import it.einjojo.akani.dungeon.lootchest.LootChest;
 import it.einjojo.akani.dungeon.mine.Hardness;
 import it.einjojo.akani.dungeon.mine.MineOreType;
@@ -56,6 +53,7 @@ public class AkaniDungeonPlugin extends JavaPlugin {
         new MineListener(this, akaniDungeon);
         dungeonWorldListener = new DungeonWorldListener(this);
         new InputListener(this);
+        new PlayerListener(this);
         // LootChestListener is registered inside the manager
     }
 
