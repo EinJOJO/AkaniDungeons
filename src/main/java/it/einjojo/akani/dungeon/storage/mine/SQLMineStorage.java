@@ -19,6 +19,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.function.Function;
 
 public class SQLMineStorage {
@@ -202,6 +203,10 @@ public class SQLMineStorage {
                         list.add(placedOreFromResultSet(rs, placedOreFactory, oreTypeByNameLookupFunction));
                     } catch (IllegalStateException worldNotLoaded) {
                         log.warn("skipping placed ore because world not loaded: {}", worldNotLoaded.getMessage());
+                    } catch (NoSuchElementException ex) {
+                        int ore = rs.getInt("id");
+                        log.info("deleting placed ore because type is invalid: {}", ore);
+                        deletePlacedOre(ore);
                     }
                 }
             }
