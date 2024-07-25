@@ -27,6 +27,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 @CommandAlias("lc|lootchest")
+@CommandPermission("akani.dungeons.lootchest")
 public class LootChestCommand extends BaseCommand {
     private BukkitTask currentScanTask;
     private List<Location> lastScanResult;

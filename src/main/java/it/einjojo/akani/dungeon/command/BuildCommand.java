@@ -2,6 +2,7 @@ package it.einjojo.akani.dungeon.command;
 
 import it.einjojo.akani.util.commands.BaseCommand;
 import it.einjojo.akani.util.commands.annotation.CommandAlias;
+import it.einjojo.akani.util.commands.annotation.CommandPermission;
 import it.einjojo.akani.util.commands.annotation.Default;
 import it.einjojo.akani.util.commands.annotation.Optional;
 import it.einjojo.akani.util.commands.bukkit.contexts.OnlinePlayer;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 @CommandAlias("build")
+@CommandPermission("akani.dungeons.build")
 public class BuildCommand extends BaseCommand {
 
     private final DungeonWorldListener worldListener;

@@ -11,6 +11,7 @@ import it.einjojo.akani.util.inventory.Icon;
 import it.einjojo.akani.util.inventory.pagination.PaginationManager;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -64,13 +65,18 @@ public class MineOreTypeSelectorGUI extends PaginatedGui {
             player.closeInventory();
             return;
         }
-        ItemStack icon = cursorItem.clone();
-        icon.setAmount(1);
-        MineOreType oreType = factory.createMineOreType(icon);
-        config.addOreType(oreType);
-        player.getInventory().addItem(cursorItem);
-        player.setItemOnCursor(null);
-        addOreType(oreType);
+        try {
+            ItemStack icon = cursorItem.clone();
+            icon.setAmount(1);
+            MineOreType oreType = factory.createMineOreType(icon);
+            config.addOreType(oreType);
+            player.getInventory().addItem(cursorItem);
+            player.setItemOnCursor(null);
+            addOreType(oreType);
+        } catch (IllegalArgumentException ex) {
+            player.sendMessage(Component.text("Ein Fehler ist aufgetreten: " + ex.getMessage()));
+            player.playSound(player, Sound.ENTITY_ITEM_BREAK, 1, 1.5f);
+        }
     }
 
     public void addOreType(MineOreType oreType) {

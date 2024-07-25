@@ -26,6 +26,7 @@ public class SQLMineStorage {
 
     private static final Logger log = LoggerFactory.getLogger(SQLMineStorage.class);
     private final SQLConnectionProvider connectionProvider;
+    private static final List<Integer> invalidIds = new LinkedList<>();
 
 
     public SQLMineStorage(SQLConnectionProvider connectionProvider) {
@@ -205,8 +206,7 @@ public class SQLMineStorage {
                         log.warn("skipping placed ore because world not loaded: {}", worldNotLoaded.getMessage());
                     } catch (NoSuchElementException ex) {
                         int ore = rs.getInt("id");
-                        log.info("deleting placed ore because type is invalid: {}", ore);
-                        deletePlacedOre(ore);
+                        invalidIds.add(ore);
                     }
                 }
             }

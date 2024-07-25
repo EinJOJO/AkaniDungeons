@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @CommandAlias("adminmine|amine")
-@CommandPermission("akani.mine.admin")
+@CommandPermission("akani.dungeons.mine")
 public class MineOreCommand extends BaseCommand {
     @Dependency
     private AkaniDungeon core;
@@ -27,6 +27,7 @@ public class MineOreCommand extends BaseCommand {
 
     @Subcommand("gui")
     @Description("Open the mine ore type selector GUI.")
+
     public void openTypesGui(Player sender) {
         new MineOreTypeSelectorGUI(sender, core.config().mineOreTypeConfig(), core.mineOreTypeFactory()).open();
     }

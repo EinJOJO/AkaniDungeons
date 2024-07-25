@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 @CommandAlias("chunkmobs|mobs")
+@CommandPermission("akani.dungeons.chunkmobs")
 public class ChunkMobsCommand extends BaseCommand {
 
     private final MobSpawnerConfig mobSpawnerConfig;
