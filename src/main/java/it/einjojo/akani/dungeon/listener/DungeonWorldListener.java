@@ -49,6 +49,14 @@ public class DungeonWorldListener implements Listener {
     }
 
 
+    @EventHandler
+    public void disablePVP(EntityDamageByEntityEvent event) {
+        if (event.getEntity() instanceof Player && event.getDamager() instanceof Player) {
+            event.setCancelled(true);
+        }
+    }
+
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void cancelBlockBreak(BlockBreakEvent event) {
         if (isNotInBuildMode(event.getPlayer())) {
