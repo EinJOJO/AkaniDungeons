@@ -68,6 +68,7 @@ public class LootChestListener implements Listener, PacketListener {
         });
     }
 
+    @EventHandler
     public void destroyLootChest(BlockBreakEvent event) {
         if (BuilderRegistry.isNotInBuildMode(event.getPlayer().getUniqueId())) return;
         PlacedLootChest plc = lootChestManager.placedLootChestByLocation(event.getBlock().getLocation());
@@ -75,6 +76,7 @@ public class LootChestListener implements Listener, PacketListener {
             return;
         }
         lootChestManager.deletePlacedChest(plc);
+        event.getPlayer().sendMessage("§cDie platzierte Lootchest wurde gelöscht.");
     }
 
 
@@ -86,6 +88,7 @@ public class LootChestListener implements Listener, PacketListener {
         if (event.getClickedBlock() == null) {
             return;
         }
+        if (!event.getAction().isRightClick()) return;
         PlacedLootChest plc = lootChestManager.placedLootChestByLocation(event.getClickedBlock().getLocation());
         if (plc == null) {
             return;

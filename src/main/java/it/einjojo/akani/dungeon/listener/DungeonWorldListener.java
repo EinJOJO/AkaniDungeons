@@ -4,12 +4,16 @@ import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
 import it.einjojo.akani.dungeon.util.BuilderRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -64,10 +68,17 @@ public class DungeonWorldListener implements Listener {
         if (isNotInBuildMode(event.getPlayer())) {
             event.setUseInteractedBlock(PlayerInteractEvent.Result.DENY);
         }
+
         if (event.getItem() == null) return;
         if (INTERACTION_BLACKLIST.contains(event.getItem().getType())) {
             event.setUseItemInHand(PlayerInteractEvent.Result.DENY);
         }
+
+    }
+
+    @EventHandler
+    public void disallowItemFrameRotation(PlayerInteractAtEntityEvent event) {
+
     }
 
 
@@ -76,6 +87,18 @@ public class DungeonWorldListener implements Listener {
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             postRespawnEvent.getPlayer().chat("/warp dungeons");
         }, 1);
+    }
+
+    @EventHandler
+    public void disallowItemFrameAttack(EntityDamageByEntityEvent entityDamageEvent) {
+        if (entityDamageEvent.getEntity() instanceof ItemFrame) {
+            if (entityDamageEvent.getDamager() instanceof Player player) {
+                if (isNotInBuildMode(player)) {
+                    entityDamageEvent.setCancelled(true);
+                }
+            }
+        }
+
     }
 
 

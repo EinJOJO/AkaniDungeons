@@ -19,7 +19,11 @@ public class BuilderRegistry {
     }
 
     public static boolean isNotInBuildMode(@NotNull UUID player) {
-        return !buildModeSet.contains(player.getUniqueId());
+        return !buildModeSet.contains(player);
+    }
+
+    public static boolean isInBuildMode(@NotNull UUID player) {
+        return buildModeSet.contains(player);
     }
 
 }

@@ -23,6 +23,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,6 +48,7 @@ public class LootChestCommand extends BaseCommand {
             }
             return;
         }
+
         Material scanMaterial = Material.BEACON;
         if (arg != null) {
             try {
@@ -61,6 +63,7 @@ public class LootChestCommand extends BaseCommand {
             sendMessage(player, "§cEin Chest-Scan läuft bereits...");
             return;
         }
+
         Region selection;
         try {
             selection = BukkitAdapter.adapt(player).getSelection();
@@ -69,21 +72,38 @@ public class LootChestCommand extends BaseCommand {
             sendMessage(player, "§cErstelle mit Worldedit eine Region.");
             return;
         }
+
         World world = selection.getWorld();
+        if (world == null) {
+            sendMessage(player, "§cKeine Welt gefunden.");
+            return;
+        }
+
         BlockType searching = BukkitAdapter.asBlockType(scanMaterial);
         currentScanTask = plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            if (world == null) {
-                sendMessage(player, "§cKeine Welt gefunden.");
-                return;
-            }
-            List<Location> lootBoxes = new LinkedList<>();
+            List<Location> lootBoxes = new ArrayList<>();
             long started = System.currentTimeMillis();
             sendMessage(player, "§eChest-Scan gestartet...");
-            for (BlockVector3 blockVector3 : selection) {
-                if (world.getBlock(blockVector3).getBlockType() == searching) {
-                    lootBoxes.add(BukkitAdapter.adapt(player.getWorld(), blockVector3));
+
+            BlockVector3 min = selection.getMinimumPoint();
+            BlockVector3 max = selection.getMaximumPoint();
+            int minX = min.getBlockX();
+            int minY = min.getBlockY();
+            int minZ = min.getBlockZ();
+            int maxX = max.getBlockX();
+            int maxY = max.getBlockY();
+            int maxZ = max.getBlockZ();
+
+            for (int x = minX; x <= maxX; x++) {
+                for (int z = minZ; z <= maxZ; z++) {
+                    for (int y = minY; y <= maxY; y++) {
+                        if (world.getBlock(x, y, z).getBlockType() == searching) {
+                            lootBoxes.add(new Location(player.getWorld(), x, y, z));
+                        }
+                    }
                 }
             }
+
             lastScanResult = lootBoxes;
             Duration elapsed = Duration.ofMillis(System.currentTimeMillis() - started);
             sendMessage(player, "§aScan abgeschlossen §7in %dm %ds".formatted(elapsed.toMinutesPart(), elapsed.toSecondsPart()));
