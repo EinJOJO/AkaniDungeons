@@ -53,7 +53,6 @@ public class AkaniDungeonPlugin extends JavaPlugin {
         new MineListener(this, akaniDungeon);
         dungeonWorldListener = new DungeonWorldListener(this);
         new InputListener(this);
-        new PlayerListener(this);
         // LootChestListener is registered inside the manager
     }
 

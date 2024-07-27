@@ -1,5 +1,9 @@
 package it.einjojo.akani.dungeon.listener;
 
+import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
+import it.einjojo.akani.dungeon.util.BuilderRegistry;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -7,26 +11,37 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.EnumSet;
 import java.util.UUID;
 
 public class DungeonWorldListener implements Listener {
 
-    private final Set<UUID> buildModeSet = new HashSet<>();
+    private final JavaPlugin plugin;
+    private static final EnumSet<Material> INTERACTION_BLACKLIST = EnumSet.of(
+            Material.BUCKET,
+            Material.WATER_BUCKET,
+            Material.LAVA_BUCKET,
+            Material.FLINT_AND_STEEL,
+            Material.FIRE_CHARGE,
+            Material.FIREWORK_ROCKET,
+            Material.GLASS_BOTTLE,
+            Material.FIREWORK_STAR
+    );
 
     public DungeonWorldListener(JavaPlugin plugin) {
+        this.plugin = plugin;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        buildModeSet.remove(UUID.randomUUID());
+        if (!BuilderRegistry.isNotInBuildMode(event.getPlayer().getUniqueId())) {
+            toggleBuild(event.getPlayer().getUniqueId());
+        }
     }
 
 
@@ -48,21 +63,28 @@ public class DungeonWorldListener implements Listener {
     public void cancelInteractions(PlayerInteractEvent event) {
         if (isNotInBuildMode(event.getPlayer())) {
             event.setUseInteractedBlock(PlayerInteractEvent.Result.DENY);
+        }
+        if (event.getItem() == null) return;
+        if (INTERACTION_BLACKLIST.contains(event.getItem().getType())) {
             event.setUseItemInHand(PlayerInteractEvent.Result.DENY);
         }
     }
 
 
+    @EventHandler
+    public void respawnRunCommand(PlayerPostRespawnEvent postRespawnEvent) {
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            postRespawnEvent.getPlayer().chat("/warp dungeons");
+        }, 1);
+    }
+
+
     public void toggleBuild(UUID playerId) {
-        if (buildModeSet.contains(playerId)) {
-            buildModeSet.remove(playerId);
-        } else {
-            buildModeSet.add(playerId);
-        }
+        BuilderRegistry.toggleBuild(playerId);
     }
 
     protected boolean isNotInBuildMode(Player player) {
-        return !buildModeSet.contains(player.getUniqueId());
+        return BuilderRegistry.isNotInBuildMode(player.getUniqueId());
     }
 
 }

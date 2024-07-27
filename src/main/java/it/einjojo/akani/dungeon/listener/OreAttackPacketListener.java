@@ -69,12 +69,12 @@ public class OreAttackPacketListener extends PacketListenerAbstract {
             return;
         }
         if (placedOre.hasDestroyed(player.getUniqueId())) {
-            denialAction(player, placedOre, Component.text("§cYou already destroyed this!"));
+            denialAction(player, placedOre, Component.text("§cDu hast das Erz bereits abgebaut!"));
             return;
         }
         Tool tool = toolFactory.fromItemStack(itemStack);
         if (tool.type() == null || !placedOre.type().canBreak(itemStack)) {
-            denialAction(player, placedOre, Component.text("§cYou can't break this with that tool!"));
+            denialAction(player, placedOre, Component.text("§cBenutze ein anderes Werkzeug!"));
             return;
         }
         var preMineProgressionEvent = new AsyncPlayerPreMineProgressEvent(player, placedOre, progression, tool.damage());
