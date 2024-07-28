@@ -1,6 +1,7 @@
 package it.einjojo.akani.dungeon.mobs;
 
 import it.einjojo.akani.dungeon.config.MobSpawnerConfig;
+import it.einjojo.akani.dungeon.mobs.spawnable.Spawnable;
 import it.einjojo.akani.dungeon.util.ChunkPosition;
 import it.einjojo.akani.dungeon.util.ChunkRing;
 import it.einjojo.akani.dungeon.util.RepeatingTask;
@@ -83,12 +84,12 @@ public class AsyncMobPopulateChunkSelector implements RepeatingTask {
         int maxMobs = mobSpawnerConfig.maxMobsPerChunk();
         int skipped = 0;
         for (ChunkPosition chunkPos : chunks) {
-            if (randomlySkip && RANDOM.nextInt(2) == 0) { // 1/2 chance to skip
+            if (randomlySkip && RANDOM.nextInt(3) == 0) { // 1/2 chance to skip
                 skipped++;
                 continue;
             }
             Biome biome = chunkPos.getBiome(world);
-            List<String> mobIds = mobSpawnerConfig.mobIds(biome);
+            ArrayList<String> mobIds = new ArrayList<>(mobSpawnerConfig.mobIds(biome));
             if (mobIds.isEmpty()) {
                 continue;
             }
@@ -98,12 +99,10 @@ public class AsyncMobPopulateChunkSelector implements RepeatingTask {
                 continue;
             }
             int newMobs = (int) Math.ceil((maxMobs - entityAmount) * refill); // example: refill 30% of the missing mobs
-            Iterator<String> mobIdIterator = mobIds.iterator();
             for (int i = 0; i < newMobs; i++) {
-                if (!mobIdIterator.hasNext()) {
-                    mobIdIterator = mobIds.iterator();
-                }
-                syncMobSpawner.add(spawnableFactory.create(mobIdIterator.next(), chunkPos.randomSpawnableLocation(world)));
+                String mobId = mobIds.get(RANDOM.nextInt(mobIds.size()));
+                Spawnable<?> spawnable = spawnableFactory.create(mobId, chunkPos.randomSpawnableLocation(world));
+                syncMobSpawner.add(spawnable);
             }
         }
         logger.debug("Skipped {} chunks and refilled {} with {} refill-rate ", skipped, chunks.size() - skipped, refill);
