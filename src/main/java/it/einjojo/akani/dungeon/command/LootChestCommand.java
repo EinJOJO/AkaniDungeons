@@ -23,9 +23,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @CommandAlias("lc|lootchest")
 @CommandPermission("akani.dungeons.lootchest")
@@ -40,8 +38,12 @@ public class LootChestCommand extends BaseCommand {
     @Description("Scannt eine World-Region nach Lootboxen.")
     @CommandCompletion("[material]|cancel")
     @Syntax("[material]|cancel")
-    public void scanRegion(Player player, @Single @Optional String arg) {
-        if (arg != null && arg.equalsIgnoreCase("cancel")) {
+    public void scanRegion(Player player, String[] args) {
+        if (args.length < 1) {
+            sendMessage(player, "§cNutze /lc scan Material1 Material2 §7oder §c/lc scan cancel");
+        }
+        String arg0 = args[0];
+        if (arg0 != null && arg0.equalsIgnoreCase("cancel")) {
             if (currentScanTask != null) {
                 currentScanTask.cancel();
                 sendMessage(player, "§aScan abgebrochen.");
@@ -49,24 +51,27 @@ public class LootChestCommand extends BaseCommand {
             return;
         }
 
-        Material scanMaterial = Material.BEACON;
-        if (arg != null) {
+        Set<BlockType> scanMaterials = new HashSet<>();
+        for (String arg : args) {
             try {
-                scanMaterial = Material.valueOf(arg.toUpperCase());
+                scanMaterials.add(BukkitAdapter.asBlockType(Material.valueOf(arg.toUpperCase())));
             } catch (IllegalArgumentException ex) {
                 sendMessage(player, "§cUngültiges Material: " + arg);
                 return;
             }
         }
 
+
         if (currentScanTask != null && !currentScanTask.isCancelled()) {
-            sendMessage(player, "§cEin Chest-Scan läuft bereits...");
+            sendMessage(player, "§cEin Chest-Scan läuft bereits... Brich ab /cancel");
             return;
         }
 
+        //TODO fix
         Region selection;
         try {
             selection = BukkitAdapter.adapt(player).getSelection();
+            int blockAmount = selection.getHeight() * selection.getWidth() * selection.getLength();
         } catch (IncompleteRegionException ex) {
             sendMessage(player, "§cKeine Auswahl getroffen.");
             sendMessage(player, "§cErstelle mit Worldedit eine Region.");
@@ -74,12 +79,13 @@ public class LootChestCommand extends BaseCommand {
         }
 
         World world = selection.getWorld();
+        org.bukkit.World bukkitWorld = BukkitAdapter.adapt(world);
         if (world == null) {
             sendMessage(player, "§cKeine Welt gefunden.");
             return;
         }
 
-        BlockType searching = BukkitAdapter.asBlockType(scanMaterial);
+
         currentScanTask = plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
             List<Location> lootBoxes = new ArrayList<>();
             long started = System.currentTimeMillis();
@@ -97,8 +103,8 @@ public class LootChestCommand extends BaseCommand {
             for (int x = minX; x <= maxX; x++) {
                 for (int z = minZ; z <= maxZ; z++) {
                     for (int y = minY; y <= maxY; y++) {
-                        if (world.getBlock(x, y, z).getBlockType() == searching) {
-                            lootBoxes.add(new Location(player.getWorld(), x, y, z));
+                        if (scanMaterials.contains(world.getBlock(x, y, z).getBlockType())) {
+                            lootBoxes.add(new Location(bukkitWorld, x, y, z));
                         }
                     }
                 }
