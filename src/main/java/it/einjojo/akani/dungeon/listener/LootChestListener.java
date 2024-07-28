@@ -91,7 +91,7 @@ public class LootChestListener implements Listener, PacketListener {
             lootChest = lootChestManager.lootChestByName("normal");
         } else if (material.equals(Material.PURPLE_SHULKER_BOX)) {
             lootChest = lootChestManager.lootChestByName("episch");
-        } else if (material.equals(Material.GREEN_SHULKER_BOX)) {
+        } else if (material.equals(Material.LIME_SHULKER_BOX)) {
             lootChest = lootChestManager.lootChestByName("selten");
         } else if (material.equals(Material.YELLOW_SHULKER_BOX)) {
             lootChest = lootChestManager.lootChestByName("Legendär");
