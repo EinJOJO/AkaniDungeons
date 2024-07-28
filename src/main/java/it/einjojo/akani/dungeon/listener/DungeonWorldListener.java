@@ -70,6 +70,7 @@ public class DungeonWorldListener implements Listener {
         event.setDroppedExp(0);
         event.setKeepInventory(true);
         event.deathMessage(null);
+        event.getDrops().clear();
     }
 
 
