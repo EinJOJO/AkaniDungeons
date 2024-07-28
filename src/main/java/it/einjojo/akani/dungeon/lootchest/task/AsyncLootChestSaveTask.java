@@ -1,4 +1,4 @@
-package it.einjojo.akani.dungeon.lootchest.bukkit;
+package it.einjojo.akani.dungeon.lootchest.task;
 
 import it.einjojo.akani.dungeon.lootchest.LootChestManager;
 import it.einjojo.akani.dungeon.util.RepeatingTask;

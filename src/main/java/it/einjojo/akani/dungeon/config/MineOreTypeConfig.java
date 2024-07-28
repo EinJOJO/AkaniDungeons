@@ -10,6 +10,11 @@ public interface MineOreTypeConfig {
 
     void save();
 
+    /**
+     * Add a new ore type to the config
+     * @param oreType
+     * @throws IllegalArgumentException if already exists
+     */
     void addOreType(MineOreType oreType);
 
     void removeOreType(MineOreType remove);

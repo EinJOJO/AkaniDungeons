@@ -61,20 +61,20 @@ public class OreAttackPacketListener extends PacketListenerAbstract {
         Player player = (Player) event.getPlayer();
         ItemStack itemStack = player.getInventory().getItemInMainHand();
         if (itemStack.getType().equals(Material.DEBUG_STICK)) {
-            player.sendMessage("§7Type: §c" + placedOre.type().name());
-            player.sendMessage("§7Destroyed: ");
-            for (Map.Entry<UUID, Long> entry : placedOre.playerDestroyMap().entrySet()) {
-                player.sendMessage("§7 - " + entry.getKey() + " : §c" + entry.getValue());
-            }
+            printDebug(player, placedOre);
+            return;
+        }
+        if (itemStack.getType().equals(Material.COMMAND_BLOCK)) {
+            deletePlaced(player, placedOre);
             return;
         }
         if (placedOre.hasDestroyed(player.getUniqueId())) {
-            denialAction(player, placedOre, Component.text("§cYou already destroyed this!"));
+            denialAction(player, placedOre, Component.text("§cDu hast das Erz bereits abgebaut!"));
             return;
         }
         Tool tool = toolFactory.fromItemStack(itemStack);
         if (tool.type() == null || !placedOre.type().canBreak(itemStack)) {
-            denialAction(player, placedOre, Component.text("§cYou can't break this with that tool!"));
+            denialAction(player, placedOre, Component.text("§cBenutze ein anderes Werkzeug!"));
             return;
         }
         var preMineProgressionEvent = new AsyncPlayerPreMineProgressEvent(player, placedOre, progression, tool.damage());
@@ -102,10 +102,26 @@ public class OreAttackPacketListener extends PacketListenerAbstract {
         }
     }
 
+    private void printDebug(Player player, PlacedOre placedOre) {
+        player.sendMessage("§7Type: §c" + placedOre.type().name());
+        player.sendMessage("§7Destroyed: ");
+        for (Map.Entry<UUID, Long> entry : placedOre.playerDestroyMap().entrySet()) {
+            player.sendMessage("§7 - " + entry.getKey() + " : §c" + entry.getValue());
+        }
+    }
+
+    private void deletePlaced(Player player, PlacedOre ore) {
+        mineManager.storage().deletePlacedOre(ore);
+        mineManager.unregisterPlacedOre(ore);
+        player.sendMessage("§cOre deleted.");
+    }
+
+
     protected void denialAction(Player player, PlacedOre placedOre, Component actionBarMessage) {
         player.spawnParticle(Particle.ASH, placedOre.location().clone().add(0, 0.3f, 0), 3);
         player.sendActionBar(actionBarMessage);
         player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 0.3f, 1);
     }
+
 
 }

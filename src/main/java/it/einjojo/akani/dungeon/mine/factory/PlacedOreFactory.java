@@ -8,9 +8,9 @@ import org.bukkit.Location;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public record PlacedOreFactory() {
+public class PlacedOreFactory {
 
-    public PlacedOre createMineOre(Location location, MineOreType oreType) {
+    public PlacedOre createPlacedOre(Location location, MineOreType oreType) {
         int entityId = SpigotReflectionUtil.generateEntityId();
         return new PlacedOre(entityId, location, oreType, new HashSet<>(), new HashMap<>());
     }

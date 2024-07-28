@@ -1,16 +1,18 @@
 package it.einjojo.akani.dungeon.command;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.Optional;
-import co.aikar.commands.bukkit.contexts.OnlinePlayer;
+import it.einjojo.akani.util.commands.BaseCommand;
+import it.einjojo.akani.util.commands.annotation.CommandAlias;
+import it.einjojo.akani.util.commands.annotation.CommandPermission;
+import it.einjojo.akani.util.commands.annotation.Default;
+import it.einjojo.akani.util.commands.annotation.Optional;
+import it.einjojo.akani.util.commands.bukkit.contexts.OnlinePlayer;
 import com.google.common.base.Preconditions;
 import it.einjojo.akani.dungeon.listener.DungeonWorldListener;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 @CommandAlias("build")
+@CommandPermission("akani.dungeons.build")
 public class BuildCommand extends BaseCommand {
 
     private final DungeonWorldListener worldListener;

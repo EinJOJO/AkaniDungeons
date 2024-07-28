@@ -6,6 +6,6 @@ description: AkaniDungeons plugin
 api-version: 1.19
 depend:
   - packetevents
-  - SmartInvs
   - AkaniCore
   - MythicMobs
+  - AkaniUtils

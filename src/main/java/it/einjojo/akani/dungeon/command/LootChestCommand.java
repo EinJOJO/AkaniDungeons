@@ -1,8 +1,8 @@
 package it.einjojo.akani.dungeon.command;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.CommandHelp;
-import co.aikar.commands.annotation.*;
+import it.einjojo.akani.util.commands.BaseCommand;
+import it.einjojo.akani.util.commands.CommandHelp;
+import it.einjojo.akani.util.commands.annotation.*;
 import com.sk89q.worldedit.IncompleteRegionException;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector3;
@@ -23,10 +23,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.time.Duration;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 @CommandAlias("lc|lootchest")
+@CommandPermission("akani.dungeons.lootchest")
 public class LootChestCommand extends BaseCommand {
     private BukkitTask currentScanTask;
     private List<Location> lastScanResult;
@@ -38,51 +38,78 @@ public class LootChestCommand extends BaseCommand {
     @Description("Scannt eine World-Region nach Lootboxen.")
     @CommandCompletion("[material]|cancel")
     @Syntax("[material]|cancel")
-    public void scanRegion(Player player, @Single @Optional String arg) {
-        if (arg != null && arg.equalsIgnoreCase("cancel")) {
+    public void scanRegion(Player player, String[] args) {
+        if (args.length < 1) {
+            sendMessage(player, "§cNutze /lc scan Material1 Material2 §7oder §c/lc scan cancel");
+        }
+        String arg0 = args[0];
+        if (arg0 != null && arg0.equalsIgnoreCase("cancel")) {
             if (currentScanTask != null) {
                 currentScanTask.cancel();
                 sendMessage(player, "§aScan abgebrochen.");
             }
             return;
         }
-        Material scanMaterial = Material.BEACON;
-        if (arg != null) {
+
+        Set<BlockType> scanMaterials = new HashSet<>();
+        for (String arg : args) {
             try {
-                scanMaterial = Material.valueOf(arg.toUpperCase());
+                scanMaterials.add(BukkitAdapter.asBlockType(Material.valueOf(arg.toUpperCase())));
             } catch (IllegalArgumentException ex) {
                 sendMessage(player, "§cUngültiges Material: " + arg);
                 return;
             }
         }
 
+
         if (currentScanTask != null && !currentScanTask.isCancelled()) {
-            sendMessage(player, "§cEin Chest-Scan läuft bereits...");
+            sendMessage(player, "§cEin Chest-Scan läuft bereits... Brich ab /cancel");
             return;
         }
+
+        //TODO fix
         Region selection;
         try {
             selection = BukkitAdapter.adapt(player).getSelection();
+            int blockAmount = selection.getHeight() * selection.getWidth() * selection.getLength();
         } catch (IncompleteRegionException ex) {
             sendMessage(player, "§cKeine Auswahl getroffen.");
             sendMessage(player, "§cErstelle mit Worldedit eine Region.");
             return;
         }
+
         World world = selection.getWorld();
-        BlockType searching = BukkitAdapter.asBlockType(scanMaterial);
+        org.bukkit.World bukkitWorld = BukkitAdapter.adapt(world);
+        if (world == null) {
+            sendMessage(player, "§cKeine Welt gefunden.");
+            return;
+        }
+
+
         currentScanTask = plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            if (world == null) {
-                sendMessage(player, "§cKeine Welt gefunden.");
-                return;
-            }
-            List<Location> lootBoxes = new LinkedList<>();
+            List<Location> lootBoxes = new ArrayList<>();
             long started = System.currentTimeMillis();
             sendMessage(player, "§eChest-Scan gestartet...");
-            for (BlockVector3 blockVector3 : selection) {
-                if (world.getBlock(blockVector3).getBlockType() == searching) {
-                    lootBoxes.add(BukkitAdapter.adapt(player.getWorld(), blockVector3));
+
+            BlockVector3 min = selection.getMinimumPoint();
+            BlockVector3 max = selection.getMaximumPoint();
+            int minX = min.getBlockX();
+            int minY = min.getBlockY();
+            int minZ = min.getBlockZ();
+            int maxX = max.getBlockX();
+            int maxY = max.getBlockY();
+            int maxZ = max.getBlockZ();
+
+            for (int x = minX; x <= maxX; x++) {
+                for (int z = minZ; z <= maxZ; z++) {
+                    for (int y = minY; y <= maxY; y++) {
+                        if (scanMaterials.contains(world.getBlock(x, y, z).getBlockType())) {
+                            lootBoxes.add(new Location(bukkitWorld, x, y, z));
+                        }
+                    }
                 }
             }
+
             lastScanResult = lootBoxes;
             Duration elapsed = Duration.ofMillis(System.currentTimeMillis() - started);
             sendMessage(player, "§aScan abgeschlossen §7in %dm %ds".formatted(elapsed.toMinutesPart(), elapsed.toSecondsPart()));
@@ -175,7 +202,7 @@ public class LootChestCommand extends BaseCommand {
 
     @Subcommand("gui")
     public void openGui(Player player) {
-        LootChestOverviewGui.inventory(lootChestManager()).open(player);
+        new LootChestOverviewGui(player, lootChestManager()).open();
     }
 
     private LootChestManager lootChestManager() {

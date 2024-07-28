@@ -21,9 +21,21 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public record PlacedOre(int entityId, Location location, MineOreType type, Set<UUID> viewers,
-                        Map<UUID, Long> playerDestroyMap) {
+public class PlacedOre {
+    private final int entityId;
+    private final Location location;
+    private final MineOreType type;
+    private final Set<UUID> viewers;
+    private final Map<UUID, Long> playerDestroyMap;
+    private @Nullable Integer databaseId;
 
+    public PlacedOre(int entityId, Location location, MineOreType type, Set<UUID> viewers, Map<UUID, Long> playerDestroyMap) {
+        this.entityId = entityId;
+        this.location = location;
+        this.type = type;
+        this.viewers = viewers;
+        this.playerDestroyMap = playerDestroyMap;
+    }
 
     public void render(Player player, boolean ignoreDestroy) {
         if (viewers.contains(player.getUniqueId())) {
@@ -131,4 +143,33 @@ public record PlacedOre(int entityId, Location location, MineOreType type, Set<U
         playerDestroyMap.put(player.getUniqueId(), System.currentTimeMillis());
     }
 
+
+    public int entityId() {
+        return entityId;
+    }
+
+    public Location location() {
+        return location;
+    }
+
+    public MineOreType type() {
+        return type;
+    }
+
+    public Set<UUID> viewers() {
+        return viewers;
+    }
+
+    public Map<UUID, Long> playerDestroyMap() {
+        return playerDestroyMap;
+    }
+
+
+    public @Nullable Integer databaseId() {
+        return databaseId;
+    }
+
+    public void setDatabaseId(@Nullable Integer databaseId) {
+        this.databaseId = databaseId;
+    }
 }

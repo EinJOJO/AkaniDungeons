@@ -1,17 +1,13 @@
 package it.einjojo.akani.dungeon;
 
-import co.aikar.commands.PaperCommandManager;
+import it.einjojo.akani.dungeon.listener.*;
+import it.einjojo.akani.util.commands.PaperCommandManager;
 import io.lumine.mythic.bukkit.MythicBukkit;
 import it.einjojo.akani.dungeon.command.BuildCommand;
 import it.einjojo.akani.dungeon.command.ChunkMobsCommand;
 import it.einjojo.akani.dungeon.command.LootChestCommand;
 import it.einjojo.akani.dungeon.command.MineOreCommand;
 import it.einjojo.akani.dungeon.config.DungeonConfigManager;
-import it.einjojo.akani.dungeon.gui.GuiManager;
-import it.einjojo.akani.dungeon.listener.DungeonWorldListener;
-import it.einjojo.akani.dungeon.listener.InputListener;
-import it.einjojo.akani.dungeon.listener.MineListener;
-import it.einjojo.akani.dungeon.listener.OreAttackPacketListener;
 import it.einjojo.akani.dungeon.lootchest.LootChest;
 import it.einjojo.akani.dungeon.mine.Hardness;
 import it.einjojo.akani.dungeon.mine.MineOreType;
@@ -25,7 +21,6 @@ public class AkaniDungeonPlugin extends JavaPlugin {
     private static AkaniDungeonPlugin singleton;
     private AkaniDungeon akaniDungeon;
     private PaperCommandManager commandManager;
-    private GuiManager guiManager;
     private DungeonWorldListener dungeonWorldListener;
 
     public static AkaniDungeonPlugin get() {
@@ -49,7 +44,6 @@ public class AkaniDungeonPlugin extends JavaPlugin {
             akaniDungeon.load();
         });
         akaniDungeon.startSchedulers();
-        guiManager = new GuiManager(this, dungeonConfigManager.mineOreTypeConfig(), akaniDungeon.mineOreTypeFactory());
         registerListener();
         registerCommands();
     }
@@ -65,7 +59,6 @@ public class AkaniDungeonPlugin extends JavaPlugin {
     public void registerCommands() {
         commandManager = new PaperCommandManager(this);
         commandManager.enableUnstableAPI("help");
-        commandManager.enableUnstableAPI("brigadier");
         commandManager.getCommandCompletions().registerAsyncCompletion("mythicmobs", (c) -> MythicBukkit.inst().getMobManager().getMobNames());
         commandManager.getCommandCompletions().registerAsyncCompletion("lootChests", (c) -> akaniDungeon.lootChestManager().lootChests().stream().map(LootChest::name).toList());
         commandManager.getCommandCompletions().registerAsyncCompletion("oreTypes", (c) -> akaniDungeon.config().mineOreTypeConfig().types().stream().map(MineOreType::name).toList());
@@ -84,7 +77,6 @@ public class AkaniDungeonPlugin extends JavaPlugin {
             return false;
         }, false);
         commandManager.registerDependency(AkaniDungeon.class, akaniDungeon);
-        commandManager.registerDependency(GuiManager.class, guiManager);
         commandManager.registerCommand(new MineOreCommand());
         commandManager.registerCommand(new BuildCommand(dungeonWorldListener));
         commandManager.registerCommand(new LootChestCommand());

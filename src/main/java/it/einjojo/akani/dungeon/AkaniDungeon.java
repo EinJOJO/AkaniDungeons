@@ -35,7 +35,7 @@ public class AkaniDungeon {
         this.configManager = configManager;
         syncMobSpawner = new SyncMobSpawner();
         asyncMobPopulateChunkSelector = new AsyncMobPopulateChunkSelector(config().mobSpawnerConfig(), syncMobSpawner);
-        mineManager = new MineManager(configManager.placedOreConfig());
+        mineManager = new MineManager(configManager.mineOreTypeConfig(), () -> core.dataSourceProxy().getConnection());
         syncOreRenderer = new SyncOreRenderer(mineManager);
         placedOreFactory = new PlacedOreFactory();
         mineOreTypeFactory = new MineOreTypeFactory();
@@ -71,7 +71,6 @@ public class AkaniDungeon {
         asyncMobPopulateChunkSelector.start(plugin, configManager.mobSpawnerConfig().selectorInterval());
         syncMobSpawner.start(plugin, configManager.mobSpawnerConfig().spawnerInterval());
         syncOreRenderer.start(plugin, 5);
-        mineManager.start(plugin, 20 * 60);
         lootChestManager.startTasks();
     }
 

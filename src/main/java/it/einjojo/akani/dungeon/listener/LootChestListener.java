@@ -1,15 +1,18 @@
-package it.einjojo.akani.dungeon.lootchest.bukkit;
+package it.einjojo.akani.dungeon.listener;
 
+import com.destroystokyo.paper.event.block.BlockDestroyEvent;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import it.einjojo.akani.dungeon.lootchest.*;
+import it.einjojo.akani.dungeon.util.BuilderRegistry;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -65,12 +68,27 @@ public class LootChestListener implements Listener, PacketListener {
         });
     }
 
+    @EventHandler
+    public void destroyLootChest(BlockBreakEvent event) {
+        if (BuilderRegistry.isNotInBuildMode(event.getPlayer().getUniqueId())) return;
+        PlacedLootChest plc = lootChestManager.placedLootChestByLocation(event.getBlock().getLocation());
+        if (plc == null) {
+            return;
+        }
+        lootChestManager.deletePlacedChest(plc);
+        event.getPlayer().sendMessage("§cDie platzierte Lootchest wurde gelöscht.");
+    }
+
 
     @EventHandler
     public void openChestOnInteract(PlayerInteractEvent event) {
         if (!event.hasBlock()) {
             return;
         }
+        if (event.getClickedBlock() == null) {
+            return;
+        }
+        if (!event.getAction().isRightClick()) return;
         PlacedLootChest plc = lootChestManager.placedLootChestByLocation(event.getClickedBlock().getLocation());
         if (plc == null) {
             return;

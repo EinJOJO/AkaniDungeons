@@ -1,8 +1,8 @@
 package it.einjojo.akani.dungeon.command;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.CommandHelp;
-import co.aikar.commands.annotation.*;
+import it.einjojo.akani.util.commands.BaseCommand;
+import it.einjojo.akani.util.commands.CommandHelp;
+import it.einjojo.akani.util.commands.annotation.*;
 import it.einjojo.akani.dungeon.AkaniDungeonPlugin;
 import it.einjojo.akani.dungeon.config.MobSpawnerConfig;
 import it.einjojo.akani.dungeon.util.ChunkPosition;
@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 @CommandAlias("chunkmobs|mobs")
+@CommandPermission("akani.dungeons.chunkmobs")
 public class ChunkMobsCommand extends BaseCommand {
 
     private final MobSpawnerConfig mobSpawnerConfig;

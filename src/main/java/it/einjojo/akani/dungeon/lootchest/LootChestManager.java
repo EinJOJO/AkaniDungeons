@@ -1,8 +1,8 @@
 package it.einjojo.akani.dungeon.lootchest;
 
-import it.einjojo.akani.dungeon.lootchest.bukkit.AsyncLootChestSaveTask;
-import it.einjojo.akani.dungeon.lootchest.bukkit.LootChestListener;
-import it.einjojo.akani.dungeon.lootchest.bukkit.LootChestTickTask;
+import it.einjojo.akani.dungeon.lootchest.task.AsyncLootChestSaveTask;
+import it.einjojo.akani.dungeon.listener.LootChestListener;
+import it.einjojo.akani.dungeon.lootchest.task.LootChestTickTask;
 import it.einjojo.akani.dungeon.lootchest.particle.ParticleSpawnerFactory;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;

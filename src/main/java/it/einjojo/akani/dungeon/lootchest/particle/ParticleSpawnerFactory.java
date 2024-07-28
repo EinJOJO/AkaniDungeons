@@ -7,6 +7,8 @@ public class ParticleSpawnerFactory {
             case NormalParticleSpawner.NAME -> createNormalParticleSpawner();
             case EpicParticleSpawner.NAME -> createEpicParticleSpawner();
             case LegendaryParticleSpawner.NAME -> createLegendaryParticleSpawner();
+            case RareParticleSpawner.NAME -> createRareParticleSpawner();
+            case VeryRareParticleSpawner.NAME -> createVeryRareParticleSpawner();
             default -> throw new IllegalArgumentException("Unknown particle spawner: " + name);
         };
     }
@@ -23,4 +25,11 @@ public class ParticleSpawnerFactory {
         return new LegendaryParticleSpawner();
     }
 
+    public ParticleSpawner createRareParticleSpawner() {
+        return new RareParticleSpawner();
+    }
+
+    public ParticleSpawner createVeryRareParticleSpawner() {
+        return new VeryRareParticleSpawner();
+    }
 }

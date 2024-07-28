@@ -1,9 +1,11 @@
 package it.einjojo.akani.dungeon.mine;
 
 import com.google.common.base.Preconditions;
-import it.einjojo.akani.dungeon.config.PlacedOreConfig;
+import it.einjojo.akani.dungeon.config.MineOreTypeConfig;
+import it.einjojo.akani.dungeon.mine.factory.PlacedOreFactory;
+import it.einjojo.akani.dungeon.storage.SQLConnectionProvider;
+import it.einjojo.akani.dungeon.storage.mine.SQLMineStorage;
 import it.einjojo.akani.dungeon.util.ChunkPosition;
-import it.einjojo.akani.dungeon.util.RepeatingTask;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
@@ -16,19 +18,21 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class MineManager implements RepeatingTask {
+public class MineManager {
 
     private static final Logger logger = LoggerFactory.getLogger(MineManager.class);
     private final Map<ChunkPosition, MineChunk> oreChunkMap = new ConcurrentHashMap<>();
     private final Map<Integer, PlacedOre> oreMap = new ConcurrentHashMap<>();
     private final Map<UUID, MineProgression> progressionMap = new ConcurrentHashMap<>();
-    private final PlacedOreConfig config;
-    private BukkitTask saveTask;
-    private boolean oreChanged = false;
+    private final MineOreTypeConfig config;
+    private final SQLMineStorage storage;
 
-    public MineManager(PlacedOreConfig config) {
+
+    public MineManager(MineOreTypeConfig config, SQLConnectionProvider connectionProvider) {
         Preconditions.checkNotNull(config);
         this.config = config;
+        storage = new SQLMineStorage(connectionProvider);
+        storage.init();
     }
 
     public PlacedOre oreByEntityId(int entityId) {
@@ -51,61 +55,37 @@ public class MineManager implements RepeatingTask {
         progressionMap.remove(playerId);
     }
 
-    public void registerOre(PlacedOre ore) {
+    public void registerPlacedOre(PlacedOre ore) {
         oreMap.put(ore.entityId(), ore);
         MineChunk chunk = oreChunkMap.computeIfAbsent(ChunkPosition.of(ore.location()), chunkPosition -> new MineChunk(chunkPosition, new LinkedList<>()));
         chunk.ores().add(ore);
-        oreChanged = true;
         logger.debug("Registered ore {}", ore.entityId());
     }
 
-    public void unregisterOre(PlacedOre ore) {
+    public void unregisterPlacedOre(PlacedOre ore) {
         oreMap.remove(ore.entityId());
-        oreChunkMap.get(ChunkPosition.of(ore.location())).ores().remove(ore);
-        oreChanged = true;
-    }
-
-    public void save() {
-        if (!oreChanged) {
-            return;
+        MineChunk chunk = oreChunkMap.get(ChunkPosition.of(ore.location()));
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            ore.unrender(player);
         }
-        config.save(oreMap.values());
-        oreChanged = false;
-        logger.info("Saved {} placed ores", oreMap.size());
+        chunk.ores().remove(ore);
     }
 
     public void load() {
         oreChunkMap.clear();
         for (PlacedOre ore : oreMap.values()) {
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                ore.unrender(player);
-            }
-            oreMap.remove(ore.entityId());
+            unregisterPlacedOre(ore);
         }
-        config.load().forEach(this::registerOre);
-        oreChanged = false;
+        for (PlacedOre placedOre : storage.loadAllPlacedOres(new PlacedOreFactory(),
+                (name) -> config.types().stream().filter(type -> type.name().equals(name)).findFirst().orElseThrow())) {
+            registerPlacedOre(placedOre);
+        }
         logger.info("Loaded {} placed ores", oreMap.size());
     }
 
-
-    @Override
-    public BukkitTask task() {
-        return saveTask;
+    public SQLMineStorage storage() {
+        return storage;
     }
 
-    @Override
-    public void setTask(BukkitTask task) {
-        saveTask = task;
-    }
 
-    @Override
-    public boolean isAsync() {
-        return true;
-    }
-
-    @Override
-    public void run() {
-        save();
-
-    }
 }

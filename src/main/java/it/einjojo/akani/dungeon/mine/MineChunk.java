@@ -2,6 +2,7 @@ package it.einjojo.akani.dungeon.mine;
 
 import it.einjojo.akani.dungeon.util.ChunkPosition;
 import org.bukkit.Chunk;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -11,7 +12,8 @@ public record MineChunk(ChunkPosition position, List<PlacedOre> ores) {
 
 
     public void renderOres(Player player) {
-        ores.forEach(ore -> ore.render(player));
+        boolean inDebugMode = player.getInventory().getItemInMainHand().getType().equals(Material.DEBUG_STICK);
+        ores.forEach(ore -> ore.render(player, inDebugMode));
     }
 
     public void unrenderOres(Player player) {

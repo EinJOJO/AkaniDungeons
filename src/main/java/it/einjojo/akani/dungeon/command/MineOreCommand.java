@@ -1,10 +1,11 @@
 package it.einjojo.akani.dungeon.command;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.CommandHelp;
-import co.aikar.commands.annotation.*;
+import it.einjojo.akani.dungeon.AkaniDungeonPlugin;
+import it.einjojo.akani.dungeon.gui.mineoretype.MineOreTypeSelectorGUI;
+import it.einjojo.akani.util.commands.BaseCommand;
+import it.einjojo.akani.util.commands.CommandHelp;
+import it.einjojo.akani.util.commands.annotation.*;
 import it.einjojo.akani.dungeon.AkaniDungeon;
-import it.einjojo.akani.dungeon.gui.GuiManager;
 import it.einjojo.akani.dungeon.util.ItemReward;
 import it.einjojo.akani.dungeon.mine.Hardness;
 import it.einjojo.akani.dungeon.mine.MineOreType;
@@ -15,20 +16,20 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @CommandAlias("adminmine|amine")
-@CommandPermission("akani.mine.admin")
+@CommandPermission("akani.dungeons.mine")
 public class MineOreCommand extends BaseCommand {
     @Dependency
     private AkaniDungeon core;
-    @Dependency
-    private GuiManager guiManager;
+
     @Dependency
     private JavaPlugin plugin;
 
 
     @Subcommand("gui")
     @Description("Open the mine ore type selector GUI.")
+
     public void openTypesGui(Player sender) {
-        guiManager.mineOreTypeSelectorGUI().open(sender);
+        new MineOreTypeSelectorGUI(sender, core.config().mineOreTypeConfig(), core.mineOreTypeFactory()).open();
     }
 
     @Subcommand("create")
@@ -48,15 +49,6 @@ public class MineOreCommand extends BaseCommand {
         sender.sendMessage("§7Das Erz §a" + type.name() + "§7 wurde erstellt.");
     }
 
-    @Subcommand("save")
-    @Syntax("")
-    @Description("Save the placed mine ore types.")
-    public void savePlaced(Player sender) {
-        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, () -> {
-            core.mineManager().save();
-            sender.sendMessage("§7Platzierte Erze gespeichert.");
-        });
-    }
 
     @Subcommand("reload|rl")
     @Syntax("")

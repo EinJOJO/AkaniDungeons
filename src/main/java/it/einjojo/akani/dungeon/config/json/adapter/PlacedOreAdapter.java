@@ -35,7 +35,7 @@ public class PlacedOreAdapter implements JsonSerializer<PlacedOre>, JsonDeserial
                 .filter(_oreType -> _oreType.name().equals(object.get("type").getAsString()))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Ore type not found"));
-        return akaniDungeon.akaniDungeon().placedOreFactory().createMineOre(new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch), oreType);
+        return akaniDungeon.akaniDungeon().placedOreFactory().createPlacedOre(new Location(Bukkit.getWorld(world), x, y, z, yaw, pitch), oreType);
     }
 
     @Override
