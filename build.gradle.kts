@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "it.einjojo.akani"
-version = "1.2.12"
+version = "1.2.14"
 
 repositories {
 
