@@ -73,6 +73,7 @@ public class MineOreTypeSelectorGUI extends PaginatedGui {
             player.getInventory().addItem(cursorItem);
             player.setItemOnCursor(null);
             addOreType(oreType);
+            paginationManager.update();
         } catch (IllegalArgumentException ex) {
             player.sendMessage(Component.text("Ein Fehler ist aufgetreten: " + ex.getMessage()));
             player.playSound(player, Sound.ENTITY_ITEM_BREAK, 1, 1.5f);
