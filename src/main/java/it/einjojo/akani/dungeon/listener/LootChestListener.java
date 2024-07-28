@@ -7,6 +7,7 @@ import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import it.einjojo.akani.dungeon.lootchest.*;
 import it.einjojo.akani.dungeon.util.BuilderRegistry;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,6 +23,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class LootChestListener implements Listener, PacketListener {
     private final JavaPlugin plugin;
     private final LootChestManager lootChestManager;
+    private final PlacedLootChestFactory lootChestFactory = new PlacedLootChestFactory();
 
 
     public LootChestListener(JavaPlugin plugin, LootChestManager lootChestManager) {
@@ -63,7 +65,7 @@ public class LootChestListener implements Listener, PacketListener {
                 case WEST -> clickedBlock.getLocation().add(-1, 0, 0);
                 default -> clickedBlock.getLocation();
             };
-            lootChestManager.persistPlacedChest(new PlacedLootChestFactory().createSimplePlacedLootChest(resolved, location));
+            lootChestManager.persistPlacedChest(lootChestFactory.createSimplePlacedLootChest(resolved, location));
             event.setCancelled(true);
         });
     }
@@ -77,6 +79,30 @@ public class LootChestListener implements Listener, PacketListener {
         }
         lootChestManager.deletePlacedChest(plc);
         event.getPlayer().sendMessage("§cDie platzierte Lootchest wurde gelöscht.");
+    }
+
+    @EventHandler(priority = EventPriority.LOW)
+    public void placeLootChestIfShulker(PlayerInteractEvent interactEvent) {
+        if (interactEvent.getHand() != EquipmentSlot.HAND) return;
+        if (interactEvent.getClickedBlock() == null) return;
+        LootChest lootChest = null;
+        Material material = interactEvent.getClickedBlock().getType();
+        if (material.equals(Material.LIGHT_GRAY_SHULKER_BOX)) {
+            lootChest = lootChestManager.lootChestByName("normal");
+        } else if (material.equals(Material.PURPLE_SHULKER_BOX)) {
+            lootChest = lootChestManager.lootChestByName("episch");
+        } else if (material.equals(Material.LIME_SHULKER_BOX)) {
+            lootChest = lootChestManager.lootChestByName("selten");
+        } else if (material.equals(Material.YELLOW_SHULKER_BOX)) {
+            lootChest = lootChestManager.lootChestByName("Legendär");
+        } else if (material.equals(Material.BLUE_SHULKER_BOX)) {
+            lootChest = lootChestManager.lootChestByName("sehr selten");
+        }
+        if (lootChest == null) {
+            return;
+        }
+        lootChestManager.persistPlacedChest(lootChestFactory.createSimplePlacedLootChest(lootChest, interactEvent.getClickedBlock().getLocation()));
+        interactEvent.getPlayer().sendMessage("§aDu hast eine Lootchest registriert!");
     }
 
 

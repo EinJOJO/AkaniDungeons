@@ -13,6 +13,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -49,14 +50,6 @@ public class DungeonWorldListener implements Listener {
     }
 
 
-    @EventHandler
-    public void disablePVP(EntityDamageByEntityEvent event) {
-        if (event.getEntity() instanceof Player && event.getDamager() instanceof Player) {
-            event.setCancelled(true);
-        }
-    }
-
-
     @EventHandler(priority = EventPriority.LOWEST)
     public void cancelBlockBreak(BlockBreakEvent event) {
         if (isNotInBuildMode(event.getPlayer())) {
@@ -72,21 +65,12 @@ public class DungeonWorldListener implements Listener {
     }
 
     @EventHandler
-    public void cancelInteractions(PlayerInteractEvent event) {
-        if (isNotInBuildMode(event.getPlayer())) {
-            event.setUseInteractedBlock(PlayerInteractEvent.Result.DENY);
-        }
-
-        if (event.getItem() == null) return;
-        if (INTERACTION_BLACKLIST.contains(event.getItem().getType())) {
-            event.setUseItemInHand(PlayerInteractEvent.Result.DENY);
-        }
-
-    }
-
-    @EventHandler
-    public void disallowItemFrameRotation(PlayerInteractAtEntityEvent event) {
-
+    public void keepInventory(PlayerDeathEvent event) {
+        event.setKeepLevel(true);
+        event.setDroppedExp(0);
+        event.setKeepInventory(true);
+        event.deathMessage(null);
+        event.getDrops().clear();
     }
 
 
@@ -95,18 +79,6 @@ public class DungeonWorldListener implements Listener {
         Bukkit.getScheduler().runTaskLater(plugin, () -> {
             postRespawnEvent.getPlayer().chat("/warp dungeons");
         }, 1);
-    }
-
-    @EventHandler
-    public void disallowItemFrameAttack(EntityDamageByEntityEvent entityDamageEvent) {
-        if (entityDamageEvent.getEntity() instanceof ItemFrame) {
-            if (entityDamageEvent.getDamager() instanceof Player player) {
-                if (isNotInBuildMode(player)) {
-                    entityDamageEvent.setCancelled(true);
-                }
-            }
-        }
-
     }
 
 
