@@ -137,7 +137,7 @@ public class MineOreTypeSettingGUI extends Gui implements ParentableGui {
 
             addItem(9 * 3 + 1 + (offset++), new Icon(itemBuilder.build()).onClick(e -> {
                 oreType.setHardness(Hardness.values()[index]);
-
+                addHardnessSelector();
             }));
         }
     }
